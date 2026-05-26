@@ -2,12 +2,19 @@
 
 import { useTranslations } from "next-intl";
 import FadeInView from "./FadeInView";
+import type { SanityHero } from "@/lib/sanity";
 
 function openApplyModal() {
   window.dispatchEvent(new CustomEvent("open-apply-modal"));
 }
 
-export default function Hero({ children }: { children?: React.ReactNode }) {
+export default function Hero({
+  children,
+  sanityHero,
+}: {
+  children?: React.ReactNode;
+  sanityHero?: SanityHero | null;
+}) {
   const t = useTranslations("Hero");
 
   return (
@@ -23,7 +30,7 @@ export default function Hero({ children }: { children?: React.ReactNode }) {
                 lineHeight: 1.05,
               }}
             >
-              {t("headline1")}
+              {sanityHero?.headlineLine1 || t("headline1")}
             </span>
             <span
               className="block italic text-[clamp(2rem,9vw,3rem)] md:text-[clamp(48px,7vw,72px)]"
@@ -33,7 +40,7 @@ export default function Hero({ children }: { children?: React.ReactNode }) {
                 lineHeight: 1.05,
               }}
             >
-              {t("headline2")}
+              {sanityHero?.headlineLine2 || t("headline2")}
             </span>
           </h1>
         </FadeInView>
@@ -43,7 +50,7 @@ export default function Hero({ children }: { children?: React.ReactNode }) {
             className="text-base md:text-lg leading-relaxed mb-8 md:mb-10 max-w-2xl"
             style={{ color: "rgba(26,48,40,0.72)" }}
           >
-            {t("body")}
+            {sanityHero?.bodyText || t("body")}
           </p>
         </FadeInView>
 
@@ -60,7 +67,7 @@ export default function Hero({ children }: { children?: React.ReactNode }) {
                 ((e.currentTarget as HTMLElement).style.backgroundColor = "#E87030")
               }
             >
-              {t("cta")}
+              {sanityHero?.primaryButtonText || t("cta")}
             </button>
             <a
               href="#about"

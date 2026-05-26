@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import FadeInView from "./FadeInView";
+import type { SanityCourse } from "@/lib/sanity";
 
 interface CourseData {
   title: string;
@@ -286,16 +287,34 @@ function CourseModal({
   );
 }
 
-export default function Courses() {
+export default function Courses({ sanityData }: { sanityData?: SanityCourse[] | null }) {
   const t = useTranslations("Courses");
   const [selected, setSelected] = useState<Course | null>(null);
   const [open, setOpen] = useState(false);
 
-  const courseDataList = t.raw("list") as CourseData[];
-  const courses: Course[] = courseMeta.map((meta, i) => ({
-    ...meta,
-    ...courseDataList[i],
-  }));
+  // Build course list: prefer Sanity data, fall back to translation files
+  let courses: Course[];
+  if (sanityData && sanityData.length > 0) {
+    courses = sanityData.map((sc, i) => ({
+      id: i + 1,
+      gradient: courseMeta[i]?.gradient ?? "linear-gradient(135deg, #2AA090 0%, #1a6a5a 100%)",
+      title: sc.title,
+      shortDescription: sc.tagline ?? sc.description ?? "",
+      description: sc.description ?? "",
+      author: sc.authorName ?? "",
+      authorRole: sc.authorRole ?? "",
+      whoFor: sc.whoFor ?? [],
+      curriculum: (sc.curriculum ?? []).map((c) => c.title),
+      lessons: sc.lessons ?? courseMeta[i]?.lessons ?? 0,
+      status: (sc.status as "active" | "coming-soon") ?? courseMeta[i]?.status ?? "active",
+    }));
+  } else {
+    const courseDataList = t.raw("list") as CourseData[];
+    courses = courseMeta.map((meta, i) => ({
+      ...meta,
+      ...courseDataList[i],
+    }));
+  }
 
   const modalLabels = {
     taughtBy: t("modal.taughtBy"),

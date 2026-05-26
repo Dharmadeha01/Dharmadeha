@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import FadeInView from "./FadeInView";
+import type { SanityTestimonial } from "@/lib/sanity";
 
 interface Quote {
   text: string;
@@ -9,9 +10,12 @@ interface Quote {
   role: string;
 }
 
-export default function Voices() {
+export default function Voices({ sanityData }: { sanityData?: SanityTestimonial[] | null }) {
   const t = useTranslations("Voices");
-  const quotes = t.raw("quotes") as Quote[];
+  const fallbackQuotes = t.raw("quotes") as Quote[];
+  const quotes: Quote[] = sanityData && sanityData.length > 0
+    ? sanityData.map((item) => ({ text: item.quote, author: item.name, role: item.role ?? "" }))
+    : fallbackQuotes;
 
   return (
     <section style={{ backgroundColor: "#EEF6F5" }} className="py-12 md:py-24">

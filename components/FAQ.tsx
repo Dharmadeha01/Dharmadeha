@@ -8,15 +8,19 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import FadeInView from "./FadeInView";
+import type { SanityFaq } from "@/lib/sanity";
 
 interface FAQItem {
   q: string;
   a: string;
 }
 
-export default function FAQ() {
+export default function FAQ({ sanityData }: { sanityData?: SanityFaq[] | null }) {
   const t = useTranslations("FAQ");
-  const items = t.raw("items") as FAQItem[];
+  const fallbackItems = t.raw("items") as FAQItem[];
+  const items: FAQItem[] = sanityData && sanityData.length > 0
+    ? sanityData.map((item) => ({ q: item.question, a: item.answer }))
+    : fallbackItems;
 
   return (
     <section id="faq" style={{ backgroundColor: "#FAF5EC" }} className="py-12 md:py-24">
