@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import {
   Dialog,
@@ -65,8 +66,10 @@ function CourseCard({
   viewCourse: string;
 }) {
   return (
-    <div
-      className="rounded-2xl overflow-hidden cursor-pointer group transition-shadow hover:shadow-lg"
+    <motion.div
+      whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(26,48,40,0.12)" }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      className="rounded-2xl overflow-hidden cursor-pointer group"
       style={{ backgroundColor: "#fff", boxShadow: "0 1px 6px rgba(26,48,40,0.07)" }}
       onClick={() => onOpen(course)}
     >
@@ -114,14 +117,14 @@ function CourseCard({
             {course.lessons} {lessonsLabel}
           </span>
           <span
-            className="text-sm font-medium group-hover:underline"
+            className="text-sm font-medium group-hover:underline group-hover:translate-x-1 inline-block transition-transform duration-200"
             style={{ color: "#E87030" }}
           >
             {viewCourse}
           </span>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

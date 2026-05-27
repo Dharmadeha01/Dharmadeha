@@ -1,11 +1,169 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { motion, useReducedMotion } from "framer-motion";
 import { Users, BookOpen } from "lucide-react";
 import FadeInView from "./FadeInView";
+import { ConcentricCircles } from "./ui/ConcentricCircles";
+
+const cardVariants = {
+  rest: { y: 0 },
+  hovered: { y: -6 },
+};
+const circlesVariants = {
+  rest: { scale: 1 },
+  hovered: { scale: 1.08 },
+};
+
+interface CardProps {
+  accentColor: string;
+  accentRgba: string;
+  circleId: string;
+  icon: React.ReactNode;
+  title: string;
+  subtitle: string;
+  bullets: string[];
+  badge: string;
+  shouldReduce: boolean;
+}
+
+function Card({
+  accentColor,
+  accentRgba,
+  circleId,
+  icon,
+  title,
+  subtitle,
+  bullets,
+  badge,
+  shouldReduce,
+}: CardProps) {
+  return (
+    <motion.div
+      className="relative overflow-hidden rounded-2xl p-7 md:p-10 flex flex-col"
+      style={{ backgroundColor: "#fff", border: "1px solid rgba(26,48,40,0.08)" }}
+      variants={cardVariants}
+      initial="rest"
+      whileHover={shouldReduce ? "rest" : "hovered"}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+    >
+      {/* Circles — scale on card hover */}
+      <motion.div
+        variants={circlesVariants}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        style={{
+          position: "absolute",
+          top: 0,
+          right: 0,
+          width: "320px",
+          height: "320px",
+          transformOrigin: "center",
+          zIndex: 0,
+          pointerEvents: "none",
+        }}
+      >
+        <ConcentricCircles color={accentColor} id={circleId} />
+      </motion.div>
+
+      {/* Content */}
+      <div className="relative flex flex-col flex-1" style={{ zIndex: 10 }}>
+        {/* Decorative 50% */}
+        <div
+          style={{
+            fontFamily: "var(--font-dm-serif)",
+            fontSize: "68px",
+            color: accentRgba,
+            lineHeight: 1,
+            marginBottom: "16px",
+          }}
+        >
+          50%
+        </div>
+
+        {/* Icon circle */}
+        <div
+          className="w-12 h-12 rounded-full flex items-center justify-center"
+          style={{ backgroundColor: accentColor, marginBottom: "16px" }}
+        >
+          {icon}
+        </div>
+
+        {/* Title */}
+        <h3
+          style={{
+            fontFamily: "var(--font-dm-serif)",
+            fontSize: "32px",
+            color: "#1A3028",
+            lineHeight: 1.2,
+            marginBottom: "4px",
+          }}
+        >
+          {title}
+        </h3>
+
+        {/* Subtitle */}
+        <p
+          className="italic"
+          style={{
+            fontFamily: "var(--font-dm-sans)",
+            fontSize: "16px",
+            color: accentColor,
+          }}
+        >
+          {subtitle}
+        </p>
+
+        {/* Divider */}
+        <div style={{ borderTop: "1px solid rgba(26,48,40,0.1)", margin: "20px 0" }} />
+
+        {/* Bullets */}
+        <ul className="space-y-3 flex-1">
+          {bullets.map((bullet, i) => (
+            <li key={i} className="flex items-start gap-3">
+              <div
+                className="shrink-0 rounded-full"
+                style={{
+                  width: "6px",
+                  height: "6px",
+                  backgroundColor: accentColor,
+                  marginTop: "8px",
+                }}
+              />
+              <span
+                style={{
+                  color: "rgba(26,48,40,0.75)",
+                  fontSize: "15px",
+                  lineHeight: 1.6,
+                  fontFamily: "var(--font-dm-sans)",
+                }}
+              >
+                {bullet}
+              </span>
+            </li>
+          ))}
+        </ul>
+
+        {/* Badge */}
+        <div className="mt-6">
+          <span
+            className="inline-block px-3 py-1 rounded-full text-xs font-medium"
+            style={{
+              backgroundColor: `${accentColor}1A`,
+              color: accentColor,
+              fontFamily: "var(--font-dm-sans)",
+            }}
+          >
+            {badge}
+          </span>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 export default function AboutProject() {
   const t = useTranslations("AboutProject");
+  const shouldReduce = useReducedMotion() ?? false;
 
   const satsangBullets = t.raw("satsangBullets") as string[];
   const educationBullets = t.raw("educationBullets") as string[];
@@ -58,221 +216,33 @@ export default function AboutProject() {
         </FadeInView>
 
         {/* Two cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
-          {/* CARD 1 — SATSANG */}
-          <FadeInView delay={0.05}>
-            <div
-              className="rounded-2xl h-full flex flex-col"
-              style={{
-                backgroundColor: "#fff",
-                border: "0.5px solid rgba(26,48,40,0.1)",
-                borderLeft: "3px solid #2AA090",
-                padding: "36px 36px 28px",
-              }}
-            >
-              {/* Decorative number */}
-              <div
-                style={{
-                  fontFamily: "var(--font-dm-serif)",
-                  fontSize: "64px",
-                  color: "rgba(42,160,144,0.2)",
-                  lineHeight: 1,
-                  marginBottom: "16px",
-                }}
-              >
-                50%
-              </div>
-
-              {/* Icon circle */}
-              <div
-                className="w-12 h-12 rounded-full flex items-center justify-center mb-5"
-                style={{ backgroundColor: "rgba(42,160,144,0.1)" }}
-              >
-                <Users size={28} style={{ color: "#2AA090" }} />
-              </div>
-
-              {/* Title */}
-              <h3
-                style={{
-                  fontFamily: "var(--font-dm-serif)",
-                  fontSize: "32px",
-                  color: "#1A3028",
-                  lineHeight: 1.2,
-                  marginBottom: "4px",
-                }}
-              >
-                {t("satsangTitle")}
-              </h3>
-
-              {/* Subtitle */}
-              <p
-                className="italic mb-5"
-                style={{
-                  fontFamily: "var(--font-dm-sans)",
-                  fontSize: "16px",
-                  color: "#2AA090",
-                }}
-              >
-                {t("satsangSubtitle")}
-              </p>
-
-              {/* Divider */}
-              <div
-                style={{
-                  borderTop: "1px solid rgba(26,48,40,0.1)",
-                  marginBottom: "20px",
-                }}
-              />
-
-              {/* Bullets */}
-              <ul className="space-y-3 mb-6 flex-1">
-                {satsangBullets.map((bullet, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <div
-                      className="shrink-0 rounded-full"
-                      style={{
-                        width: "6px",
-                        height: "6px",
-                        backgroundColor: "#2AA090",
-                        marginTop: "8px",
-                      }}
-                    />
-                    <span
-                      style={{
-                        color: "rgba(26,48,40,0.75)",
-                        fontSize: "15px",
-                        lineHeight: 1.6,
-                        fontFamily: "var(--font-dm-sans)",
-                      }}
-                    >
-                      {bullet}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* Badge */}
-              <div>
-                <span
-                  className="inline-block px-3 py-1 rounded-full text-xs font-medium"
-                  style={{
-                    backgroundColor: "rgba(42,160,144,0.15)",
-                    color: "#2AA090",
-                    fontFamily: "var(--font-dm-sans)",
-                  }}
-                >
-                  {t("everyMeeting")}
-                </span>
-              </div>
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <FadeInView delay={0.1}>
+            <Card
+              accentColor="#2AA090"
+              accentRgba="rgba(42,160,144,0.2)"
+              circleId="teal"
+              icon={<Users size={22} color="#fff" />}
+              title={t("satsangTitle")}
+              subtitle={t("satsangSubtitle")}
+              bullets={satsangBullets}
+              badge={t("everyMeeting")}
+              shouldReduce={shouldReduce}
+            />
           </FadeInView>
 
-          {/* CARD 2 — EDUCATION */}
-          <FadeInView delay={0.1}>
-            <div
-              className="rounded-2xl h-full flex flex-col"
-              style={{
-                backgroundColor: "#fff",
-                border: "0.5px solid rgba(26,48,40,0.1)",
-                borderLeft: "3px solid #E87030",
-                padding: "36px 36px 28px",
-              }}
-            >
-              {/* Decorative number */}
-              <div
-                style={{
-                  fontFamily: "var(--font-dm-serif)",
-                  fontSize: "64px",
-                  color: "rgba(232,112,48,0.2)",
-                  lineHeight: 1,
-                  marginBottom: "16px",
-                }}
-              >
-                50%
-              </div>
-
-              {/* Icon circle */}
-              <div
-                className="w-12 h-12 rounded-full flex items-center justify-center mb-5"
-                style={{ backgroundColor: "rgba(232,112,48,0.1)" }}
-              >
-                <BookOpen size={28} style={{ color: "#E87030" }} />
-              </div>
-
-              {/* Title */}
-              <h3
-                style={{
-                  fontFamily: "var(--font-dm-serif)",
-                  fontSize: "32px",
-                  color: "#1A3028",
-                  lineHeight: 1.2,
-                  marginBottom: "4px",
-                }}
-              >
-                {t("educationTitle")}
-              </h3>
-
-              {/* Subtitle */}
-              <p
-                className="italic mb-5"
-                style={{
-                  fontFamily: "var(--font-dm-sans)",
-                  fontSize: "16px",
-                  color: "#E87030",
-                }}
-              >
-                {t("educationSubtitle")}
-              </p>
-
-              {/* Divider */}
-              <div
-                style={{
-                  borderTop: "1px solid rgba(26,48,40,0.1)",
-                  marginBottom: "20px",
-                }}
-              />
-
-              {/* Bullets */}
-              <ul className="space-y-3 mb-6 flex-1">
-                {educationBullets.map((bullet, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <div
-                      className="shrink-0 rounded-full"
-                      style={{
-                        width: "6px",
-                        height: "6px",
-                        backgroundColor: "#E87030",
-                        marginTop: "8px",
-                      }}
-                    />
-                    <span
-                      style={{
-                        color: "rgba(26,48,40,0.75)",
-                        fontSize: "15px",
-                        lineHeight: 1.6,
-                        fontFamily: "var(--font-dm-sans)",
-                      }}
-                    >
-                      {bullet}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* Badge */}
-              <div>
-                <span
-                  className="inline-block px-3 py-1 rounded-full text-xs font-medium"
-                  style={{
-                    backgroundColor: "rgba(232,112,48,0.15)",
-                    color: "#E87030",
-                    fontFamily: "var(--font-dm-sans)",
-                  }}
-                >
-                  {t("everyMeeting")}
-                </span>
-              </div>
-            </div>
+          <FadeInView delay={0.18}>
+            <Card
+              accentColor="#E87030"
+              accentRgba="rgba(232,112,48,0.2)"
+              circleId="ember"
+              icon={<BookOpen size={22} color="#fff" />}
+              title={t("educationTitle")}
+              subtitle={t("educationSubtitle")}
+              bullets={educationBullets}
+              badge={t("everyMeeting")}
+              shouldReduce={shouldReduce}
+            />
           </FadeInView>
         </div>
 
@@ -282,10 +252,9 @@ export default function AboutProject() {
             className="rounded-2xl mt-12"
             style={{
               backgroundColor: "#1A3028",
-              padding: "40px 40px 40px",
+              padding: "40px",
             }}
           >
-            {/* Eyebrow */}
             <p
               className="text-xs font-medium tracking-widest uppercase mb-3"
               style={{ color: "rgba(232,168,64,0.6)" }}
@@ -293,7 +262,6 @@ export default function AboutProject() {
               {t("pathEyebrow")}
             </p>
 
-            {/* Title */}
             <h3
               className="mb-2"
               style={{
@@ -306,7 +274,6 @@ export default function AboutProject() {
               {t("pathTitle")}
             </h3>
 
-            {/* Body */}
             <p
               className="mb-10 md:mb-12"
               style={{
@@ -319,9 +286,7 @@ export default function AboutProject() {
               {t("pathBody")}
             </p>
 
-            {/* Timeline */}
             <div className="relative">
-              {/* Desktop connector line behind circles */}
               <div
                 className="hidden md:block absolute left-0 right-0"
                 style={{
@@ -331,35 +296,13 @@ export default function AboutProject() {
                 }}
               />
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {[
-                  {
-                    num: "1",
-                    bg: "#E8A840",
-                    textColor: "#1A3028",
-                    title: t("step1Title"),
-                    body: t("step1Body"),
-                  },
-                  {
-                    num: "2",
-                    bg: "#2AA090",
-                    textColor: "#ffffff",
-                    title: t("step2Title"),
-                    body: t("step2Body"),
-                  },
-                  {
-                    num: "3",
-                    bg: "#E87030",
-                    textColor: "#ffffff",
-                    title: t("step3Title"),
-                    body: t("step3Body"),
-                  },
+                  { num: "1", bg: "#E8A840", textColor: "#1A3028", title: t("step1Title"), body: t("step1Body") },
+                  { num: "2", bg: "#2AA090", textColor: "#ffffff", title: t("step2Title"), body: t("step2Body") },
+                  { num: "3", bg: "#E87030", textColor: "#ffffff", title: t("step3Title"), body: t("step3Body") },
                 ].map((step, i) => (
-                  <div
-                    key={i}
-                    className="flex md:flex-col gap-4 items-start"
-                  >
-                    {/* Number circle */}
+                  <div key={i} className="flex md:flex-col gap-4 items-start">
                     <div
                       className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 relative z-10"
                       style={{

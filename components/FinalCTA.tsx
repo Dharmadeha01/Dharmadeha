@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import FadeInView from "./FadeInView";
 
@@ -7,8 +8,14 @@ function openApplyModal() {
   window.dispatchEvent(new CustomEvent("open-apply-modal"));
 }
 
+function scrollToJoin() {
+  const el = document.getElementById("join");
+  if (el) el.scrollIntoView({ behavior: "smooth" });
+}
+
 export default function FinalCTA() {
   const t = useTranslations("FinalCTA");
+  const shouldReduce = useReducedMotion();
 
   return (
     <section style={{ backgroundColor: "#1A3028" }} className="py-10 md:py-16">
@@ -47,9 +54,12 @@ export default function FinalCTA() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6 md:mb-8">
-            <button
+            <motion.button
               onClick={openApplyModal}
-              className="px-9 py-3.5 md:py-4 rounded-full font-medium text-white transition-colors cursor-pointer"
+              whileHover={shouldReduce ? {} : { scale: 1.02 }}
+              whileTap={shouldReduce ? {} : { scale: 0.97 }}
+              transition={{ duration: 0.15 }}
+              className="px-9 py-3.5 md:py-4 rounded-full font-medium text-white cursor-pointer"
               style={{ backgroundColor: "#E87030" }}
               onMouseEnter={(e) =>
                 ((e.currentTarget as HTMLElement).style.backgroundColor = "#d4612a")
@@ -59,26 +69,27 @@ export default function FinalCTA() {
               }
             >
               {t("cta1")}
-            </button>
-            <a
-              href="#"
-              className="px-9 py-3.5 md:py-4 rounded-full font-medium transition-colors"
+            </motion.button>
+            <motion.button
+              onClick={scrollToJoin}
+              whileHover={shouldReduce ? {} : { scale: 1.02 }}
+              whileTap={shouldReduce ? {} : { scale: 0.97 }}
+              transition={{ duration: 0.15 }}
+              className="px-9 py-3.5 md:py-4 rounded-full font-medium cursor-pointer"
               style={{
                 border: "2px solid #E8A840",
                 color: "#E8A840",
                 backgroundColor: "transparent",
               }}
               onMouseEnter={(e) => {
-                const el = e.target as HTMLElement;
-                el.style.backgroundColor = "rgba(232,168,64,0.12)";
+                (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(232,168,64,0.12)";
               }}
               onMouseLeave={(e) => {
-                const el = e.target as HTMLElement;
-                el.style.backgroundColor = "transparent";
+                (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
               }}
             >
               {t("cta2")}
-            </a>
+            </motion.button>
           </div>
 
           <p

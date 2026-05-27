@@ -1,45 +1,27 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { motion, useReducedMotion } from "framer-motion";
 import { Users, Compass } from "lucide-react";
 import FadeInView from "./FadeInView";
+import { ConcentricCircles } from "./ui/ConcentricCircles";
 
 function openApplyModal() {
   window.dispatchEvent(new CustomEvent("open-apply-modal"));
 }
 
-function ConcentricCircles({ color }: { color: string }) {
-  const rings = [
-    { size: 80, opacity: 0.4 },
-    { size: 144, opacity: 0.3 },
-    { size: 208, opacity: 0.2 },
-    { size: 288, opacity: 0.1 },
-  ];
-  return (
-    <>
-      {rings.map(({ size, opacity }, i) => (
-        <div
-          key={i}
-          style={{
-            position: "absolute",
-            width: size,
-            height: size,
-            borderRadius: "50%",
-            border: `1.5px solid ${color}`,
-            right: -60,
-            bottom: -60,
-            opacity,
-            pointerEvents: "none",
-            zIndex: 0,
-          }}
-        />
-      ))}
-    </>
-  );
-}
+const cardVariants = {
+  rest: { y: 0 },
+  hovered: { y: -6 },
+};
+const circlesVariants = {
+  rest: { scale: 1 },
+  hovered: { scale: 1.08 },
+};
 
 export default function TwoPaths() {
   const t = useTranslations("TwoPaths");
+  const shouldReduce = useReducedMotion() ?? false;
   const card1Items = t.raw("card1Items") as string[];
   const card2Items = t.raw("card2Items") as string[];
 
@@ -79,36 +61,54 @@ export default function TwoPaths() {
           </h2>
         </FadeInView>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Card 1 — Join */}
           <FadeInView delay={0.1}>
-            <div
-              className="relative overflow-hidden rounded-2xl flex flex-col p-7 md:p-10"
-              style={{
-                backgroundColor: "rgba(42,160,144,0.08)",
-                border: "1px solid rgba(42,160,144,0.2)",
-              }}
+            <motion.div
+              className="relative overflow-hidden rounded-2xl p-7 md:p-10 flex flex-col"
+              style={{ backgroundColor: "#fff", border: "1px solid rgba(26,48,40,0.08)" }}
+              variants={cardVariants}
+              initial="rest"
+              whileHover={shouldReduce ? "rest" : "hovered"}
+              transition={{ duration: 0.25, ease: "easeOut" }}
             >
-              <ConcentricCircles color="#2AA090" />
+              {/* Circles */}
+              <motion.div
+                variants={circlesVariants}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                  width: "320px",
+                  height: "320px",
+                  transformOrigin: "center",
+                  zIndex: 0,
+                  pointerEvents: "none",
+                }}
+              >
+                <ConcentricCircles color="#2AA090" id="teal-join" />
+              </motion.div>
 
-              {/* All content above circles */}
+              {/* Content */}
               <div className="relative flex flex-col flex-1" style={{ zIndex: 10 }}>
-                {/* Top pill */}
-                <span
-                  className="inline-block self-start px-3 py-1 rounded-full text-xs font-medium mb-5"
+                {/* Decorative 50% */}
+                <div
                   style={{
-                    backgroundColor: "rgba(42,160,144,0.1)",
-                    color: "#2AA090",
-                    fontFamily: "var(--font-dm-sans)",
+                    fontFamily: "var(--font-dm-serif)",
+                    fontSize: "68px",
+                    color: "rgba(42,160,144,0.2)",
+                    lineHeight: 1,
+                    marginBottom: "16px",
                   }}
                 >
-                  {t("card1Pill")}
-                </span>
+                  50%
+                </div>
 
                 {/* Icon */}
                 <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center mb-4"
-                  style={{ backgroundColor: "#2AA090" }}
+                  className="w-12 h-12 rounded-full flex items-center justify-center"
+                  style={{ backgroundColor: "#2AA090", marginBottom: "16px" }}
                 >
                   <Users size={22} color="#fff" />
                 </div>
@@ -139,12 +139,7 @@ export default function TwoPaths() {
                 </p>
 
                 {/* Divider */}
-                <div
-                  style={{
-                    borderTop: "1px solid rgba(26,48,40,0.1)",
-                    marginBottom: "20px",
-                  }}
-                />
+                <div style={{ borderTop: "1px solid rgba(26,48,40,0.1)", marginBottom: "20px" }} />
 
                 {/* Bullets */}
                 <ul className="space-y-3 mb-7 flex-1">
@@ -152,12 +147,7 @@ export default function TwoPaths() {
                     <li key={i} className="flex items-start gap-3 text-sm leading-relaxed">
                       <div
                         className="shrink-0 rounded-full"
-                        style={{
-                          width: "6px",
-                          height: "6px",
-                          backgroundColor: "#2AA090",
-                          marginTop: "8px",
-                        }}
+                        style={{ width: "6px", height: "6px", backgroundColor: "#2AA090", marginTop: "8px" }}
                       />
                       <span style={{ color: "rgba(26,48,40,0.8)", fontFamily: "var(--font-dm-sans)" }}>
                         {item}
@@ -166,10 +156,13 @@ export default function TwoPaths() {
                   ))}
                 </ul>
 
-                {/* CTA button — ember */}
-                <button
+                {/* CTA — ember */}
+                <motion.button
                   onClick={openApplyModal}
-                  className="w-full text-center py-3.5 rounded-full text-sm font-medium text-white transition-colors cursor-pointer"
+                  whileHover={shouldReduce ? {} : { scale: 1.02 }}
+                  whileTap={shouldReduce ? {} : { scale: 0.97 }}
+                  transition={{ duration: 0.15 }}
+                  className="w-full text-center py-3.5 rounded-full text-sm font-medium text-white cursor-pointer"
                   style={{ backgroundColor: "#E87030" }}
                   onMouseEnter={(e) =>
                     ((e.currentTarget as HTMLElement).style.backgroundColor = "#d4612a")
@@ -179,40 +172,58 @@ export default function TwoPaths() {
                   }
                 >
                   {t("card1Cta")}
-                </button>
+                </motion.button>
               </div>
-            </div>
+            </motion.div>
           </FadeInView>
 
           {/* Card 2 — Mentor */}
-          <FadeInView delay={0.2}>
-            <div
-              className="relative overflow-hidden rounded-2xl flex flex-col p-7 md:p-10"
-              style={{
-                backgroundColor: "rgba(232,112,48,0.08)",
-                border: "1px solid rgba(232,112,48,0.2)",
-              }}
+          <FadeInView delay={0.18}>
+            <motion.div
+              className="relative overflow-hidden rounded-2xl p-7 md:p-10 flex flex-col"
+              style={{ backgroundColor: "#fff", border: "1px solid rgba(26,48,40,0.08)" }}
+              variants={cardVariants}
+              initial="rest"
+              whileHover={shouldReduce ? "rest" : "hovered"}
+              transition={{ duration: 0.25, ease: "easeOut" }}
             >
-              <ConcentricCircles color="#E87030" />
+              {/* Circles */}
+              <motion.div
+                variants={circlesVariants}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                  width: "320px",
+                  height: "320px",
+                  transformOrigin: "center",
+                  zIndex: 0,
+                  pointerEvents: "none",
+                }}
+              >
+                <ConcentricCircles color="#E87030" id="ember-mentor" />
+              </motion.div>
 
-              {/* All content above circles */}
+              {/* Content */}
               <div className="relative flex flex-col flex-1" style={{ zIndex: 10 }}>
-                {/* Top pill */}
-                <span
-                  className="inline-block self-start px-3 py-1 rounded-full text-xs font-medium mb-5"
+                {/* Decorative 50% */}
+                <div
                   style={{
-                    backgroundColor: "rgba(232,112,48,0.1)",
-                    color: "#E87030",
-                    fontFamily: "var(--font-dm-sans)",
+                    fontFamily: "var(--font-dm-serif)",
+                    fontSize: "68px",
+                    color: "rgba(232,112,48,0.2)",
+                    lineHeight: 1,
+                    marginBottom: "16px",
                   }}
                 >
-                  {t("card2Pill")}
-                </span>
+                  50%
+                </div>
 
                 {/* Icon */}
                 <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center mb-4"
-                  style={{ backgroundColor: "#E87030" }}
+                  className="w-12 h-12 rounded-full flex items-center justify-center"
+                  style={{ backgroundColor: "#E87030", marginBottom: "16px" }}
                 >
                   <Compass size={22} color="#fff" />
                 </div>
@@ -243,12 +254,7 @@ export default function TwoPaths() {
                 </p>
 
                 {/* Divider */}
-                <div
-                  style={{
-                    borderTop: "1px solid rgba(26,48,40,0.1)",
-                    marginBottom: "20px",
-                  }}
-                />
+                <div style={{ borderTop: "1px solid rgba(26,48,40,0.1)", marginBottom: "20px" }} />
 
                 {/* Bullets */}
                 <ul className="space-y-3 mb-7 flex-1">
@@ -256,12 +262,7 @@ export default function TwoPaths() {
                     <li key={i} className="flex items-start gap-3 text-sm leading-relaxed">
                       <div
                         className="shrink-0 rounded-full"
-                        style={{
-                          width: "6px",
-                          height: "6px",
-                          backgroundColor: "#E87030",
-                          marginTop: "8px",
-                        }}
+                        style={{ width: "6px", height: "6px", backgroundColor: "#E87030", marginTop: "8px" }}
                       />
                       <span style={{ color: "rgba(26,48,40,0.8)", fontFamily: "var(--font-dm-sans)" }}>
                         {item}
@@ -270,27 +271,22 @@ export default function TwoPaths() {
                   ))}
                 </ul>
 
-                {/* CTA button — outline */}
-                <button
-                  className="w-full text-center py-3.5 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer"
+                {/* CTA — outline */}
+                <motion.button
+                  whileHover={shouldReduce ? {} : { scale: 1.02, backgroundColor: "#1A3028", color: "#FAF5EC" }}
+                  whileTap={shouldReduce ? {} : { scale: 0.97 }}
+                  transition={{ duration: 0.2 }}
+                  className="w-full text-center py-3.5 rounded-full text-sm font-medium cursor-pointer"
                   style={{
                     border: "1.5px solid #1A3028",
                     color: "#1A3028",
                     backgroundColor: "transparent",
                   }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.backgroundColor = "#1A3028";
-                    (e.currentTarget as HTMLElement).style.color = "#FAF5EC";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
-                    (e.currentTarget as HTMLElement).style.color = "#1A3028";
-                  }}
                 >
                   {t("card2Cta")}
-                </button>
+                </motion.button>
               </div>
-            </div>
+            </motion.div>
           </FadeInView>
         </div>
       </div>

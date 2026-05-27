@@ -1,7 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 
 interface FadeInViewProps {
   children: React.ReactNode;
@@ -9,21 +8,16 @@ interface FadeInViewProps {
   className?: string;
 }
 
-export default function FadeInView({
-  children,
-  delay = 0,
-  className,
-}: FadeInViewProps) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-40px" });
+export default function FadeInView({ children, delay = 0, className }: FadeInViewProps) {
+  const shouldReduce = useReducedMotion();
 
   return (
     <motion.div
-      ref={ref}
       className={className}
-      initial={{ opacity: 0, y: 8 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-      transition={{ duration: 0.55, delay, ease: "easeOut" }}
+      initial={shouldReduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+      whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.6, delay, ease: [0.25, 0.1, 0.25, 1] }}
     >
       {children}
     </motion.div>

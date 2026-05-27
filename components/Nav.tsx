@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { DharmaDehaLockup } from "@/components/ui/DharmaDehaMark";
@@ -18,6 +19,7 @@ function scrollToJoin(e: React.MouseEvent) {
 
 export default function Nav() {
   const t = useTranslations("Nav");
+  const shouldReduce = useReducedMotion();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -33,6 +35,8 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const ease = [0.25, 0.1, 0.25, 1] as const;
+
   return (
     <nav
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
@@ -43,18 +47,29 @@ export default function Nav() {
       }}
     >
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        {/* Wordmark — responsive size */}
-        <a href="#" aria-label="DharmaDeha home">
+        {/* Logo — fade in on load */}
+        <motion.a
+          href="#"
+          aria-label="DharmaDeha home"
+          initial={shouldReduce ? { opacity: 1 } : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0, ease }}
+        >
           <span className="hidden lg:block">
             <DharmaDehaLockup size={42} />
           </span>
           <span className="block lg:hidden">
             <DharmaDehaLockup size={36} />
           </span>
-        </a>
+        </motion.a>
 
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-6">
+        {/* Desktop nav — fade in */}
+        <motion.div
+          className="hidden md:flex items-center gap-6"
+          initial={shouldReduce ? { opacity: 1 } : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.1, ease }}
+        >
           {links.map((link) => (
             <a
               key={link.label}
@@ -73,10 +88,13 @@ export default function Nav() {
           ))}
           <LanguageSwitcher />
 
-          {/* Become a mentor button — Deep bg, ivory text */}
-          <button
+          {/* Become a mentor */}
+          <motion.button
             onClick={scrollToJoin}
-            className="text-sm px-5 py-2 rounded-full font-medium transition-colors cursor-pointer"
+            whileHover={shouldReduce ? {} : { scale: 1.02 }}
+            whileTap={shouldReduce ? {} : { scale: 0.97 }}
+            transition={{ duration: 0.15 }}
+            className="text-sm px-5 py-2 rounded-full font-medium cursor-pointer"
             style={{ backgroundColor: "#1A3028", color: "#FAF5EC" }}
             onMouseEnter={(e) =>
               ((e.currentTarget as HTMLElement).style.backgroundColor = "#2B4A38")
@@ -86,12 +104,15 @@ export default function Nav() {
             }
           >
             {t("mentorCta")}
-          </button>
+          </motion.button>
 
-          {/* Join a DharmaDeha button — Ember */}
-          <button
+          {/* Join — ember */}
+          <motion.button
             onClick={openApplyModal}
-            className="text-sm px-5 py-2 rounded-full text-white font-medium transition-colors cursor-pointer"
+            whileHover={shouldReduce ? {} : { scale: 1.02 }}
+            whileTap={shouldReduce ? {} : { scale: 0.97 }}
+            transition={{ duration: 0.15 }}
+            className="text-sm px-5 py-2 rounded-full text-white font-medium cursor-pointer"
             style={{ backgroundColor: "#E87030" }}
             onMouseEnter={(e) =>
               ((e.currentTarget as HTMLElement).style.backgroundColor = "#d4612a")
@@ -101,18 +122,21 @@ export default function Nav() {
             }
           >
             {t("cta")}
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
 
-        {/* Mobile: sticky Join button + Hamburger */}
+        {/* Mobile: sticky compact Join + Hamburger */}
         <div className="md:hidden flex items-center gap-2">
-          <button
+          <motion.button
             onClick={openApplyModal}
+            whileHover={shouldReduce ? {} : { scale: 1.02 }}
+            whileTap={shouldReduce ? {} : { scale: 0.97 }}
+            transition={{ duration: 0.15 }}
             className="text-sm px-3 py-2 rounded-full text-white font-medium cursor-pointer"
             style={{ backgroundColor: "#E87030" }}
           >
-            {t("cta")}
-          </button>
+            {t("ctaMobile")}
+          </motion.button>
           <button
             className="p-1"
             style={{ color: "#1A3028" }}
@@ -124,51 +148,73 @@ export default function Nav() {
         </div>
       </div>
 
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div
-          className="md:hidden px-6 py-5 flex flex-col gap-5"
-          style={{
-            backgroundColor: "#FAF5EC",
-            borderTop: "1px solid rgba(26,48,40,0.08)",
-          }}
-        >
-          {links.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="text-base"
-              style={{ color: "rgba(26,48,40,0.8)" }}
-              onClick={() => setMenuOpen(false)}
-            >
-              {link.label}
-            </a>
-          ))}
-          <div className="flex items-center gap-3">
-            <LanguageSwitcher />
-          </div>
-          {/* Join button */}
-          <button
-            className="text-sm px-5 py-3 rounded-full text-white font-medium text-center cursor-pointer"
-            style={{ backgroundColor: "#E87030" }}
-            onClick={() => { setMenuOpen(false); openApplyModal(); }}
-          >
-            {t("cta")}
-          </button>
-          {/* Become a mentor button */}
-          <button
-            className="text-sm px-5 py-3 rounded-full font-medium text-center cursor-pointer"
-            style={{ backgroundColor: "#1A3028", color: "#FAF5EC" }}
-            onClick={() => {
-              setMenuOpen(false);
-              const el = document.getElementById("join");
-              if (el) el.scrollIntoView({ behavior: "smooth" });
+      {/* Mobile menu — animated */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            className="md:hidden px-6 py-5 flex flex-col gap-5"
+            style={{
+              backgroundColor: "#FAF5EC",
+              borderTop: "1px solid rgba(26,48,40,0.08)",
             }}
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
           >
-            {t("mentorCta")}
-          </button>
-        </div>
-      )}
+            {links.map((link, i) => (
+              <motion.a
+                key={link.label}
+                href={link.href}
+                className="text-base"
+                style={{ color: "rgba(26,48,40,0.8)" }}
+                onClick={() => setMenuOpen(false)}
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.25, delay: 0.05 + i * 0.05, ease: "easeOut" }}
+              >
+                {link.label}
+              </motion.a>
+            ))}
+            <motion.div
+              className="flex items-center gap-3"
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.25, delay: 0.2, ease: "easeOut" }}
+            >
+              <LanguageSwitcher />
+            </motion.div>
+            <motion.button
+              className="text-sm px-5 py-3 rounded-full text-white font-medium text-center cursor-pointer"
+              style={{ backgroundColor: "#E87030" }}
+              onClick={() => { setMenuOpen(false); openApplyModal(); }}
+              whileHover={shouldReduce ? {} : { scale: 1.02 }}
+              whileTap={shouldReduce ? {} : { scale: 0.97 }}
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.25, delay: 0.25, ease: "easeOut" }}
+            >
+              {t("cta")}
+            </motion.button>
+            <motion.button
+              className="text-sm px-5 py-3 rounded-full font-medium text-center cursor-pointer"
+              style={{ backgroundColor: "#1A3028", color: "#FAF5EC" }}
+              onClick={() => {
+                setMenuOpen(false);
+                const el = document.getElementById("join");
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+              }}
+              whileHover={shouldReduce ? {} : { scale: 1.02 }}
+              whileTap={shouldReduce ? {} : { scale: 0.97 }}
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.25, delay: 0.3, ease: "easeOut" }}
+            >
+              {t("mentorCta")}
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }
