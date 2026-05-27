@@ -11,7 +11,7 @@ export default function FinalCTA() {
   const t = useTranslations("FinalCTA");
 
   return (
-    <section style={{ backgroundColor: "#1A3028" }} className="py-14 md:py-24">
+    <section style={{ backgroundColor: "#1A3028" }} className="py-10 md:py-16">
       <div className="max-w-3xl mx-auto px-6 text-center">
         <FadeInView>
           <h2 className="mb-5 md:mb-6">

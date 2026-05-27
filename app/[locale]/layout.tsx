@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Serif_Display, DM_Sans } from "next/font/google";
+import { DM_Serif_Display, DM_Sans, Manrope } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
@@ -19,6 +19,13 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
+const manrope = Manrope({
+  subsets: ["latin", "latin-ext", "cyrillic"],
+  weight: ["500", "600"],
+  variable: "--font-manrope",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "DharmaDeha — No one walks the path alone",
   description:
@@ -27,6 +34,10 @@ export const metadata: Metadata = {
   openGraph: {
     url: "https://dharmadeha.vercel.app",
     siteName: "DharmaDeha",
+  },
+  icons: {
+    icon: "/favicon.svg",
+    apple: "/apple-touch-icon.svg",
   },
 };
 
@@ -48,7 +59,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${dmSerifDisplay.variable} ${dmSans.variable} antialiased`}
+      className={`${dmSerifDisplay.variable} ${dmSans.variable} ${manrope.variable} antialiased`}
     >
       <body>
         <NextIntlClientProvider messages={messages}>

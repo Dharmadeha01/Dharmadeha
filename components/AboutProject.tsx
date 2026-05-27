@@ -14,7 +14,7 @@ export default function AboutProject() {
     <section
       id="about-project"
       style={{ backgroundColor: "#FAF5EC" }}
-      className="py-12 md:py-24"
+      className="py-10 md:py-16"
     >
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
@@ -80,7 +80,7 @@ export default function AboutProject() {
                   marginBottom: "16px",
                 }}
               >
-                01
+                50%
               </div>
 
               {/* Icon circle */}
@@ -188,7 +188,7 @@ export default function AboutProject() {
                   marginBottom: "16px",
                 }}
               >
-                02
+                50%
               </div>
 
               {/* Icon circle */}

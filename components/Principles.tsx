@@ -39,7 +39,7 @@ export default function Principles() {
   return (
     <section
       style={{ backgroundColor: "#1A3028" }}
-      className="py-12 md:py-24"
+      className="py-10 md:py-16"
     >
       <div className="max-w-6xl mx-auto px-6">
         <FadeInView>

@@ -3,7 +3,8 @@
     "about": "About",
     "courses": "Courses",
     "faq": "FAQ",
-    "cta": "Join a DharmaDeha"
+    "cta": "Join a DharmaDeha",
+    "mentorCta": "Become a mentor"
   },
   "Hero": {
     "headline1": "No one walks",
@@ -117,7 +118,8 @@
     "satsangSubtitle": "Communication and support",
     "satsangBullets": [
       "Communication and support in a mastermind format guided by a mentor",
-      "Philosophy and mentoring"
+      "Philosophy and mentoring",
+      "Warm atmosphere"
     ],
     "educationTitle": "Education",
     "educationSubtitle": "Structured learning",
@@ -139,27 +141,29 @@
     "step3Body": "The course ends with a special meeting together with Didi or Dada."
   },
   "TwoPaths": {
-    "eyebrow": "Who is this for",
+    "eyebrow": "WHO IS THIS FOR",
     "headline1": "Two ways",
     "headline2": "to walk together.",
-    "card1Subtitle": "For practitioners",
-    "card1Title": "I want to join a DharmaDeha",
+    "card1Pill": "For practitioners",
+    "card1Title": "Join a DharmaDeha",
+    "card1Subtitle": "Find community on the path",
     "card1Items": [
-      "Find community on the path",
       "Study philosophy with structure",
-      "90 min per week commitment",
-      "English, Russian, Ukrainian, Italian"
+      "Real support every week",
+      "About 2 hours per week",
+      "Russian, English, Ukrainian, Italian"
     ],
-    "card1Cta": "Join a DharmaDeha",
-    "card2Subtitle": "For experienced practitioners",
-    "card2Title": "I want to mentor",
+    "card1Cta": "Join a DharmaDeha →",
+    "card2Pill": "For experienced practitioners",
+    "card2Title": "Become a mentor",
+    "card2Subtitle": "Lead your group",
     "card2Items": [
-      "Lead a small group",
+      "Lead a small DharmaDeha",
       "Develop as a servant leader",
-      "~3–4 hours per week",
-      "Full training and support provided"
+      "Full training and ongoing support",
+      "About 3–4 hours per week"
     ],
-    "card2Cta": "Become a mentor"
+    "card2Cta": "Become a mentor →"
   },
   "Voices": {
     "eyebrow": "Voices",

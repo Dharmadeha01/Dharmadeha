@@ -4,9 +4,16 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { DharmaDehaLockup } from "@/components/ui/DharmaDehaMark";
 
 function openApplyModal() {
   window.dispatchEvent(new CustomEvent("open-apply-modal"));
+}
+
+function scrollToJoin(e: React.MouseEvent) {
+  e.preventDefault();
+  const el = document.getElementById("join");
+  if (el) el.scrollIntoView({ behavior: "smooth" });
 }
 
 export default function Nav() {
@@ -36,26 +43,23 @@ export default function Nav() {
       }}
     >
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        {/* Wordmark */}
-        <a
-          href="#"
-          className="tracking-tight"
-          style={{
-            fontFamily: "var(--font-dm-serif)",
-            color: "#1A3028",
-            fontSize: "1.625rem",
-          }}
-        >
-          DharmaDeha
+        {/* Wordmark — responsive size */}
+        <a href="#" aria-label="DharmaDeha home">
+          <span className="hidden lg:block">
+            <DharmaDehaLockup size={42} />
+          </span>
+          <span className="block lg:hidden">
+            <DharmaDehaLockup size={36} />
+          </span>
         </a>
 
-        {/* Desktop */}
+        {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-6">
           {links.map((link) => (
             <a
               key={link.label}
               href={link.href}
-              className="text-sm transition-colors"
+              className="text-sm lg:text-base transition-colors"
               style={{ color: "rgba(26,48,40,0.75)" }}
               onMouseEnter={(e) =>
                 ((e.target as HTMLElement).style.color = "#1A3028")
@@ -68,6 +72,23 @@ export default function Nav() {
             </a>
           ))}
           <LanguageSwitcher />
+
+          {/* Become a mentor button — Deep bg, ivory text */}
+          <button
+            onClick={scrollToJoin}
+            className="text-sm px-5 py-2 rounded-full font-medium transition-colors cursor-pointer"
+            style={{ backgroundColor: "#1A3028", color: "#FAF5EC" }}
+            onMouseEnter={(e) =>
+              ((e.currentTarget as HTMLElement).style.backgroundColor = "#2B4A38")
+            }
+            onMouseLeave={(e) =>
+              ((e.currentTarget as HTMLElement).style.backgroundColor = "#1A3028")
+            }
+          >
+            {t("mentorCta")}
+          </button>
+
+          {/* Join a DharmaDeha button — Ember */}
           <button
             onClick={openApplyModal}
             className="text-sm px-5 py-2 rounded-full text-white font-medium transition-colors cursor-pointer"
@@ -83,15 +104,24 @@ export default function Nav() {
           </button>
         </div>
 
-        {/* Hamburger */}
-        <button
-          className="md:hidden p-1"
-          style={{ color: "#1A3028" }}
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle navigation"
-        >
-          {menuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        {/* Mobile: sticky Join button + Hamburger */}
+        <div className="md:hidden flex items-center gap-2">
+          <button
+            onClick={openApplyModal}
+            className="text-sm px-3 py-2 rounded-full text-white font-medium cursor-pointer"
+            style={{ backgroundColor: "#E87030" }}
+          >
+            {t("cta")}
+          </button>
+          <button
+            className="p-1"
+            style={{ color: "#1A3028" }}
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle navigation"
+          >
+            {menuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
@@ -117,12 +147,25 @@ export default function Nav() {
           <div className="flex items-center gap-3">
             <LanguageSwitcher />
           </div>
+          {/* Join button */}
           <button
             className="text-sm px-5 py-3 rounded-full text-white font-medium text-center cursor-pointer"
             style={{ backgroundColor: "#E87030" }}
             onClick={() => { setMenuOpen(false); openApplyModal(); }}
           >
             {t("cta")}
+          </button>
+          {/* Become a mentor button */}
+          <button
+            className="text-sm px-5 py-3 rounded-full font-medium text-center cursor-pointer"
+            style={{ backgroundColor: "#1A3028", color: "#FAF5EC" }}
+            onClick={() => {
+              setMenuOpen(false);
+              const el = document.getElementById("join");
+              if (el) el.scrollIntoView({ behavior: "smooth" });
+            }}
+          >
+            {t("mentorCta")}
           </button>
         </div>
       )}

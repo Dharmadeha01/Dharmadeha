@@ -29,7 +29,7 @@ const authors = [
 
 export default function Authors() {
   return (
-    <section id="mentors" style={{ backgroundColor: "#FAF5EC" }} className="py-12 md:py-24">
+    <section id="mentors" style={{ backgroundColor: "#FAF5EC" }} className="py-10 md:py-16">
       <div className="max-w-6xl mx-auto px-6">
         <FadeInView>
           <p

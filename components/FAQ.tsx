@@ -23,7 +23,7 @@ export default function FAQ({ sanityData }: { sanityData?: SanityFaq[] | null })
     : fallbackItems;
 
   return (
-    <section id="faq" style={{ backgroundColor: "#FAF5EC" }} className="py-12 md:py-24">
+    <section id="faq" style={{ backgroundColor: "#FAF5EC" }} className="py-10 md:py-16">
       <div className="max-w-3xl mx-auto px-6">
         <FadeInView>
           <p

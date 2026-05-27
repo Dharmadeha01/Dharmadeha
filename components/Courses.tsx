@@ -329,7 +329,7 @@ export default function Courses({ sanityData }: { sanityData?: SanityCourse[] | 
   };
 
   return (
-    <section id="courses" style={{ backgroundColor: "#FEF3E8" }} className="py-12 md:py-24">
+    <section id="courses" style={{ backgroundColor: "#FEF3E8" }} className="py-10 md:py-16">
       <div className="max-w-6xl mx-auto px-6">
         <FadeInView>
           <p

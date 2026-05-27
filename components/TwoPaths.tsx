@@ -1,13 +1,42 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
-import { Users, Compass, Check } from "lucide-react";
+import { Users, Compass } from "lucide-react";
+import FadeInView from "./FadeInView";
 
 function openApplyModal() {
   window.dispatchEvent(new CustomEvent("open-apply-modal"));
 }
-import FadeInView from "./FadeInView";
+
+function ConcentricCircles({ color }: { color: string }) {
+  const rings = [
+    { size: 80, opacity: 0.4 },
+    { size: 144, opacity: 0.3 },
+    { size: 208, opacity: 0.2 },
+    { size: 288, opacity: 0.1 },
+  ];
+  return (
+    <>
+      {rings.map(({ size, opacity }, i) => (
+        <div
+          key={i}
+          style={{
+            position: "absolute",
+            width: size,
+            height: size,
+            borderRadius: "50%",
+            border: `1.5px solid ${color}`,
+            right: -60,
+            bottom: -60,
+            opacity,
+            pointerEvents: "none",
+            zIndex: 0,
+          }}
+        />
+      ))}
+    </>
+  );
+}
 
 export default function TwoPaths() {
   const t = useTranslations("TwoPaths");
@@ -15,7 +44,7 @@ export default function TwoPaths() {
   const card2Items = t.raw("card2Items") as string[];
 
   return (
-    <section id="join" style={{ backgroundColor: "#FAF5EC" }} className="py-12 md:py-24">
+    <section id="join" style={{ backgroundColor: "#FAF5EC" }} className="py-10 md:py-16">
       <div className="max-w-6xl mx-auto px-6">
         <FadeInView>
           <p
@@ -50,169 +79,218 @@ export default function TwoPaths() {
           </h2>
         </FadeInView>
 
-        <div className="grid md:grid-cols-2 gap-5 md:gap-6">
+        <div className="grid md:grid-cols-2 gap-6">
           {/* Card 1 — Join */}
           <FadeInView delay={0.1}>
-            <motion.div
-              whileHover={{ y: -4 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="rounded-2xl flex flex-col relative overflow-hidden"
+            <div
+              className="relative overflow-hidden rounded-2xl flex flex-col p-7 md:p-10"
               style={{
-                backgroundColor: "#EEF6F5",
-                border: "1px solid rgba(42,160,144,0.15)",
-                padding: "28px",
+                backgroundColor: "rgba(42,160,144,0.08)",
+                border: "1px solid rgba(42,160,144,0.2)",
               }}
             >
-              {/* Decorative circle */}
-              <div
-                className="absolute -top-12 -right-12 w-48 h-48 rounded-full pointer-events-none"
-                style={{ backgroundColor: "rgba(42,160,144,0.08)" }}
-              />
-              <div
-                className="absolute -top-4 -right-4 w-28 h-28 rounded-full pointer-events-none"
-                style={{ backgroundColor: "rgba(42,160,144,0.06)" }}
-              />
+              <ConcentricCircles color="#2AA090" />
 
-              {/* Icon circle */}
-              <div
-                className="w-12 h-12 rounded-full flex items-center justify-center mb-4 relative z-10"
-                style={{ backgroundColor: "#2AA090" }}
-              >
-                <Users size={22} color="#fff" />
+              {/* All content above circles */}
+              <div className="relative flex flex-col flex-1" style={{ zIndex: 10 }}>
+                {/* Top pill */}
+                <span
+                  className="inline-block self-start px-3 py-1 rounded-full text-xs font-medium mb-5"
+                  style={{
+                    backgroundColor: "rgba(42,160,144,0.1)",
+                    color: "#2AA090",
+                    fontFamily: "var(--font-dm-sans)",
+                  }}
+                >
+                  {t("card1Pill")}
+                </span>
+
+                {/* Icon */}
+                <div
+                  className="w-12 h-12 rounded-full flex items-center justify-center mb-4"
+                  style={{ backgroundColor: "#2AA090" }}
+                >
+                  <Users size={22} color="#fff" />
+                </div>
+
+                {/* Title */}
+                <h3
+                  className="mb-2"
+                  style={{
+                    fontFamily: "var(--font-dm-serif)",
+                    fontSize: "28px",
+                    color: "#1A3028",
+                    lineHeight: 1.2,
+                  }}
+                >
+                  {t("card1Title")}
+                </h3>
+
+                {/* Italic subtitle */}
+                <p
+                  className="italic mb-5"
+                  style={{
+                    fontFamily: "var(--font-dm-serif)",
+                    fontSize: "15px",
+                    color: "#2AA090",
+                  }}
+                >
+                  {t("card1Subtitle")}
+                </p>
+
+                {/* Divider */}
+                <div
+                  style={{
+                    borderTop: "1px solid rgba(26,48,40,0.1)",
+                    marginBottom: "20px",
+                  }}
+                />
+
+                {/* Bullets */}
+                <ul className="space-y-3 mb-7 flex-1">
+                  {card1Items.map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm leading-relaxed">
+                      <div
+                        className="shrink-0 rounded-full"
+                        style={{
+                          width: "6px",
+                          height: "6px",
+                          backgroundColor: "#2AA090",
+                          marginTop: "8px",
+                        }}
+                      />
+                      <span style={{ color: "rgba(26,48,40,0.8)", fontFamily: "var(--font-dm-sans)" }}>
+                        {item}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* CTA button — ember */}
+                <button
+                  onClick={openApplyModal}
+                  className="w-full text-center py-3.5 rounded-full text-sm font-medium text-white transition-colors cursor-pointer"
+                  style={{ backgroundColor: "#E87030" }}
+                  onMouseEnter={(e) =>
+                    ((e.currentTarget as HTMLElement).style.backgroundColor = "#d4612a")
+                  }
+                  onMouseLeave={(e) =>
+                    ((e.currentTarget as HTMLElement).style.backgroundColor = "#E87030")
+                  }
+                >
+                  {t("card1Cta")}
+                </button>
               </div>
-
-              {/* Subtitle */}
-              <p
-                className="italic text-sm mb-2 relative z-10"
-                style={{
-                  fontFamily: "var(--font-dm-serif)",
-                  color: "#2AA090",
-                }}
-              >
-                {t("card1Subtitle")}
-              </p>
-
-              {/* Title */}
-              <h3
-                className="text-xl md:text-2xl mb-5 md:mb-7 relative z-10"
-                style={{ fontFamily: "var(--font-dm-serif)", color: "#1A3028" }}
-              >
-                {t("card1Title")}
-              </h3>
-
-              {/* Items */}
-              <ul className="space-y-3 mb-7 md:mb-8 flex-1 relative z-10">
-                {card1Items.map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm leading-relaxed">
-                    <span className="mt-0.5 shrink-0">
-                      <Check size={16} style={{ color: "#2AA090" }} />
-                    </span>
-                    <span style={{ color: "rgba(26,48,40,0.8)" }}>{item}</span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* Button */}
-              <button
-                onClick={openApplyModal}
-                className="block w-full text-center py-3.5 rounded-full text-sm font-medium text-white transition-colors relative z-10 cursor-pointer"
-                style={{ backgroundColor: "#E87030" }}
-                onMouseEnter={(e) =>
-                  ((e.currentTarget as HTMLElement).style.backgroundColor = "#d4612a")
-                }
-                onMouseLeave={(e) =>
-                  ((e.currentTarget as HTMLElement).style.backgroundColor = "#E87030")
-                }
-              >
-                {t("card1Cta")}
-              </button>
-            </motion.div>
+            </div>
           </FadeInView>
 
           {/* Card 2 — Mentor */}
           <FadeInView delay={0.2}>
-            <motion.div
-              whileHover={{ y: -4 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="rounded-2xl flex flex-col relative overflow-hidden"
+            <div
+              className="relative overflow-hidden rounded-2xl flex flex-col p-7 md:p-10"
               style={{
-                backgroundColor: "#FBF5E0",
-                border: "1px solid rgba(232,168,64,0.3)",
-                padding: "28px",
+                backgroundColor: "rgba(232,112,48,0.08)",
+                border: "1px solid rgba(232,112,48,0.2)",
               }}
             >
-              {/* Decorative circle */}
-              <div
-                className="absolute -top-12 -right-12 w-48 h-48 rounded-full pointer-events-none"
-                style={{ backgroundColor: "rgba(196,128,16,0.08)" }}
-              />
-              <div
-                className="absolute -top-4 -right-4 w-28 h-28 rounded-full pointer-events-none"
-                style={{ backgroundColor: "rgba(196,128,16,0.06)" }}
-              />
+              <ConcentricCircles color="#E87030" />
 
-              {/* Icon circle */}
-              <div
-                className="w-12 h-12 rounded-full flex items-center justify-center mb-4 relative z-10"
-                style={{ backgroundColor: "#E8A840" }}
-              >
-                <Compass size={22} color="#1A3028" />
+              {/* All content above circles */}
+              <div className="relative flex flex-col flex-1" style={{ zIndex: 10 }}>
+                {/* Top pill */}
+                <span
+                  className="inline-block self-start px-3 py-1 rounded-full text-xs font-medium mb-5"
+                  style={{
+                    backgroundColor: "rgba(232,112,48,0.1)",
+                    color: "#E87030",
+                    fontFamily: "var(--font-dm-sans)",
+                  }}
+                >
+                  {t("card2Pill")}
+                </span>
+
+                {/* Icon */}
+                <div
+                  className="w-12 h-12 rounded-full flex items-center justify-center mb-4"
+                  style={{ backgroundColor: "#E87030" }}
+                >
+                  <Compass size={22} color="#fff" />
+                </div>
+
+                {/* Title */}
+                <h3
+                  className="mb-2"
+                  style={{
+                    fontFamily: "var(--font-dm-serif)",
+                    fontSize: "28px",
+                    color: "#1A3028",
+                    lineHeight: 1.2,
+                  }}
+                >
+                  {t("card2Title")}
+                </h3>
+
+                {/* Italic subtitle */}
+                <p
+                  className="italic mb-5"
+                  style={{
+                    fontFamily: "var(--font-dm-serif)",
+                    fontSize: "15px",
+                    color: "#E87030",
+                  }}
+                >
+                  {t("card2Subtitle")}
+                </p>
+
+                {/* Divider */}
+                <div
+                  style={{
+                    borderTop: "1px solid rgba(26,48,40,0.1)",
+                    marginBottom: "20px",
+                  }}
+                />
+
+                {/* Bullets */}
+                <ul className="space-y-3 mb-7 flex-1">
+                  {card2Items.map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm leading-relaxed">
+                      <div
+                        className="shrink-0 rounded-full"
+                        style={{
+                          width: "6px",
+                          height: "6px",
+                          backgroundColor: "#E87030",
+                          marginTop: "8px",
+                        }}
+                      />
+                      <span style={{ color: "rgba(26,48,40,0.8)", fontFamily: "var(--font-dm-sans)" }}>
+                        {item}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* CTA button — outline */}
+                <button
+                  className="w-full text-center py-3.5 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer"
+                  style={{
+                    border: "1.5px solid #1A3028",
+                    color: "#1A3028",
+                    backgroundColor: "transparent",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.backgroundColor = "#1A3028";
+                    (e.currentTarget as HTMLElement).style.color = "#FAF5EC";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
+                    (e.currentTarget as HTMLElement).style.color = "#1A3028";
+                  }}
+                >
+                  {t("card2Cta")}
+                </button>
               </div>
-
-              {/* Subtitle */}
-              <p
-                className="italic text-sm mb-2 relative z-10"
-                style={{
-                  fontFamily: "var(--font-dm-serif)",
-                  color: "#C48010",
-                }}
-              >
-                {t("card2Subtitle")}
-              </p>
-
-              {/* Title */}
-              <h3
-                className="text-xl md:text-2xl mb-5 md:mb-7 relative z-10"
-                style={{ fontFamily: "var(--font-dm-serif)", color: "#1A3028" }}
-              >
-                {t("card2Title")}
-              </h3>
-
-              {/* Items */}
-              <ul className="space-y-3 mb-7 md:mb-8 flex-1 relative z-10">
-                {card2Items.map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm leading-relaxed">
-                    <span className="mt-0.5 shrink-0">
-                      <Check size={16} style={{ color: "#C48010" }} />
-                    </span>
-                    <span style={{ color: "rgba(26,48,40,0.8)" }}>{item}</span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* Button */}
-              <a
-                href="#"
-                className="block w-full text-center py-3.5 rounded-full text-sm font-medium transition-colors relative z-10"
-                style={{
-                  border: "2px solid #1A3028",
-                  color: "#1A3028",
-                  backgroundColor: "transparent",
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.target as HTMLElement;
-                  el.style.backgroundColor = "#1A3028";
-                  el.style.color = "#FAF5EC";
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.target as HTMLElement;
-                  el.style.backgroundColor = "transparent";
-                  el.style.color = "#1A3028";
-                }}
-              >
-                {t("card2Cta")}
-              </a>
-            </motion.div>
+            </div>
           </FadeInView>
         </div>
       </div>

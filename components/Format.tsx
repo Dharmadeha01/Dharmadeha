@@ -14,7 +14,7 @@ export default function Format() {
   const steps = t.raw("steps") as Step[];
 
   return (
-    <section id="about" style={{ backgroundColor: "#1A3028" }} className="py-12 md:py-24">
+    <section id="about" style={{ backgroundColor: "#1A3028" }} className="py-10 md:py-16">
       <div className="max-w-6xl mx-auto px-6">
         <FadeInView>
           <p
