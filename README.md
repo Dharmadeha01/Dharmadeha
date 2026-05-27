@@ -1,4 +1,10 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DharmaDeha Landing Page
+
+**Live site:** https://dharmadeha-landing.vercel.app
+
+A multilingual landing page for DharmaDeha — weekly small-group practice circles rooted in Ananda Marga philosophy.
+
+**Stack:** Next.js · next-intl (ru/en/uk) · Sanity CMS · Airtable apply form · Vercel
 
 ## Getting Started
 
@@ -6,17 +12,25 @@ First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result. The root URL redirects to `/ru` (Russian is the default language).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
+
+Copy `.env.local.example` to `.env.local` and fill in:
+
+```
+NEXT_PUBLIC_SANITY_PROJECT_ID=
+NEXT_PUBLIC_SANITY_DATASET=production
+SANITY_API_TOKEN=
+AIRTABLE_API_TOKEN=
+AIRTABLE_BASE_ID=
+```
+
+## Sanity Studio
+
+Available at `/studio` when running locally or on the live site.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 

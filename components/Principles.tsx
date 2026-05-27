@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { Lock, Heart, Hand, Star } from "lucide-react";
 import FadeInView from "./FadeInView";
 
 interface Principle {
@@ -8,27 +9,56 @@ interface Principle {
   body: string;
 }
 
+const ICON_CONFIG = [
+  {
+    Icon: Lock,
+    iconColor: "#E8A840",
+    bgColor: "rgba(232,168,64,0.2)",
+  },
+  {
+    Icon: Heart,
+    iconColor: "#2AA090",
+    bgColor: "rgba(42,160,144,0.2)",
+  },
+  {
+    Icon: Hand,
+    iconColor: "#E87030",
+    bgColor: "rgba(232,112,48,0.2)",
+  },
+  {
+    Icon: Star,
+    iconColor: "#E8A840",
+    bgColor: "rgba(232,168,64,0.2)",
+  },
+];
+
 export default function Principles() {
   const t = useTranslations("Principles");
   const principles = t.raw("principles") as Principle[];
 
   return (
-    <section style={{ backgroundColor: "#FAF5EC" }} className="py-12 md:py-24">
+    <section
+      style={{ backgroundColor: "#1A3028" }}
+      className="py-12 md:py-24"
+    >
       <div className="max-w-6xl mx-auto px-6">
         <FadeInView>
+          {/* Eyebrow */}
           <p
             className="text-xs font-medium tracking-widest uppercase mb-4 md:mb-5"
             style={{ color: "#2AA090" }}
           >
             {t("eyebrow")}
           </p>
+
+          {/* Headline */}
           <h2 className="mb-5 md:mb-6">
             <span
               className="block"
               style={{
                 fontFamily: "var(--font-dm-serif)",
                 fontSize: "clamp(28px, 4.5vw, 52px)",
-                color: "#1A3028",
+                color: "#FAF5EC",
                 lineHeight: 1.1,
               }}
             >
@@ -39,62 +69,97 @@ export default function Principles() {
               style={{
                 fontFamily: "var(--font-dm-serif)",
                 fontSize: "clamp(28px, 4.5vw, 52px)",
-                color: "#E87030",
+                color: "#E8A840",
                 lineHeight: 1.1,
               }}
             >
               {t("headline2")}
             </span>
           </h2>
+
+          {/* Intro */}
           <p
-            className="text-base md:text-lg leading-relaxed mb-10 md:mb-16 max-w-2xl"
-            style={{ color: "rgba(26,48,40,0.7)" }}
+            className="text-base md:text-lg leading-relaxed mb-10 md:mb-14 max-w-2xl"
+            style={{ color: "rgba(250,245,236,0.7)", fontFamily: "var(--font-dm-sans)" }}
           >
             {t("intro")}
           </p>
         </FadeInView>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-          {principles.map((principle, i) => (
-            <FadeInView key={i} delay={i * 0.08}>
-              <div
-                className="rounded-xl flex gap-5"
-                style={{
-                  backgroundColor: "#fff",
-                  border: "1px solid rgba(26,48,40,0.1)",
-                  padding: "28px",
-                }}
-              >
-                {/* Number badge */}
+        {/* 2×2 grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+          {principles.map((principle, i) => {
+            const { Icon, iconColor, bgColor } = ICON_CONFIG[i] ?? ICON_CONFIG[0];
+            return (
+              <FadeInView key={i} delay={i * 0.08}>
                 <div
-                  className="w-9 h-9 rounded-full flex items-center justify-center shrink-0 text-sm font-semibold"
+                  className="rounded-2xl flex gap-6 transition-colors duration-200 cursor-default"
                   style={{
-                    backgroundColor: "#E8A840",
-                    color: "#1A3028",
-                    fontFamily: "var(--font-dm-serif)",
-                    fontSize: "16px",
+                    backgroundColor: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    padding: "32px",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLDivElement).style.backgroundColor =
+                      "rgba(255,255,255,0.08)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLDivElement).style.backgroundColor =
+                      "rgba(255,255,255,0.05)";
                   }}
                 >
-                  {i + 1}
-                </div>
+                  {/* Left — decorative number */}
+                  <div
+                    className="shrink-0 select-none leading-none"
+                    style={{
+                      fontFamily: "var(--font-dm-serif)",
+                      fontSize: "72px",
+                      color: "rgba(250,245,236,0.15)",
+                      lineHeight: 0.85,
+                      marginTop: "4px",
+                    }}
+                  >
+                    {i + 1}
+                  </div>
 
-                <div>
-                  <h3
-                    className="text-lg mb-2"
-                    style={{ fontFamily: "var(--font-dm-serif)", color: "#1A3028" }}
-                  >
-                    {principle.title}
-                  </h3>
-                  <p
-                    className="text-sm leading-relaxed"
-                    style={{ color: "rgba(26,48,40,0.7)" }}
-                  >
-                    {principle.body}
-                  </p>
+                  {/* Right — content */}
+                  <div className="flex flex-col gap-3">
+                    {/* Icon circle */}
+                    <div
+                      className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
+                      style={{ backgroundColor: bgColor }}
+                    >
+                      <Icon size={15} style={{ color: iconColor }} />
+                    </div>
+
+                    {/* Title */}
+                    <h3
+                      style={{
+                        fontFamily: "var(--font-dm-serif)",
+                        fontSize: "22px",
+                        color: "#FAF5EC",
+                        lineHeight: 1.2,
+                      }}
+                    >
+                      {principle.title}
+                    </h3>
+
+                    {/* Body */}
+                    <p
+                      style={{
+                        color: "rgba(250,245,236,0.65)",
+                        fontFamily: "var(--font-dm-sans)",
+                        fontSize: "14px",
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      {principle.body}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </FadeInView>
-          ))}
+              </FadeInView>
+            );
+          })}
         </div>
       </div>
     </section>

@@ -109,16 +109,34 @@
     ]
   },
   "AboutProject": {
-    "eyebrow": "About the project",
-    "headline1": "How a DharmaDeha",
-    "headline2": "actually works.",
-    "intro": "DharmaDeha is a small weekly group of practitioners united by a course, a language, and an intention. Together is easier.",
-    "card1Title": "Education",
-    "card1Body": "Every meeting is built around a lesson — you study systematically, not haphazardly.",
-    "card2Title": "Satsang",
-    "card2Body": "Not just a lecture. You share your practice, learn from others, and walk together.",
-    "card3Title": "The path",
-    "card3Body": "There is no finish line. But with a group, every step becomes clearer."
+    "eyebrow": "ABOUT THE PROJECT",
+    "headline1": "Two parts.",
+    "headline2": "One journey.",
+    "intro": "Every DharmaDeha meeting combines two things — Satsang and Education. They are inseparable.",
+    "satsangTitle": "Satsang",
+    "satsangSubtitle": "Communication and support",
+    "satsangBullets": [
+      "Communication and support in a mastermind format guided by a mentor",
+      "Philosophy and mentoring"
+    ],
+    "educationTitle": "Education",
+    "educationSubtitle": "Structured learning",
+    "educationBullets": [
+      "Watch a short video",
+      "Read a book chapter",
+      "Do the homework",
+      "Discuss the chapter in the DharmaDeha"
+    ],
+    "everyMeeting": "Every meeting",
+    "pathEyebrow": "YOUR JOURNEY",
+    "pathTitle": "The path of a DharmaDeha",
+    "pathBody": "Every DharmaDeha follows the same arc — from the first meeting to the final celebration.",
+    "step1Title": "First Acquaintance",
+    "step1Body": "Getting to know each other, setting intentions, choosing roles.",
+    "step2Title": "10+ Educational Meetings",
+    "step2Body": "One lesson per week. Study, discuss, support each other, and grow together.",
+    "step3Title": "Celebrational Meeting",
+    "step3Body": "The course ends with a special meeting together with Didi or Dada."
   },
   "TwoPaths": {
     "eyebrow": "Who is this for",
@@ -166,26 +184,26 @@
     ]
   },
   "Principles": {
-    "eyebrow": "Our principles",
+    "eyebrow": "OUR PRINCIPLES",
     "headline1": "How we hold",
     "headline2": "the space.",
-    "intro": "Four principles that make DharmaDeha a safe place to practice.",
+    "intro": "Four agreements that make every DharmaDeha a safe place to grow.",
     "principles": [
       {
         "title": "Confidentiality",
-        "body": "Everything said in a meeting stays within the group."
+        "body": "What we share in the group stays within the group."
       },
       {
         "title": "Carefulness",
-        "body": "We handle what people share with care — no judgment, only compassion."
+        "body": "We speak from our own perspective — without judgment, debate, or unsolicited advice. Every voice is equal."
       },
       {
         "title": "Voluntariness",
-        "body": "Every participant engages as much as they choose. There is no pressure."
+        "body": "You participate according to your state — you can speak or simply say 'pass'."
       },
       {
         "title": "Engagement",
-        "body": "We come prepared and show up fully present."
+        "body": "We show up regularly, give advance notice when we can't attend, and participate in collective meditations."
       }
     ]
   },

@@ -23,6 +23,11 @@ export const metadata: Metadata = {
   title: "DharmaDeha — No one walks the path alone",
   description:
     "Meditation mentorship circles for people who want community on the spiritual path.",
+  metadataBase: new URL("https://dharmadeha-landing.vercel.app"),
+  openGraph: {
+    url: "https://dharmadeha-landing.vercel.app",
+    siteName: "DharmaDeha",
+  },
 };
 
 export function generateStaticParams() {
