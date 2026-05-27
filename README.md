@@ -1,6 +1,6 @@
 # DharmaDeha Landing Page
 
-**Live site:** https://dharmadeha-landing.vercel.app
+**Live site:** https://dharmadeha.vercel.app
 
 A multilingual landing page for DharmaDeha — weekly small-group practice circles rooted in Ananda Marga philosophy.
 
