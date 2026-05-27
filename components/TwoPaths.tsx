@@ -4,17 +4,46 @@ import { useTranslations } from "next-intl";
 import { motion, useReducedMotion } from "framer-motion";
 import { Users, Compass } from "lucide-react";
 import FadeInView from "./FadeInView";
-import { ConcentricCircles } from "./ui/ConcentricCircles";
 
 function openApplyModal() {
   window.dispatchEvent(new CustomEvent("open-apply-modal"));
+}
+
+/** CSS concentric rings anchored at bottom-right corner */
+function ConcentricRings({ color }: { color: string }) {
+  return (
+    <>
+      {[
+        { size: 80, opacity: 0.4 },
+        { size: 144, opacity: 0.3 },
+        { size: 208, opacity: 0.2 },
+        { size: 288, opacity: 0.1 },
+      ].map(({ size, opacity }, i) => (
+        <div
+          key={i}
+          style={{
+            position: "absolute",
+            width: size,
+            height: size,
+            borderRadius: "50%",
+            border: `1.5px solid ${color}`,
+            right: -60,
+            bottom: -60,
+            opacity,
+            pointerEvents: "none",
+            zIndex: 0,
+          }}
+        />
+      ))}
+    </>
+  );
 }
 
 const cardVariants = {
   rest: { y: 0 },
   hovered: { y: -6 },
 };
-const circlesVariants = {
+const ringsVariants = {
   rest: { scale: 1 },
   hovered: { scale: 1.08 },
 };
@@ -61,54 +90,46 @@ export default function TwoPaths() {
           </h2>
         </FadeInView>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-6">
           {/* Card 1 — Join */}
           <FadeInView delay={0.1}>
             <motion.div
-              className="relative overflow-hidden rounded-2xl p-7 md:p-10 flex flex-col"
-              style={{ backgroundColor: "#fff", border: "1px solid rgba(26,48,40,0.08)" }}
+              className="relative overflow-hidden rounded-2xl flex flex-col p-7 md:p-10"
+              style={{
+                backgroundColor: "rgba(42,160,144,0.08)",
+                border: "1px solid rgba(42,160,144,0.2)",
+              }}
               variants={cardVariants}
               initial="rest"
               whileHover={shouldReduce ? "rest" : "hovered"}
               transition={{ duration: 0.25, ease: "easeOut" }}
             >
-              {/* Circles */}
+              {/* Rings — scale on hover */}
               <motion.div
-                variants={circlesVariants}
+                variants={ringsVariants}
                 transition={{ duration: 0.4, ease: "easeOut" }}
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  width: "320px",
-                  height: "320px",
-                  transformOrigin: "center",
-                  zIndex: 0,
-                  pointerEvents: "none",
-                }}
+                style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
               >
-                <ConcentricCircles color="#2AA090" id="teal-join" />
+                <ConcentricRings color="#2AA090" />
               </motion.div>
 
-              {/* Content */}
               <div className="relative flex flex-col flex-1" style={{ zIndex: 10 }}>
-                {/* Decorative 50% */}
-                <div
+                {/* Top pill */}
+                <span
+                  className="inline-block self-start px-3 py-1 rounded-full text-xs font-medium mb-5"
                   style={{
-                    fontFamily: "var(--font-dm-serif)",
-                    fontSize: "68px",
-                    color: "rgba(42,160,144,0.2)",
-                    lineHeight: 1,
-                    marginBottom: "16px",
+                    backgroundColor: "rgba(42,160,144,0.1)",
+                    color: "#2AA090",
+                    fontFamily: "var(--font-dm-sans)",
                   }}
                 >
-                  50%
-                </div>
+                  {t("card1Pill")}
+                </span>
 
                 {/* Icon */}
                 <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center"
-                  style={{ backgroundColor: "#2AA090", marginBottom: "16px" }}
+                  className="w-12 h-12 rounded-full flex items-center justify-center mb-4"
+                  style={{ backgroundColor: "#2AA090" }}
                 >
                   <Users size={22} color="#fff" />
                 </div>
@@ -138,10 +159,8 @@ export default function TwoPaths() {
                   {t("card1Subtitle")}
                 </p>
 
-                {/* Divider */}
                 <div style={{ borderTop: "1px solid rgba(26,48,40,0.1)", marginBottom: "20px" }} />
 
-                {/* Bullets */}
                 <ul className="space-y-3 mb-7 flex-1">
                   {card1Items.map((item, i) => (
                     <li key={i} className="flex items-start gap-3 text-sm leading-relaxed">
@@ -156,7 +175,6 @@ export default function TwoPaths() {
                   ))}
                 </ul>
 
-                {/* CTA — ember */}
                 <motion.button
                   onClick={openApplyModal}
                   whileHover={shouldReduce ? {} : { scale: 1.02 }}
@@ -180,50 +198,42 @@ export default function TwoPaths() {
           {/* Card 2 — Mentor */}
           <FadeInView delay={0.18}>
             <motion.div
-              className="relative overflow-hidden rounded-2xl p-7 md:p-10 flex flex-col"
-              style={{ backgroundColor: "#fff", border: "1px solid rgba(26,48,40,0.08)" }}
+              className="relative overflow-hidden rounded-2xl flex flex-col p-7 md:p-10"
+              style={{
+                backgroundColor: "rgba(232,112,48,0.08)",
+                border: "1px solid rgba(232,112,48,0.2)",
+              }}
               variants={cardVariants}
               initial="rest"
               whileHover={shouldReduce ? "rest" : "hovered"}
               transition={{ duration: 0.25, ease: "easeOut" }}
             >
-              {/* Circles */}
+              {/* Rings */}
               <motion.div
-                variants={circlesVariants}
+                variants={ringsVariants}
                 transition={{ duration: 0.4, ease: "easeOut" }}
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  width: "320px",
-                  height: "320px",
-                  transformOrigin: "center",
-                  zIndex: 0,
-                  pointerEvents: "none",
-                }}
+                style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
               >
-                <ConcentricCircles color="#E87030" id="ember-mentor" />
+                <ConcentricRings color="#E87030" />
               </motion.div>
 
-              {/* Content */}
               <div className="relative flex flex-col flex-1" style={{ zIndex: 10 }}>
-                {/* Decorative 50% */}
-                <div
+                {/* Top pill */}
+                <span
+                  className="inline-block self-start px-3 py-1 rounded-full text-xs font-medium mb-5"
                   style={{
-                    fontFamily: "var(--font-dm-serif)",
-                    fontSize: "68px",
-                    color: "rgba(232,112,48,0.2)",
-                    lineHeight: 1,
-                    marginBottom: "16px",
+                    backgroundColor: "rgba(232,112,48,0.1)",
+                    color: "#E87030",
+                    fontFamily: "var(--font-dm-sans)",
                   }}
                 >
-                  50%
-                </div>
+                  {t("card2Pill")}
+                </span>
 
                 {/* Icon */}
                 <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center"
-                  style={{ backgroundColor: "#E87030", marginBottom: "16px" }}
+                  className="w-12 h-12 rounded-full flex items-center justify-center mb-4"
+                  style={{ backgroundColor: "#E87030" }}
                 >
                   <Compass size={22} color="#fff" />
                 </div>
@@ -253,10 +263,8 @@ export default function TwoPaths() {
                   {t("card2Subtitle")}
                 </p>
 
-                {/* Divider */}
                 <div style={{ borderTop: "1px solid rgba(26,48,40,0.1)", marginBottom: "20px" }} />
 
-                {/* Bullets */}
                 <ul className="space-y-3 mb-7 flex-1">
                   {card2Items.map((item, i) => (
                     <li key={i} className="flex items-start gap-3 text-sm leading-relaxed">
@@ -271,7 +279,6 @@ export default function TwoPaths() {
                   ))}
                 </ul>
 
-                {/* CTA — outline */}
                 <motion.button
                   whileHover={shouldReduce ? {} : { scale: 1.02, backgroundColor: "#1A3028", color: "#FAF5EC" }}
                   whileTap={shouldReduce ? {} : { scale: 0.97 }}
