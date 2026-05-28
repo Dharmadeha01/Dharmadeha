@@ -1,7 +1,6 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Play } from "lucide-react";
 import FadeInView from "./FadeInView";
 
 export default function Video() {
@@ -44,29 +43,22 @@ export default function Video() {
             </p>
           </div>
 
-          {/* TODO: Replace with YouTube iframe embed when video is ready */}
-          <div
-            className="aspect-video rounded-2xl flex flex-col items-center justify-center gap-4 w-full"
-            style={{ backgroundColor: "#1A3028" }}
-          >
-            <div
-              className="w-16 h-16 rounded-full flex items-center justify-center"
+          <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, borderRadius: '1rem', overflow: 'hidden', backgroundColor: '#1A3028' }}>
+            <iframe
+              src="https://www.youtube.com/embed/5BcRI87s8q4?rel=0&modestbranding=1&color=white"
+              title="DharmaDeha — invitation video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
               style={{
-                backgroundColor: "rgba(232,168,64,0.12)",
-                border: "2px solid rgba(232,168,64,0.35)",
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                border: 'none',
+                borderRadius: '1rem',
               }}
-            >
-              <Play
-                size={26}
-                style={{ color: "#E8A840", marginLeft: "3px" }}
-              />
-            </div>
-            <p
-              className="text-xs tracking-wide uppercase"
-              style={{ color: "rgba(250,245,236,0.35)" }}
-            >
-              {t("soon")}
-            </p>
+            />
           </div>
         </FadeInView>
       </div>

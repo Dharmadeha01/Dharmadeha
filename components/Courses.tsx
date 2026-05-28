@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import {
   Dialog,
   DialogContent,
@@ -28,18 +29,21 @@ const courseMeta = [
     lessons: 10,
     status: "active" as const,
     gradient: "linear-gradient(135deg, #2AA090 0%, #1a6a5a 100%)",
+    cover: "/courses/fundamental-philosophy.png.png",
   },
   {
     id: 2,
     lessons: 10,
     status: "active" as const,
     gradient: "linear-gradient(135deg, #E87030 0%, #c45520 100%)",
+    cover: "/courses/yama-niyama.png.png",
   },
   {
     id: 3,
     lessons: 7,
     status: "coming-soon" as const,
     gradient: "linear-gradient(135deg, #E8A840 0%, #c48020 100%)",
+    cover: "/courses/seven-secrets.jpg.jpg",
   },
 ];
 
@@ -48,6 +52,7 @@ type Course = CourseData & {
   lessons: number;
   status: "active" | "coming-soon";
   gradient: string;
+  cover?: string;
 };
 
 function CourseCard({
@@ -73,24 +78,34 @@ function CourseCard({
       style={{ backgroundColor: "#fff", boxShadow: "0 1px 6px rgba(26,48,40,0.07)" }}
       onClick={() => onOpen(course)}
     >
-      {/* Gradient cover */}
-      <div
-        className="h-40 md:h-48 w-full flex items-end p-4 md:p-5"
-        style={{ background: course.gradient }}
-      >
+      {/* Cover image */}
+      <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', borderRadius: '1rem 1rem 0 0', overflow: 'hidden', backgroundColor: '#1A3028' }}>
+        {course.cover ? (
+          <Image
+            src={course.cover}
+            alt={course.title}
+            fill
+            style={{ objectFit: 'cover' }}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        ) : (
+          <div style={{ position: 'absolute', inset: 0, background: course.gradient }} />
+        )}
         <span
-          className="text-xs font-medium px-3 py-1 rounded-full"
+          className="absolute top-3 left-3 text-xs font-medium px-3 py-1 rounded-full"
           style={
             course.status === "active"
               ? {
-                  backgroundColor: "rgba(255,255,255,0.18)",
+                  backgroundColor: "rgba(0,0,0,0.35)",
                   color: "#fff",
                   border: "1px solid rgba(255,255,255,0.35)",
+                  backdropFilter: "blur(4px)",
                 }
               : {
-                  backgroundColor: "rgba(232,168,64,0.2)",
+                  backgroundColor: "rgba(232,168,64,0.25)",
                   color: "#fff8e0",
-                  border: "1px solid rgba(232,168,64,0.4)",
+                  border: "1px solid rgba(232,168,64,0.5)",
+                  backdropFilter: "blur(4px)",
                 }
           }
         >
@@ -156,11 +171,20 @@ function CourseModal({
           overflowY: "auto",
         }}
       >
-        {/* Gradient header */}
-        <div
-          className="h-28 md:h-36 w-full flex-shrink-0"
-          style={{ background: course.gradient }}
-        />
+        {/* Cover image header */}
+        <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', borderRadius: '1rem 1rem 0 0', overflow: 'hidden', flexShrink: 0, backgroundColor: '#1A3028' }}>
+          {course.cover ? (
+            <Image
+              src={course.cover}
+              alt={course.title}
+              fill
+              style={{ objectFit: 'cover' }}
+              sizes="(max-width: 768px) 100vw, 672px"
+            />
+          ) : (
+            <div style={{ position: 'absolute', inset: 0, background: course.gradient }} />
+          )}
+        </div>
 
         <div className="px-6 md:px-8 pb-8 pt-4 md:pt-5">
           <DialogHeader className="mb-4">
@@ -301,6 +325,7 @@ export default function Courses({ sanityData }: { sanityData?: SanityCourse[] | 
     courses = sanityData.map((sc, i) => ({
       id: i + 1,
       gradient: courseMeta[i]?.gradient ?? "linear-gradient(135deg, #2AA090 0%, #1a6a5a 100%)",
+      cover: courseMeta[i]?.cover,
       title: sc.title,
       shortDescription: sc.tagline ?? sc.description ?? "",
       description: sc.description ?? "",
