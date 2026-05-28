@@ -6,17 +6,23 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({ name: 'title', title: 'Course Title', type: 'string' }),
+    defineField({ name: 'slug', title: 'Slug', type: 'slug', options: { source: 'title' } }),
     defineField({ name: 'tagline', title: 'Tagline', type: 'string' }),
     defineField({
       name: 'status',
       title: 'Status',
       type: 'string',
-      options: { list: ['active', 'coming-soon'] },
+      options: {
+        list: [
+          { title: 'Active', value: 'active' },
+          { title: 'Coming Soon', value: 'coming-soon' },
+        ],
+      },
     }),
     defineField({ name: 'lessons', title: 'Number of Lessons', type: 'number' }),
-    defineField({ name: 'duration', title: 'Duration', type: 'string' }),
+    defineField({ name: 'duration', title: 'Duration (e.g. ~3 months)', type: 'string' }),
     defineField({ name: 'description', title: 'Description', type: 'text' }),
-    defineField({ name: 'cover', title: 'Cover Image', type: 'image' }),
+    defineField({ name: 'cover', title: 'Cover Image', type: 'image', options: { hotspot: true } }),
     defineField({ name: 'authorName', title: 'Author Name', type: 'string' }),
     defineField({ name: 'authorRole', title: 'Author Role', type: 'string' }),
     defineField({
@@ -32,13 +38,15 @@ export default defineType({
       of: [{
         type: 'object',
         fields: [
-          { name: 'number', title: 'Lesson number', type: 'number' },
-          { name: 'title', title: 'Lesson title', type: 'string' },
-          { name: 'topic', title: 'Topic', type: 'string' },
+          defineField({ name: 'number', title: 'Lesson Number', type: 'number' }),
+          defineField({ name: 'title', title: 'Lesson Title', type: 'string' }),
+          defineField({ name: 'topic', title: 'Topic', type: 'string' }),
         ],
+        preview: { select: { title: 'title', subtitle: 'topic' } },
       }],
     }),
     defineField({ name: 'order', title: 'Display Order', type: 'number' }),
   ],
   orderings: [{ title: 'Display Order', name: 'orderAsc', by: [{ field: 'order', direction: 'asc' }] }],
+  preview: { select: { title: 'title', subtitle: 'status', media: 'cover' } },
 })

@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Lock, Heart, Hand, Star } from "lucide-react";
 import FadeInView from "./FadeInView";
+import type { SanityPrinciple } from "@/lib/sanity";
 
 interface Principle {
   title: string;
@@ -10,40 +11,23 @@ interface Principle {
 }
 
 const ICON_CONFIG = [
-  {
-    Icon: Lock,
-    iconColor: "#E8A840",
-    bgColor: "rgba(232,168,64,0.2)",
-  },
-  {
-    Icon: Heart,
-    iconColor: "#2AA090",
-    bgColor: "rgba(42,160,144,0.2)",
-  },
-  {
-    Icon: Hand,
-    iconColor: "#E87030",
-    bgColor: "rgba(232,112,48,0.2)",
-  },
-  {
-    Icon: Star,
-    iconColor: "#E8A840",
-    bgColor: "rgba(232,168,64,0.2)",
-  },
+  { Icon: Lock,  iconColor: "#E8A840", bgColor: "rgba(232,168,64,0.2)"  },
+  { Icon: Heart, iconColor: "#2AA090", bgColor: "rgba(42,160,144,0.2)"  },
+  { Icon: Hand,  iconColor: "#E87030", bgColor: "rgba(232,112,48,0.2)"  },
+  { Icon: Star,  iconColor: "#E8A840", bgColor: "rgba(232,168,64,0.2)"  },
 ];
 
-export default function Principles() {
+export default function Principles({ sanityData }: { sanityData?: SanityPrinciple[] | null }) {
   const t = useTranslations("Principles");
-  const principles = t.raw("principles") as Principle[];
+
+  const principles: Principle[] = sanityData && sanityData.length > 0
+    ? sanityData.map((p) => ({ title: p.title, body: p.body }))
+    : (t.raw("principles") as Principle[]);
 
   return (
-    <section
-      style={{ backgroundColor: "#1A3028" }}
-      className="py-10 md:py-16"
-    >
+    <section style={{ backgroundColor: "#1A3028" }} className="py-10 md:py-16">
       <div className="max-w-6xl mx-auto px-6">
         <FadeInView>
-          {/* Eyebrow */}
           <p
             className="text-xs font-medium tracking-widest uppercase mb-4 md:mb-5"
             style={{ color: "#2AA090" }}
@@ -51,7 +35,6 @@ export default function Principles() {
             {t("eyebrow")}
           </p>
 
-          {/* Headline */}
           <h2 className="mb-5 md:mb-6">
             <span
               className="block"
@@ -77,7 +60,6 @@ export default function Principles() {
             </span>
           </h2>
 
-          {/* Intro */}
           <p
             className="text-base md:text-lg leading-relaxed mb-10 md:mb-14 max-w-2xl"
             style={{ color: "rgba(250,245,236,0.7)", fontFamily: "var(--font-dm-sans)" }}
@@ -86,7 +68,6 @@ export default function Principles() {
           </p>
         </FadeInView>
 
-        {/* 2×2 grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
           {principles.map((principle, i) => {
             const { Icon, iconColor, bgColor } = ICON_CONFIG[i] ?? ICON_CONFIG[0];
@@ -100,15 +81,13 @@ export default function Principles() {
                     padding: "32px",
                   }}
                   onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLDivElement).style.backgroundColor =
-                      "rgba(255,255,255,0.08)";
+                    (e.currentTarget as HTMLDivElement).style.backgroundColor = "rgba(255,255,255,0.08)";
                   }}
                   onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLDivElement).style.backgroundColor =
-                      "rgba(255,255,255,0.05)";
+                    (e.currentTarget as HTMLDivElement).style.backgroundColor = "rgba(255,255,255,0.05)";
                   }}
                 >
-                  {/* Left — decorative number */}
+                  {/* Decorative number */}
                   <div
                     className="shrink-0 select-none leading-none"
                     style={{
@@ -122,9 +101,7 @@ export default function Principles() {
                     {i + 1}
                   </div>
 
-                  {/* Right — content */}
                   <div className="flex flex-col gap-3">
-                    {/* Icon circle */}
                     <div
                       className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
                       style={{ backgroundColor: bgColor }}
@@ -132,7 +109,6 @@ export default function Principles() {
                       <Icon size={15} style={{ color: iconColor }} />
                     </div>
 
-                    {/* Title */}
                     <h3
                       style={{
                         fontFamily: "var(--font-dm-serif)",
@@ -144,7 +120,6 @@ export default function Principles() {
                       {principle.title}
                     </h3>
 
-                    {/* Body */}
                     <p
                       style={{
                         color: "rgba(250,245,236,0.65)",

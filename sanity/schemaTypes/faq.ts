@@ -9,4 +9,5 @@ export default defineType({
     defineField({ name: 'answer', title: 'Answer', type: 'text' }),
     defineField({ name: 'order', title: 'Display Order', type: 'number' }),
   ],
+  preview: { select: { title: 'question' } },
 })

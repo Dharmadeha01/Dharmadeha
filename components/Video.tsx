@@ -2,9 +2,13 @@
 
 import { useTranslations } from "next-intl";
 import FadeInView from "./FadeInView";
+import type { SanityVideoSection } from "@/lib/sanity";
 
-export default function Video() {
+const FALLBACK_VIDEO_ID = "5BcRI87s8q4";
+
+export default function Video({ sanityData }: { sanityData?: SanityVideoSection | null }) {
   const t = useTranslations("Video");
+  const youtubeId = sanityData?.youtubeId || FALLBACK_VIDEO_ID;
 
   return (
     <section style={{ backgroundColor: "#FAF5EC" }} className="py-10 md:py-16">
@@ -45,7 +49,7 @@ export default function Video() {
 
           <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, borderRadius: '1rem', overflow: 'hidden', backgroundColor: '#1A3028' }}>
             <iframe
-              src="https://www.youtube.com/embed/5BcRI87s8q4?rel=0&modestbranding=1&color=white"
+              src={`https://www.youtube.com/embed/${youtubeId}?rel=0&modestbranding=1&color=white`}
               title="DharmaDeha — invitation video"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen

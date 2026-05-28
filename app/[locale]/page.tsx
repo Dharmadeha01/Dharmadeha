@@ -4,6 +4,7 @@ import Hero from "@/components/Hero";
 import StatsStrip from "@/components/StatsStrip";
 import Video from "@/components/Video";
 import Courses from "@/components/Courses";
+import Authors from "@/components/Authors";
 import Format from "@/components/Format";
 import AboutProject from "@/components/AboutProject";
 import TwoPaths from "@/components/TwoPaths";
@@ -18,8 +19,11 @@ import {
   queries,
   type SanityHero,
   type SanityCourse,
+  type SanityAuthor,
   type SanityFaq,
   type SanityTestimonial,
+  type SanityPrinciple,
+  type SanityVideoSection,
 } from "@/lib/sanity";
 
 export default async function Home({
@@ -31,39 +35,51 @@ export default async function Home({
   setRequestLocale(locale);
 
   // Fetch all Sanity data in parallel; each returns null gracefully if CMS is unconfigured
-  const [sanityHero, sanityCourses, sanityFaq, sanityTestimonials] =
-    await Promise.all([
-      sanityFetch<SanityHero>(queries.hero),
-      sanityFetch<SanityCourse[]>(queries.courses),
-      sanityFetch<SanityFaq[]>(queries.faq),
-      sanityFetch<SanityTestimonial[]>(queries.testimonials),
-    ]);
+  const [
+    sanityHero,
+    sanityCourses,
+    sanityAuthors,
+    sanityFaq,
+    sanityTestimonials,
+    sanityPrinciples,
+    sanityVideoSection,
+  ] = await Promise.all([
+    sanityFetch<SanityHero>(queries.hero),
+    sanityFetch<SanityCourse[]>(queries.courses),
+    sanityFetch<SanityAuthor[]>(queries.authors),
+    sanityFetch<SanityFaq[]>(queries.faq),
+    sanityFetch<SanityTestimonial[]>(queries.testimonials),
+    sanityFetch<SanityPrinciple[]>(queries.principles),
+    sanityFetch<SanityVideoSection>(queries.videoSection),
+  ]);
 
   return (
     <>
       <Nav />
       <main>
-        {/* 1. Hero — StatsStrip is a server component passed as children for ISR stats */}
+        {/* 1. Hero */}
         <Hero sanityHero={sanityHero}>
           <StatsStrip />
         </Hero>
         {/* 2. Video */}
-        <Video />
+        <Video sanityData={sanityVideoSection} />
         {/* 3. Courses */}
         <Courses sanityData={sanityCourses} />
-        {/* 4. Format */}
+        {/* 4. Authors */}
+        <Authors sanityData={sanityAuthors} />
+        {/* 5. Format */}
         <Format />
-        {/* 5. About the project */}
+        {/* 6. About the project */}
         <AboutProject />
-        {/* 6. Two Paths */}
+        {/* 7. Two Paths */}
         <TwoPaths />
-        {/* 7. Voices / Testimonials */}
+        {/* 8. Voices / Testimonials */}
         <Voices sanityData={sanityTestimonials} />
-        {/* 8. Principles */}
-        <Principles />
-        {/* 9. FAQ */}
+        {/* 9. Principles */}
+        <Principles sanityData={sanityPrinciples} />
+        {/* 10. FAQ */}
         <FAQ sanityData={sanityFaq} />
-        {/* 10. Final CTA */}
+        {/* 11. Final CTA */}
         <FinalCTA />
       </main>
       <Footer />

@@ -10,4 +10,5 @@ export default defineType({
     defineField({ name: 'role', title: 'Role', type: 'string' }),
     defineField({ name: 'order', title: 'Display Order', type: 'number' }),
   ],
+  preview: { select: { title: 'name', subtitle: 'role' } },
 })

@@ -28,10 +28,13 @@ export const queries = {
   authors: `*[_type == "author"] | order(order asc)`,
   faq: `*[_type == "faq"] | order(order asc)`,
   testimonials: `*[_type == "testimonial"] | order(order asc)`,
+  principles: `*[_type == "principle"] | order(order asc)`,
   siteSettings: `*[_type == "siteSettings"][0]`,
+  videoSection: `*[_type == "videoSection"][0]`,
 }
 
-// Type definitions for Sanity documents
+// ── Type definitions ──────────────────────────────────────────────────────────
+
 export interface SanityHero {
   headlineLine1?: string
   headlineLine2?: string
@@ -81,17 +84,34 @@ export interface SanityTestimonial {
   order?: number
 }
 
+export interface SanityPrinciple {
+  _id: string
+  title: string
+  body: string
+  order?: number
+}
+
 export interface SanitySiteSettings {
   siteName?: string
   footerTagline?: string
   joinButtonText?: string
+  mentorButtonText?: string
   contactEmail?: string
   instagramUrl?: string
   youtubeUrl?: string
   telegramUrl?: string
 }
 
-// Safe fetch — returns null if credentials are missing/invalid or on any error
+export interface SanityVideoSection {
+  headline?: string
+  headlineItalic?: string
+  body?: string
+  youtubeId?: string
+}
+
+// ── Safe fetch ────────────────────────────────────────────────────────────────
+// Returns null if credentials are missing/invalid or on any error
+
 export async function sanityFetch<T>(
   query: string,
   options?: { revalidate?: number }

@@ -12,4 +12,5 @@ export default defineType({
     defineField({ name: 'initials', title: 'Initials (fallback if no photo)', type: 'string' }),
     defineField({ name: 'order', title: 'Display Order', type: 'number' }),
   ],
+  preview: { select: { title: 'name', subtitle: 'role', media: 'photo' } },
 })
