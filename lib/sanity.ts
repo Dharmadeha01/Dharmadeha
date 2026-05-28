@@ -13,7 +13,7 @@ export const client = createClient({
   projectId: VALID_PROJECT_ID || 'placeholder',
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2024-01-01',
-  useCdn: true,
+  useCdn: false, // disabled for debug — ensures fresh data from Sanity API
 })
 
 const builder = createImageUrlBuilder(client)
@@ -119,7 +119,7 @@ export async function sanityFetch<T>(
   if (!VALID_PROJECT_ID) return null
   try {
     return await client.fetch<T>(query, {}, {
-      next: { revalidate: options?.revalidate ?? 3600 },
+      next: { revalidate: options?.revalidate ?? 0 }, // 0 = no cache, always fresh
     })
   } catch {
     return null
