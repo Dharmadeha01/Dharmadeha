@@ -25,7 +25,7 @@ export default function Principles({ sanityData }: { sanityData?: SanityPrincipl
     : (t.raw("principles") as Principle[]);
 
   return (
-    <section style={{ backgroundColor: "#1A3028" }} className="py-10 md:py-16">
+    <section style={{ backgroundColor: "#1A3028" }} className="py-7 md:py-10">
       <div className="max-w-6xl mx-auto px-6">
         <FadeInView>
           <p

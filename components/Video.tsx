@@ -11,7 +11,7 @@ export default function Video({ sanityData }: { sanityData?: SanityVideoSection 
   const youtubeId = sanityData?.youtubeId || FALLBACK_VIDEO_ID;
 
   return (
-    <section style={{ backgroundColor: "#FAF5EC" }} className="py-10 md:py-16">
+    <section style={{ backgroundColor: "#FAF5EC" }} className="py-7 md:py-10">
       <div className="max-w-3xl mx-auto px-6">
         <FadeInView>
           <div className="text-center mb-8 md:mb-10">

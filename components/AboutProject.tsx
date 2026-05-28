@@ -172,7 +172,7 @@ export default function AboutProject() {
     <section
       id="about-project"
       style={{ backgroundColor: "#FAF5EC" }}
-      className="py-10 md:py-16"
+      className="py-7 md:py-10"
     >
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}

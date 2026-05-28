@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import Image from "next/image";
 import {
   Dialog,
   DialogContent,
@@ -29,23 +28,35 @@ const courseMeta = [
     lessons: 10,
     status: "active" as const,
     gradient: "linear-gradient(135deg, #2AA090 0%, #1a6a5a 100%)",
-    cover: "/courses/fundamental-philosophy.png.png",
+    cover: "/courses/fundamental-philosophy.png",
   },
   {
     id: 2,
     lessons: 10,
     status: "active" as const,
     gradient: "linear-gradient(135deg, #E87030 0%, #c45520 100%)",
-    cover: "/courses/yama-niyama.png.png",
+    cover: "/courses/yama-niyama.png",
   },
   {
     id: 3,
     lessons: 7,
     status: "coming-soon" as const,
     gradient: "linear-gradient(135deg, #E8A840 0%, #c48020 100%)",
-    cover: "/courses/seven-secrets.jpg.jpg",
+    cover: "/courses/seven-secrets.jpg",
   },
 ];
+
+/** Map Sanity _id or slug to local fallback image */
+function getLocalFallback(id: string, index: number): string {
+  const idMap: Record<string, string> = {
+    'course-fundamental-philosophy': '/courses/fundamental-philosophy.png',
+    'course-yama-niyama': '/courses/yama-niyama.png',
+    'course-seven-secrets': '/courses/seven-secrets.jpg',
+  };
+  if (idMap[id]) return idMap[id];
+  // Fall back to index-ordered courseMeta covers
+  return courseMeta[index]?.cover || '/courses/placeholder.jpg';
+}
 
 type Course = CourseData & {
   id: number;
@@ -81,12 +92,11 @@ function CourseCard({
       {/* Cover image */}
       <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', borderRadius: '1rem 1rem 0 0', overflow: 'hidden', backgroundColor: '#1A3028' }}>
         {course.cover ? (
-          <Image
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
             src={course.cover}
             alt={course.title}
-            fill
-            style={{ objectFit: 'cover' }}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', top: 0, left: 0 }}
           />
         ) : (
           <div style={{ position: 'absolute', inset: 0, background: course.gradient }} />
@@ -174,12 +184,11 @@ function CourseModal({
         {/* Cover image header */}
         <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', borderRadius: '1rem 1rem 0 0', overflow: 'hidden', flexShrink: 0, backgroundColor: '#1A3028' }}>
           {course.cover ? (
-            <Image
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
               src={course.cover}
               alt={course.title}
-              fill
-              style={{ objectFit: 'cover' }}
-              sizes="(max-width: 768px) 100vw, 672px"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', top: 0, left: 0 }}
             />
           ) : (
             <div style={{ position: 'absolute', inset: 0, background: course.gradient }} />
@@ -325,7 +334,7 @@ export default function Courses({ sanityData }: { sanityData?: SanityCourse[] | 
     courses = sanityData.map((sc, i) => ({
       id: i + 1,
       gradient: courseMeta[i]?.gradient ?? "linear-gradient(135deg, #2AA090 0%, #1a6a5a 100%)",
-      cover: courseMeta[i]?.cover,
+      cover: sc.coverUrl || getLocalFallback(sc._id, i),
       title: sc.title,
       shortDescription: sc.tagline ?? sc.description ?? "",
       description: sc.description ?? "",
@@ -359,7 +368,7 @@ export default function Courses({ sanityData }: { sanityData?: SanityCourse[] | 
   };
 
   return (
-    <section id="courses" style={{ backgroundColor: "#FEF3E8" }} className="py-10 md:py-16">
+    <section id="courses" style={{ backgroundColor: "#FEF3E8" }} className="py-7 md:py-10">
       <div className="max-w-6xl mx-auto px-6">
         <FadeInView>
           <p

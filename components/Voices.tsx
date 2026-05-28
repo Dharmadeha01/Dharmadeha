@@ -18,7 +18,7 @@ export default function Voices({ sanityData }: { sanityData?: SanityTestimonial[
     : fallbackQuotes;
 
   return (
-    <section style={{ backgroundColor: "#EEF6F5" }} className="py-10 md:py-16">
+    <section style={{ backgroundColor: "#EEF6F5" }} className="py-7 md:py-10">
       <div className="max-w-6xl mx-auto px-6">
         <FadeInView>
           <p

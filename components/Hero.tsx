@@ -52,7 +52,7 @@ export default function Hero({
             }}
             {...fadeUp(0.35)}
           >
-            {sanityHero?.headlineLine1 || t("headline1")}
+            {t("headline1")}
           </motion.span>
           {/* Line 2 */}
           <motion.span
@@ -64,7 +64,7 @@ export default function Hero({
             }}
             {...fadeUp(0.5)}
           >
-            {sanityHero?.headlineLine2 || t("headline2")}
+            {t("headline2")}
           </motion.span>
         </h1>
 
@@ -73,7 +73,7 @@ export default function Hero({
           style={{ color: "rgba(26,48,40,0.72)" }}
           {...fadeUp(0.65, 12)}
         >
-          {sanityHero?.bodyText || t("body")}
+          {t("body")}
         </motion.p>
 
         <motion.div
@@ -94,7 +94,7 @@ export default function Hero({
               ((e.currentTarget as HTMLElement).style.backgroundColor = "#E87030")
             }
           >
-            {sanityHero?.primaryButtonText || t("cta")}
+            {t("cta")}
           </motion.button>
           <a
             href="#about"

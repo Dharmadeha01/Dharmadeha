@@ -24,7 +24,21 @@ export function urlFor(source: SanityImageSource) {
 
 export const queries = {
   hero: `*[_type == "hero"][0]`,
-  courses: `*[_type == "course"] | order(order asc)`,
+  courses: `*[_type == "course"] | order(order asc) {
+    _id,
+    title,
+    tagline,
+    status,
+    lessons,
+    duration,
+    description,
+    "coverUrl": cover.asset->url,
+    authorName,
+    authorRole,
+    whoFor,
+    curriculum,
+    order
+  }`,
   authors: `*[_type == "author"] | order(order asc)`,
   faq: `*[_type == "faq"] | order(order asc)`,
   testimonials: `*[_type == "testimonial"] | order(order asc)`,
@@ -52,6 +66,7 @@ export interface SanityCourse {
   duration?: string
   description?: string
   cover?: SanityImageSource
+  coverUrl?: string
   authorName?: string
   authorRole?: string
   whoFor?: Array<string | { _key: string; text: string }>

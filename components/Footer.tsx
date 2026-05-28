@@ -19,7 +19,7 @@ export default function Footer() {
         backgroundColor: "#1A3028",
         borderTop: "1px solid rgba(250,245,236,0.08)",
       }}
-      className="py-10"
+      className="py-7"
     >
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-7 mb-8">

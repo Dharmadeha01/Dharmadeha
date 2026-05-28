@@ -55,7 +55,7 @@ export default function TwoPaths() {
   const card2Items = t.raw("card2Items") as string[];
 
   return (
-    <section id="join" style={{ backgroundColor: "#FAF5EC" }} className="py-10 md:py-16">
+    <section id="join" style={{ backgroundColor: "#FAF5EC" }} className="py-7 md:py-10">
       <div className="max-w-6xl mx-auto px-6">
         <FadeInView>
           <p

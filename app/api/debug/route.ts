@@ -10,18 +10,20 @@ export async function GET() {
   const hasRevalidateSecret = !!process.env.SANITY_REVALIDATE_SECRET
 
   let courses: unknown[] = []
-  let testimonials: unknown[] = []
-  let principles: unknown[] = []
-  let faq: unknown[] = []
   let fetchError: string | null = null
 
   try {
-    ;[courses, testimonials, principles, faq] = await Promise.all([
-      client.fetch('*[_type == "course"] | order(order asc) {_id, title, status, order}'),
-      client.fetch('*[_type == "testimonial"] | order(order asc) {_id, name, quote}'),
-      client.fetch('*[_type == "principle"] | order(order asc) {_id, title}'),
-      client.fetch('*[_type == "faq"] | order(order asc) {_id, question}'),
-    ])
+    courses = await client.fetch(`
+      *[_type == "course"] | order(order asc) {
+        _id,
+        title,
+        status,
+        order,
+        "coverUrl": cover.asset->url,
+        "coverRef": cover.asset._ref,
+        cover
+      }
+    `)
   } catch (e: unknown) {
     fetchError = e instanceof Error ? e.message : String(e)
   }
@@ -35,12 +37,6 @@ export async function GET() {
       SANITY_REVALIDATE_SECRET: hasRevalidateSecret ? '✅ set' : '❌ missing',
     },
     fetchError,
-    counts: {
-      courses: courses.length,
-      testimonials: testimonials.length,
-      principles: principles.length,
-      faq: faq.length,
-    },
-    data: { courses, testimonials, principles, faq },
+    courses,
   })
 }

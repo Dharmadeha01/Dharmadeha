@@ -40,7 +40,7 @@ export default function CountUpStrip({ stats }: { stats: Stats }) {
   ];
 
   return (
-    <div ref={ref} style={{ backgroundColor: "#1A3028" }} className="py-10 md:py-14">
+    <div ref={ref} style={{ backgroundColor: "#1A3028" }} className="py-7 md:py-10">
       <div className="max-w-4xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center">
         {items.map((item) => (
           <div key={item.label}>
