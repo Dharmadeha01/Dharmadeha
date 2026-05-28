@@ -331,7 +331,9 @@ export default function Courses({ sanityData }: { sanityData?: SanityCourse[] | 
       description: sc.description ?? "",
       author: sc.authorName ?? "",
       authorRole: sc.authorRole ?? "",
-      whoFor: sc.whoFor ?? [],
+      whoFor: (sc.whoFor ?? []).map((w) =>
+        typeof w === 'string' ? w : ((w as { text?: string }).text ?? '')
+      ),
       curriculum: (sc.curriculum ?? []).map((c) => c.title),
       lessons: sc.lessons ?? courseMeta[i]?.lessons ?? 0,
       status: (sc.status as "active" | "coming-soon") ?? courseMeta[i]?.status ?? "active",
@@ -366,7 +368,7 @@ export default function Courses({ sanityData }: { sanityData?: SanityCourse[] | 
           >
             {t("eyebrow")}
           </p>
-          <h2 className="mb-10 md:mb-16">
+          <h2 className="mb-5 md:mb-6">
             <span
               className="block"
               style={{
@@ -390,6 +392,12 @@ export default function Courses({ sanityData }: { sanityData?: SanityCourse[] | 
               {t("headline2")}
             </span>
           </h2>
+          <p
+            className="text-base md:text-lg leading-relaxed mb-10 md:mb-14 max-w-2xl"
+            style={{ color: "rgba(26,48,40,0.65)" }}
+          >
+            {t("body")}
+          </p>
         </FadeInView>
 
         <div className="grid md:grid-cols-3 gap-4 md:gap-6">

@@ -32,6 +32,15 @@ export default function Hero({
   return (
     <section id="hero" style={{ backgroundColor: "#FAF5EC" }}>
       <div className="max-w-4xl mx-auto px-6 pt-24 pb-10 md:pt-24 md:pb-20">
+        {/* Eyebrow */}
+        <motion.p
+          className="text-xs font-medium tracking-widest uppercase mb-6"
+          style={{ color: "#2AA090" }}
+          {...fadeUp(0.2, 8)}
+        >
+          {t("eyebrow")}
+        </motion.p>
+
         <h1 className="mb-6 md:mb-8 leading-none">
           {/* Line 1 */}
           <motion.span

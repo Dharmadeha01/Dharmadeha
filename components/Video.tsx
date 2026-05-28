@@ -15,6 +15,12 @@ export default function Video({ sanityData }: { sanityData?: SanityVideoSection 
       <div className="max-w-3xl mx-auto px-6">
         <FadeInView>
           <div className="text-center mb-8 md:mb-10">
+            <p
+              className="text-xs font-medium tracking-widest uppercase mb-4"
+              style={{ color: "#2AA090" }}
+            >
+              {t("eyebrow")}
+            </p>
             <h2>
               <span
                 className="block"

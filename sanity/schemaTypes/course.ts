@@ -29,21 +29,52 @@ export default defineType({
       name: 'whoFor',
       title: 'Who it is for',
       type: 'array',
-      of: [{ type: 'string' }],
+      of: [{
+        type: 'object',
+        name: 'whoForItem',
+        title: 'Item',
+        fields: [
+          defineField({ name: 'text', title: 'Description', type: 'string' }),
+        ],
+        preview: { select: { title: 'text' } },
+      }],
     }),
     defineField({
       name: 'curriculum',
-      title: 'Curriculum',
+      title: 'Curriculum / Программа',
       type: 'array',
-      of: [{
-        type: 'object',
-        fields: [
-          defineField({ name: 'number', title: 'Lesson Number', type: 'number' }),
-          defineField({ name: 'title', title: 'Lesson Title', type: 'string' }),
-          defineField({ name: 'topic', title: 'Topic', type: 'string' }),
-        ],
-        preview: { select: { title: 'title', subtitle: 'topic' } },
-      }],
+      of: [
+        {
+          type: 'object',
+          name: 'lesson',
+          title: 'Lesson',
+          fields: [
+            defineField({
+              name: 'number',
+              title: 'Lesson Number',
+              type: 'number',
+              validation: Rule => Rule.required().min(1),
+            }),
+            defineField({
+              name: 'title',
+              title: 'Lesson Title',
+              type: 'string',
+              validation: Rule => Rule.required(),
+            }),
+            defineField({
+              name: 'topic',
+              title: 'Topic / Short description',
+              type: 'string',
+            }),
+          ],
+          preview: {
+            select: { title: 'title', subtitle: 'topic', number: 'number' },
+            prepare({ title, subtitle, number }: { title?: string; subtitle?: string; number?: number }) {
+              return { title: `${number ?? '?'}. ${title ?? ''}`, subtitle }
+            },
+          },
+        },
+      ],
     }),
     defineField({ name: 'order', title: 'Display Order', type: 'number' }),
   ],

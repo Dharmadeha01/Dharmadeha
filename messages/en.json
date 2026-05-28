@@ -8,6 +8,7 @@
     "mentorCta": "Become a mentor"
   },
   "Hero": {
+    "eyebrow": "COMMUNITY",
     "headline1": "No one walks",
     "headline2": "the path alone.",
     "body": "We believe that true transformation happens not alone, but in a circle of like-minded souls.",
@@ -19,23 +20,25 @@
     "statsCountries": "countries"
   },
   "Video": {
+    "eyebrow": "VIDEO",
     "headline1": "A short word",
     "headline2": "from us.",
     "caption": "An invitation and explanation about DharmaDeha.",
     "soon": "Video coming soon"
   },
   "Courses": {
-    "eyebrow": "What you'll study",
+    "eyebrow": "WHAT YOU'LL STUDY",
     "headline1": "Three courses to start.",
     "headline2": "More coming soon.",
+    "body": "Each course is divided into weekly lessons. One lesson — one meeting.",
     "statusActive": "Active",
     "statusComingSoon": "Coming soon",
     "viewCourse": "View course →",
     "lessonsSuffix": "lessons",
     "modal": {
-      "taughtBy": "TAUGHT BY",
-      "whoFor": "WHO THIS IS FOR",
-      "curriculum": "CURRICULUM",
+      "taughtBy": "Taught by",
+      "whoFor": "Who this is for",
+      "curriculum": "Curriculum",
       "joinCta": "Join this DharmaDeha"
     },
     "list": [
@@ -99,7 +102,7 @@
     ]
   },
   "Format": {
-    "eyebrow": "How a meeting works",
+    "eyebrow": "HOW A MEETING WORKS",
     "headline1": "About 80 minutes.",
     "headline2": "Five stages.",
     "steps": [
@@ -114,7 +117,7 @@
     "eyebrow": "ABOUT THE PROJECT",
     "headline1": "Two parts.",
     "headline2": "One journey.",
-    "intro": "Every DharmaDeha meeting combines two things — Satsang and Education. They are inseparable.",
+    "intro": "Every DharmaDeha meeting combines two elements — Satsang and Education. They are inseparable.",
     "satsangTitle": "Satsang",
     "satsangSubtitle": "Communication and support",
     "satsangBullets": [
@@ -139,7 +142,7 @@
     "step2Title": "10+ Educational Meetings",
     "step2Body": "One lesson per week. Study, discuss, support each other, and grow together.",
     "step3Title": "Celebrational Meeting",
-    "step3Body": "The course ends with a special meeting together with Didi or Dada."
+    "step3Body": "The course ends with a special meeting together with Dadi or Dada."
   },
   "TwoPaths": {
     "eyebrow": "WHO IS THIS FOR",
@@ -192,7 +195,7 @@
     "eyebrow": "OUR PRINCIPLES",
     "headline1": "How we hold",
     "headline2": "the space.",
-    "intro": "Four agreements that make every DharmaDeha a safe place to grow.",
+    "intro": "Four principles that make every DharmaDeha a safe place to grow.",
     "principles": [
       {
         "title": "Confidentiality",
@@ -254,7 +257,7 @@
   "FinalCTA": {
     "headline1": "Ready to stop walking",
     "headline2": "alone?",
-    "body": "No cost to join. No prior experience required. Just bring your practice and your sincerity.",
+    "body": "Join for free. No prior experience required. Just bring your practice and sincerity.",
     "cta1": "Join a DharmaDeha",
     "cta2": "Become a mentor",
     "languages": "Available in English · Russian · Ukrainian · Italian"

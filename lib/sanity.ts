@@ -54,7 +54,7 @@ export interface SanityCourse {
   cover?: SanityImageSource
   authorName?: string
   authorRole?: string
-  whoFor?: string[]
+  whoFor?: Array<string | { _key: string; text: string }>
   curriculum?: Array<{ number: number; title: string; topic?: string }>
   order?: number
 }

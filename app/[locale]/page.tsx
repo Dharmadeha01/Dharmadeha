@@ -4,7 +4,6 @@ import Hero from "@/components/Hero";
 import StatsStrip from "@/components/StatsStrip";
 import Video from "@/components/Video";
 import Courses from "@/components/Courses";
-import Authors from "@/components/Authors";
 import Format from "@/components/Format";
 import AboutProject from "@/components/AboutProject";
 import TwoPaths from "@/components/TwoPaths";
@@ -19,7 +18,6 @@ import {
   queries,
   type SanityHero,
   type SanityCourse,
-  type SanityAuthor,
   type SanityFaq,
   type SanityTestimonial,
   type SanityPrinciple,
@@ -38,7 +36,6 @@ export default async function Home({
   const [
     sanityHero,
     sanityCourses,
-    sanityAuthors,
     sanityFaq,
     sanityTestimonials,
     sanityPrinciples,
@@ -46,7 +43,6 @@ export default async function Home({
   ] = await Promise.all([
     sanityFetch<SanityHero>(queries.hero),
     sanityFetch<SanityCourse[]>(queries.courses),
-    sanityFetch<SanityAuthor[]>(queries.authors),
     sanityFetch<SanityFaq[]>(queries.faq),
     sanityFetch<SanityTestimonial[]>(queries.testimonials),
     sanityFetch<SanityPrinciple[]>(queries.principles),
@@ -65,9 +61,7 @@ export default async function Home({
         <Video sanityData={sanityVideoSection} />
         {/* 3. Courses */}
         <Courses sanityData={sanityCourses} />
-        {/* 4. Authors */}
-        <Authors sanityData={sanityAuthors} />
-        {/* 5. Format */}
+        {/* 4. Format */}
         <Format />
         {/* 6. About the project */}
         <AboutProject />
