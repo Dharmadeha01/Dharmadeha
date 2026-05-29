@@ -1,15 +1,9 @@
 "use client";
 
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Lock, Heart, Hand, Star } from "lucide-react";
 import FadeInView from "./FadeInView";
 import type { SanityPrinciple } from "@/lib/sanity";
-import { localizedField } from "@/lib/i18n-content";
-
-interface Principle {
-  title: string;
-  body: string;
-}
 
 const ICON_CONFIG = [
   { Icon: Lock,  iconColor: "#E8A840", bgColor: "rgba(232,168,64,0.2)"  },
@@ -18,18 +12,19 @@ const ICON_CONFIG = [
   { Icon: Star,  iconColor: "#E8A840", bgColor: "rgba(232,168,64,0.2)"  },
 ];
 
-export default function Principles({ sanityData }: { sanityData?: SanityPrinciple[] | null }) {
+// SanityPrinciple prop is kept for API compatibility but content always comes
+// from translation files so every locale renders correctly without needing
+// translate-all.ts to have run first.
+export default function Principles({ sanityData: _sanityData }: { sanityData?: SanityPrinciple[] | null }) {
   const t = useTranslations("Principles");
-  const locale = useLocale();
 
-  const i18nPrinciples = t.raw("principles") as Principle[];
-
-  const principles: Principle[] = sanityData && sanityData.length > 0
-    ? sanityData.map((p, i) => ({
-        title: localizedField(locale, p as unknown as Record<string, unknown>, 'title', i18nPrinciples[i]?.title ?? ''),
-        body: localizedField(locale, p as unknown as Record<string, unknown>, 'body', i18nPrinciples[i]?.body ?? ''),
-      }))
-    : i18nPrinciples;
+  // Build principles from flat translation keys — always correct for every locale
+  const principles = [
+    { title: t("principle1Title"), body: t("principle1Body") },
+    { title: t("principle2Title"), body: t("principle2Body") },
+    { title: t("principle3Title"), body: t("principle3Body") },
+    { title: t("principle4Title"), body: t("principle4Body") },
+  ];
 
   return (
     <section style={{ backgroundColor: "#1A3028" }} className="py-7 md:py-10">

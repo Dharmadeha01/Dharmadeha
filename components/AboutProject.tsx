@@ -40,7 +40,7 @@ function Card({
 }: CardProps) {
   return (
     <motion.div
-      className="relative overflow-hidden rounded-2xl p-7 md:p-10 flex flex-col"
+      className="relative overflow-hidden rounded-2xl p-7 md:p-10 flex flex-col h-full"
       style={{ backgroundColor: "#fff", border: "1px solid rgba(26,48,40,0.08)" }}
       variants={cardVariants}
       initial="rest"
@@ -117,7 +117,7 @@ function Card({
         <div style={{ borderTop: "1px solid rgba(26,48,40,0.1)", margin: "20px 0" }} />
 
         {/* Bullets */}
-        <ul className="space-y-3 flex-1">
+        <ul className="space-y-3 flex-1 flex flex-col">
           {bullets.map((bullet, i) => (
             <li key={i} className="flex items-start gap-3">
               <div
@@ -144,7 +144,7 @@ function Card({
         </ul>
 
         {/* Badge */}
-        <div className="mt-6">
+        <div className="mt-auto pt-6">
           <span
             className="inline-block px-3 py-1 rounded-full text-xs font-medium"
             style={{
@@ -216,8 +216,8 @@ export default function AboutProject() {
         </FadeInView>
 
         {/* Two cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <FadeInView delay={0.1}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+          <FadeInView delay={0.1} className="h-full flex flex-col">
             <Card
               accentColor="#2AA090"
               accentRgba="rgba(42,160,144,0.2)"
@@ -231,7 +231,7 @@ export default function AboutProject() {
             />
           </FadeInView>
 
-          <FadeInView delay={0.18}>
+          <FadeInView delay={0.18} className="h-full flex flex-col">
             <Card
               accentColor="#E87030"
               accentRgba="rgba(232,112,48,0.2)"

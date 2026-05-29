@@ -399,10 +399,10 @@ export default function Courses({ sanityData }: { sanityData?: SanityCourse[] | 
   }
 
   const modalLabels = {
-    taughtBy: t("modal.taughtBy"),
-    whoFor: t("modal.whoFor"),
-    curriculum: t("modal.curriculum"),
-    joinCta: t("modal.joinCta"),
+    taughtBy: t("taughtByLabel"),
+    whoFor: t("whoForLabel"),
+    curriculum: t("curriculumLabel"),
+    joinCta: t("joinThisCourse"),
   };
 
   const handleOpen = (course: Course) => {
