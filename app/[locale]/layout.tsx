@@ -30,6 +30,18 @@ export const metadata: Metadata = {
   openGraph: {
     url: "https://dharmadeha.vercel.app",
     siteName: "DharmaDeha",
+    images: [
+      {
+        url: "https://dharmadeha.vercel.app/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "DharmaDeha — No one walks the path alone",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["https://dharmadeha.vercel.app/og-image.jpg"],
   },
   icons: {
     icon: "/favicon.svg",
