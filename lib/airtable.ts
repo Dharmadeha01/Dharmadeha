@@ -6,10 +6,10 @@ export interface Stats {
 }
 
 const FALLBACK_STATS: Stats = {
-  people: 64,
-  dharmaDehas: 10,
-  mentors: 17,
-  countries: 13,
+  people: 72,
+  dharmaDehas: 12,
+  mentors: 16,
+  countries: 14,
 };
 
 /**

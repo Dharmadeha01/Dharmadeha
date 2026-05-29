@@ -46,6 +46,17 @@ const courseMeta = [
   },
 ];
 
+/** Map Sanity course _id to localised text keys */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getCourseI18n(id: string, t: (k: any) => string) {
+  const map: Record<string, { title: string; tagline: string; description: string }> = {
+    'course-1': { title: t('course1Title'), tagline: t('course1Tagline'), description: t('course1Description') },
+    'course-2': { title: t('course2Title'), tagline: t('course2Tagline'), description: t('course2Description') },
+    'course-3': { title: t('course3Title'), tagline: t('course3Tagline'), description: t('course3Description') },
+  }
+  return map[id]
+}
+
 /** Map Sanity _id or slug to local fallback image */
 function getLocalFallback(id: string, index: number): string {
   const idMap: Record<string, string> = {
@@ -335,9 +346,14 @@ export default function Courses({ sanityData }: { sanityData?: SanityCourse[] | 
       id: i + 1,
       gradient: courseMeta[i]?.gradient ?? "linear-gradient(135deg, #2AA090 0%, #1a6a5a 100%)",
       cover: sc.coverUrl || getLocalFallback(sc._id, i),
-      title: sc.title,
-      shortDescription: sc.tagline ?? sc.description ?? "",
-      description: sc.description ?? "",
+      ...(() => {
+        const loc = getCourseI18n(sc._id, t)
+        return {
+          title: loc?.title || sc.title,
+          shortDescription: loc?.tagline || sc.tagline || sc.description || "",
+          description: loc?.description || sc.description || "",
+        }
+      })(),
       author: sc.authorName ?? "",
       authorRole: sc.authorRole ?? "",
       whoFor: (sc.whoFor ?? []).map((w) =>

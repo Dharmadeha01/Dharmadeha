@@ -46,7 +46,7 @@ export default function Nav() {
         boxShadow: scrolled ? "0 1px 8px rgba(26,48,40,0.06)" : "none",
       }}
     >
-      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-6 flex items-center justify-between md:h-16 py-1 md:py-0">
         {/* Logo — fade in on load */}
         <motion.a
           href="#"
@@ -125,26 +125,32 @@ export default function Nav() {
           </motion.button>
         </motion.div>
 
-        {/* Mobile: sticky compact Join + Hamburger */}
-        <div className="md:hidden flex items-center gap-2">
-          <motion.button
-            onClick={openApplyModal}
-            whileHover={shouldReduce ? {} : { scale: 1.02 }}
-            whileTap={shouldReduce ? {} : { scale: 0.97 }}
-            transition={{ duration: 0.15 }}
-            className="text-sm px-3 py-2 rounded-full text-white font-medium cursor-pointer"
-            style={{ backgroundColor: "#E87030" }}
-          >
-            {t("ctaMobile")}
-          </motion.button>
-          <button
-            className="p-1"
-            style={{ color: "#1A3028" }}
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle navigation"
-          >
-            {menuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+        {/* Mobile: Join + Hamburger + inline language switcher */}
+        <div className="md:hidden flex flex-col items-end gap-0.5">
+          <div className="flex items-center gap-2 h-14">
+            <motion.button
+              onClick={openApplyModal}
+              whileHover={shouldReduce ? {} : { scale: 1.02 }}
+              whileTap={shouldReduce ? {} : { scale: 0.97 }}
+              transition={{ duration: 0.15 }}
+              className="text-sm px-3 py-2 rounded-full text-white font-medium cursor-pointer"
+              style={{ backgroundColor: "#E87030" }}
+            >
+              {t("ctaMobile")}
+            </motion.button>
+            <button
+              className="p-1"
+              style={{ color: "#1A3028" }}
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle navigation"
+            >
+              {menuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+          {/* Language row — always visible on mobile */}
+          <div className="flex items-center gap-0.5 pb-1 pr-0.5">
+            <LanguageSwitcher />
+          </div>
         </div>
       </div>
 

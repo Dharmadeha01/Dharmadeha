@@ -17,10 +17,8 @@ interface FAQItem {
 
 export default function FAQ({ sanityData }: { sanityData?: SanityFaq[] | null }) {
   const t = useTranslations("FAQ");
-  const fallbackItems = t.raw("items") as FAQItem[];
-  const items: FAQItem[] = sanityData && sanityData.length > 0
-    ? sanityData.map((item) => ({ q: item.question, a: item.answer }))
-    : fallbackItems;
+  // Always use translation file — Sanity FAQ is English-only and would override locale
+  const items: FAQItem[] = t.raw("items") as FAQItem[];
 
   return (
     <section id="faq" style={{ backgroundColor: "#FAF5EC" }} className="py-7 md:py-10">
