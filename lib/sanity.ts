@@ -23,23 +23,29 @@ export function urlFor(source: SanityImageSource) {
 }
 
 export const queries = {
+  // No projection — returns all fields including RU/UA variants
   hero: `*[_type == "hero"][0]`,
   courses: `*[_type == "course"] | order(order asc) {
     _id,
-    title,
-    tagline,
+    title, titleRu, titleUa,
+    tagline, taglineRu, taglineUa,
     status,
     lessons,
     duration,
-    description,
+    description, descriptionRu, descriptionUa,
     "coverUrl": cover.asset->url,
     authorName,
     authorRole,
-    whoFor,
-    curriculum,
+    whoFor[]{ text },
+    whoForRu[]{ text },
+    whoForUa[]{ text },
+    curriculum[]{ number, title, topic },
+    curriculumRu[]{ number, title, topic },
+    curriculumUa[]{ number, title, topic },
     order
   }`,
   authors: `*[_type == "author"] | order(order asc)`,
+  // No projection — returns all fields including RU/UA variants
   faq: `*[_type == "faq"] | order(order asc)`,
   testimonials: `*[_type == "testimonial"] | order(order asc)`,
   principles: `*[_type == "principle"] | order(order asc) { _id, title, titleRu, titleUa, body, bodyRu, bodyUa, order }`,
@@ -55,22 +61,40 @@ export interface SanityHero {
   bodyText?: string
   primaryButtonText?: string
   secondaryButtonText?: string
+  headlineLine1Ru?: string
+  headlineLine2Ru?: string
+  bodyTextRu?: string
+  headlineLine1Ua?: string
+  headlineLine2Ua?: string
+  bodyTextUa?: string
+  primaryButtonTextRu?: string
+  primaryButtonTextUa?: string
 }
 
 export interface SanityCourse {
   _id: string
   title: string
+  titleRu?: string
+  titleUa?: string
   tagline?: string
+  taglineRu?: string
+  taglineUa?: string
   status?: 'active' | 'coming-soon'
   lessons?: number
   duration?: string
   description?: string
+  descriptionRu?: string
+  descriptionUa?: string
   cover?: SanityImageSource
   coverUrl?: string
   authorName?: string
   authorRole?: string
   whoFor?: Array<string | { _key: string; text: string }>
+  whoForRu?: Array<{ text: string }>
+  whoForUa?: Array<{ text: string }>
   curriculum?: Array<{ number: number; title: string; topic?: string }>
+  curriculumRu?: Array<{ number: number; title: string; topic?: string }>
+  curriculumUa?: Array<{ number: number; title: string; topic?: string }>
   order?: number
 }
 
@@ -88,6 +112,10 @@ export interface SanityFaq {
   _id: string
   question: string
   answer: string
+  questionRu?: string
+  answerRu?: string
+  questionUa?: string
+  answerUa?: string
   order?: number
 }
 
@@ -96,6 +124,10 @@ export interface SanityTestimonial {
   quote: string
   name: string
   role?: string
+  quoteRu?: string
+  quoteUa?: string
+  roleRu?: string
+  roleUa?: string
   order?: number
 }
 
@@ -113,8 +145,14 @@ export interface SanityPrinciple {
 export interface SanitySiteSettings {
   siteName?: string
   footerTagline?: string
+  footerTaglineRu?: string
+  footerTaglineUa?: string
   joinButtonText?: string
+  joinButtonTextRu?: string
+  joinButtonTextUa?: string
   mentorButtonText?: string
+  mentorButtonTextRu?: string
+  mentorButtonTextUa?: string
   contactEmail?: string
   instagramUrl?: string
   youtubeUrl?: string
@@ -126,6 +164,12 @@ export interface SanityVideoSection {
   headlineItalic?: string
   body?: string
   youtubeId?: string
+  headlineRu?: string
+  headlineItalicRu?: string
+  bodyRu?: string
+  headlineUa?: string
+  headlineItalicUa?: string
+  bodyUa?: string
 }
 
 // ── Safe fetch ────────────────────────────────────────────────────────────────

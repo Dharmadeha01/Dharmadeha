@@ -3,12 +3,23 @@
 import { useTranslations } from "next-intl";
 import FadeInView from "./FadeInView";
 import type { SanityVideoSection } from "@/lib/sanity";
+import { loc } from "@/lib/localize";
 
 const FALLBACK_VIDEO_ID = "5BcRI87s8q4";
 
-export default function Video({ sanityData }: { sanityData?: SanityVideoSection | null }) {
+export default function Video({
+  sanityData,
+  locale = "en",
+}: {
+  sanityData?: SanityVideoSection | null;
+  locale?: string;
+}) {
   const t = useTranslations("Video");
   const youtubeId = sanityData?.youtubeId || FALLBACK_VIDEO_ID;
+
+  // Use Sanity data with locale fallback; fall back to i18n when Sanity field absent
+  const headline1 = (sanityData ? loc(sanityData, 'headline', locale) : '') || t("headline1");
+  const headline2 = (sanityData ? loc(sanityData, 'headlineItalic', locale) : '') || t("headline2");
 
   return (
     <section style={{ backgroundColor: "#FAF5EC" }} className="py-7 md:py-10">
@@ -31,7 +42,7 @@ export default function Video({ sanityData }: { sanityData?: SanityVideoSection 
                   lineHeight: 1.1,
                 }}
               >
-                {t("headline1")}
+                {headline1}
               </span>
               <span
                 className="block italic"
@@ -42,7 +53,7 @@ export default function Video({ sanityData }: { sanityData?: SanityVideoSection 
                   lineHeight: 1.1,
                 }}
               >
-                {t("headline2")}
+                {headline2}
               </span>
             </h2>
             <p

@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import FadeInView from "./FadeInView";
 import type { SanityTestimonial } from "@/lib/sanity";
 import { TestimonialsCarousel } from "./TestimonialsCarousel";
+import { loc } from "@/lib/localize";
 
 interface Quote {
   text: string;
@@ -11,12 +12,23 @@ interface Quote {
   role: string;
 }
 
-export default function Voices({ sanityData }: { sanityData?: SanityTestimonial[] | null }) {
+export default function Voices({
+  sanityData,
+  locale = "en",
+}: {
+  sanityData?: SanityTestimonial[] | null;
+  locale?: string;
+}) {
   const t = useTranslations("Voices");
   const fallbackQuotes = t.raw("quotes") as Quote[];
-  const quotes: Quote[] = sanityData && sanityData.length > 0
-    ? sanityData.map((item) => ({ text: item.quote, author: item.name, role: item.role ?? "" }))
-    : fallbackQuotes;
+  const quotes: Quote[] =
+    sanityData && sanityData.length > 0
+      ? sanityData.map((item) => ({
+          text: loc(item, 'quote', locale) || item.quote,
+          author: item.name,
+          role: loc(item, 'role', locale) || item.role || "",
+        }))
+      : fallbackQuotes;
 
   return (
     <section style={{ backgroundColor: "#EEF6F5" }} className="py-7 md:py-10">

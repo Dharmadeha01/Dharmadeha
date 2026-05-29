@@ -9,16 +9,30 @@ import {
 } from "@/components/ui/accordion";
 import FadeInView from "./FadeInView";
 import type { SanityFaq } from "@/lib/sanity";
+import { loc } from "@/lib/localize";
 
 interface FAQItem {
   q: string;
   a: string;
 }
 
-export default function FAQ({ sanityData }: { sanityData?: SanityFaq[] | null }) {
+export default function FAQ({
+  sanityData,
+  locale = "en",
+}: {
+  sanityData?: SanityFaq[] | null;
+  locale?: string;
+}) {
   const t = useTranslations("FAQ");
-  // Always use translation file — Sanity FAQ is English-only and would override locale
-  const items: FAQItem[] = t.raw("items") as FAQItem[];
+
+  // Use Sanity data with locale-aware fields when available; fall back to i18n
+  const items: FAQItem[] =
+    sanityData && sanityData.length > 0
+      ? sanityData.map((f) => ({
+          q: loc(f, 'question', locale) || f.question,
+          a: loc(f, 'answer', locale) || f.answer,
+        }))
+      : (t.raw("items") as FAQItem[]);
 
   return (
     <section id="faq" style={{ backgroundColor: "#FAF5EC" }} className="py-7 md:py-10">

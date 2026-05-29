@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import FadeInView from "./FadeInView";
 import type { SanityCourse } from "@/lib/sanity";
+import { loc, locArray } from "@/lib/localize";
 
 interface CourseData {
   title: string;
@@ -66,7 +67,6 @@ function getLocalFallback(id: string, index: number): string {
     'course-seven-secrets': '/courses/seven-secrets.jpg',
   };
   if (idMap[id]) return idMap[id];
-  // Fall back to index-ordered courseMeta covers
   return courseMeta[index]?.cover || '/courses/placeholder.jpg';
 }
 
@@ -97,12 +97,12 @@ function CourseCard({
     <motion.div
       whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(26,48,40,0.12)" }}
       transition={{ duration: 0.25, ease: "easeOut" }}
-      className="rounded-2xl overflow-hidden cursor-pointer group"
+      className="rounded-2xl overflow-hidden cursor-pointer group h-full flex flex-col"
       style={{ backgroundColor: "#fff", boxShadow: "0 1px 6px rgba(26,48,40,0.07)" }}
       onClick={() => onOpen(course)}
     >
       {/* Cover image */}
-      <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', borderRadius: '1rem 1rem 0 0', overflow: 'hidden', backgroundColor: '#1A3028' }}>
+      <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', borderRadius: '1rem 1rem 0 0', overflow: 'hidden', backgroundColor: '#1A3028', flexShrink: 0 }}>
         {course.cover ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -136,20 +136,22 @@ function CourseCard({
       </div>
 
       {/* Content */}
-      <div className="p-5 md:p-6">
-        <h3
-          className="text-lg md:text-xl mb-2"
-          style={{ fontFamily: "var(--font-dm-serif)", color: "#1A3028" }}
-        >
-          {course.title}
-        </h3>
-        <p
-          className="text-sm leading-relaxed mb-4 line-clamp-2"
-          style={{ color: "rgba(26,48,40,0.65)" }}
-        >
-          {course.shortDescription}
-        </p>
-        <div className="flex items-center justify-between">
+      <div className="flex flex-col flex-1 p-5">
+        <div className="flex-1">
+          <h3
+            className="text-lg md:text-xl mb-2"
+            style={{ fontFamily: "var(--font-dm-serif)", color: "#1A3028" }}
+          >
+            {course.title}
+          </h3>
+          <p
+            className="text-sm leading-relaxed line-clamp-2"
+            style={{ color: "rgba(26,48,40,0.65)" }}
+          >
+            {course.shortDescription}
+          </p>
+        </div>
+        <div className="mt-auto pt-4 flex items-center justify-between">
           <span className="text-xs" style={{ color: "rgba(26,48,40,0.45)" }}>
             {course.lessons} {lessonsLabel}
           </span>
@@ -243,7 +245,7 @@ function CourseModal({
             </DialogTitle>
           </DialogHeader>
 
-          {/* AUTHOR BLOCK — at top, above description */}
+          {/* AUTHOR BLOCK */}
           <div
             className="mb-5 pb-5"
             style={{ borderBottom: "1px solid rgba(26,48,40,0.1)" }}
@@ -361,7 +363,13 @@ function CourseModal({
   );
 }
 
-export default function Courses({ sanityData }: { sanityData?: SanityCourse[] | null }) {
+export default function Courses({
+  sanityData,
+  locale = "en",
+}: {
+  sanityData?: SanityCourse[] | null;
+  locale?: string;
+}) {
   const t = useTranslations("Courses");
   const [selected, setSelected] = useState<Course | null>(null);
   const [open, setOpen] = useState(false);
@@ -369,27 +377,40 @@ export default function Courses({ sanityData }: { sanityData?: SanityCourse[] | 
   // Build course list: prefer Sanity data, fall back to translation files
   let courses: Course[];
   if (sanityData && sanityData.length > 0) {
-    courses = sanityData.map((sc, i) => ({
-      id: i + 1,
-      gradient: courseMeta[i]?.gradient ?? "linear-gradient(135deg, #2AA090 0%, #1a6a5a 100%)",
-      cover: sc.coverUrl || getLocalFallback(sc._id, i),
-      ...(() => {
-        const loc = getCourseI18n(sc._id, t)
-        return {
-          title: loc?.title || sc.title,
-          shortDescription: loc?.tagline || sc.tagline || sc.description || "",
-          description: loc?.description || sc.description || "",
-        }
-      })(),
-      author: sc.authorName ?? "",
-      authorRole: sc.authorRole ?? "",
-      whoFor: (sc.whoFor ?? []).map((w) =>
-        typeof w === 'string' ? w : ((w as { text?: string }).text ?? '')
-      ),
-      curriculum: (sc.curriculum ?? []).map((c) => c.title),
-      lessons: sc.lessons ?? courseMeta[i]?.lessons ?? 0,
-      status: (sc.status as "active" | "coming-soon") ?? courseMeta[i]?.status ?? "active",
-    }));
+    courses = sanityData.map((sc, i) => {
+      // Locale-aware title/tagline/description — Sanity RU/UA first, then i18n fallback
+      const i18n = getCourseI18n(sc._id, t);
+      const title = loc(sc, 'title', locale) || i18n?.title || sc.title || '';
+      const shortDescription = loc(sc, 'tagline', locale) || i18n?.tagline || sc.tagline || sc.description || '';
+      const description = loc(sc, 'description', locale) || i18n?.description || sc.description || '';
+
+      // Locale-aware whoFor array
+      const rawWhoFor = locArray(sc, 'whoFor', locale);
+      const whoFor = rawWhoFor.map((w) =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        typeof w === 'string' ? w : ((w as any).text ?? '')
+      ).filter(Boolean);
+
+      // Locale-aware curriculum array
+      const rawCurriculum = locArray(sc, 'curriculum', locale);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const curriculum = rawCurriculum.map((c: any) => c.title ?? '').filter(Boolean);
+
+      return {
+        id: i + 1,
+        gradient: courseMeta[i]?.gradient ?? "linear-gradient(135deg, #2AA090 0%, #1a6a5a 100%)",
+        cover: sc.coverUrl || getLocalFallback(sc._id, i),
+        title,
+        shortDescription,
+        description,
+        author: sc.authorName ?? "",
+        authorRole: sc.authorRole ?? "",
+        whoFor,
+        curriculum,
+        lessons: sc.lessons ?? courseMeta[i]?.lessons ?? 0,
+        status: (sc.status as "active" | "coming-soon") ?? courseMeta[i]?.status ?? "active",
+      };
+    });
   } else {
     const courseDataList = t.raw("list") as CourseData[];
     courses = courseMeta.map((meta, i) => ({
@@ -452,9 +473,9 @@ export default function Courses({ sanityData }: { sanityData?: SanityCourse[] | 
           </p>
         </FadeInView>
 
-        <div className="grid md:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
           {courses.map((course, i) => (
-            <FadeInView key={course.id} delay={i * 0.1}>
+            <FadeInView key={course.id} delay={i * 0.1} className="h-full">
               <CourseCard
                 course={course}
                 onOpen={handleOpen}

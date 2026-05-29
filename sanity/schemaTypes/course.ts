@@ -82,6 +82,48 @@ export default defineType({
         },
       ],
     }),
+    defineField({
+      name: 'whoForRu',
+      title: '🇷🇺 Who it is for (RU)',
+      type: 'array',
+      of: [{ type: 'object', name: 'whoForItemRu', fields: [defineField({ name: 'text', title: 'Text', type: 'string' })], preview: { select: { title: 'text' } } }]
+    }),
+    defineField({
+      name: 'whoForUa',
+      title: '🇺🇦 Who it is for (UA)',
+      type: 'array',
+      of: [{ type: 'object', name: 'whoForItemUa', fields: [defineField({ name: 'text', title: 'Text', type: 'string' })], preview: { select: { title: 'text' } } }]
+    }),
+    defineField({
+      name: 'curriculumRu',
+      title: '🇷🇺 Curriculum (RU)',
+      type: 'array',
+      of: [{
+        type: 'object',
+        name: 'lessonRu',
+        fields: [
+          defineField({ name: 'number', title: 'Lesson Number', type: 'number' }),
+          defineField({ name: 'title', title: 'Lesson Title (RU)', type: 'string' }),
+          defineField({ name: 'topic', title: 'Topic (RU)', type: 'string' }),
+        ],
+        preview: { select: { title: 'title', subtitle: 'topic', number: 'number' }, prepare({ title, subtitle, number }: { title?: string; subtitle?: string; number?: number }) { return { title: `${number ?? '?'}. ${title ?? ''}`, subtitle } } }
+      }]
+    }),
+    defineField({
+      name: 'curriculumUa',
+      title: '🇺🇦 Curriculum (UA)',
+      type: 'array',
+      of: [{
+        type: 'object',
+        name: 'lessonUa',
+        fields: [
+          defineField({ name: 'number', title: 'Lesson Number', type: 'number' }),
+          defineField({ name: 'title', title: 'Lesson Title (UA)', type: 'string' }),
+          defineField({ name: 'topic', title: 'Topic (UA)', type: 'string' }),
+        ],
+        preview: { select: { title: 'title', subtitle: 'topic', number: 'number' }, prepare({ title, subtitle, number }: { title?: string; subtitle?: string; number?: number }) { return { title: `${number ?? '?'}. ${title ?? ''}`, subtitle } } }
+      }]
+    }),
     defineField({ name: 'order', title: 'Display Order', type: 'number' }),
   ],
   orderings: [{ title: 'Display Order', name: 'orderAsc', by: [{ field: 'order', direction: 'asc' }] }],

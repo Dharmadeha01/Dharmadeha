@@ -54,13 +54,13 @@ export default async function Home({
       <Nav />
       <main>
         {/* 1. Hero */}
-        <Hero sanityHero={sanityHero}>
+        <Hero sanityHero={sanityHero} locale={locale}>
           <StatsStrip />
         </Hero>
         {/* 2. Video */}
-        <Video sanityData={sanityVideoSection} />
+        <Video sanityData={sanityVideoSection} locale={locale} />
         {/* 3. Courses */}
-        <Courses sanityData={sanityCourses} />
+        <Courses sanityData={sanityCourses} locale={locale} />
         {/* 4. Format */}
         <Format />
         {/* 6. About the project */}
@@ -68,11 +68,11 @@ export default async function Home({
         {/* 7. Two Paths */}
         <TwoPaths />
         {/* 8. Voices / Testimonials */}
-        <Voices sanityData={sanityTestimonials} />
+        <Voices sanityData={sanityTestimonials} locale={locale} />
         {/* 9. Principles */}
         <Principles sanityData={sanityPrinciples} />
         {/* 10. FAQ */}
-        <FAQ sanityData={sanityFaq} />
+        <FAQ sanityData={sanityFaq} locale={locale} />
         {/* 11. Final CTA */}
         <FinalCTA />
       </main>

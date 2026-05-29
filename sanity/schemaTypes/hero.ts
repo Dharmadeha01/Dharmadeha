@@ -16,6 +16,8 @@ export default defineType({
     defineField({ name: 'headlineLine1Ua', title: 'Headline Line 1 (UA)', type: 'string' }),
     defineField({ name: 'headlineLine2Ua', title: 'Headline Line 2 — italic (UA)', type: 'string' }),
     defineField({ name: 'bodyTextUa', title: 'Body Text (UA)', type: 'text' }),
+    defineField({ name: 'primaryButtonTextRu', title: '🇷🇺 Primary Button (RU)', type: 'string' }),
+    defineField({ name: 'primaryButtonTextUa', title: '🇺🇦 Primary Button (UA)', type: 'string' }),
   ],
   preview: { select: { title: 'headlineLine1' } },
 })

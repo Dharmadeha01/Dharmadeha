@@ -70,13 +70,13 @@ export default function Principles({ sanityData: _sanityData }: { sanityData?: S
           </p>
         </FadeInView>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 items-stretch">
           {principles.map((principle, i) => {
             const { Icon, iconColor, bgColor } = ICON_CONFIG[i] ?? ICON_CONFIG[0];
             return (
-              <FadeInView key={i} delay={i * 0.08}>
+              <FadeInView key={i} delay={i * 0.08} className="h-full">
                 <div
-                  className="rounded-2xl flex gap-6 transition-colors duration-200 cursor-default"
+                  className="rounded-2xl flex gap-6 transition-colors duration-200 cursor-default h-full"
                   style={{
                     backgroundColor: "rgba(255,255,255,0.05)",
                     border: "1px solid rgba(255,255,255,0.1)",
@@ -103,7 +103,7 @@ export default function Principles({ sanityData: _sanityData }: { sanityData?: S
                     {i + 1}
                   </div>
 
-                  <div className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-3 flex-1">
                     <div
                       className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
                       style={{ backgroundColor: bgColor }}
@@ -123,6 +123,7 @@ export default function Principles({ sanityData: _sanityData }: { sanityData?: S
                     </h3>
 
                     <p
+                      className="flex-1"
                       style={{
                         color: "rgba(250,245,236,0.65)",
                         fontFamily: "var(--font-dm-sans)",

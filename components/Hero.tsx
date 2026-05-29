@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import FadeInView from "./FadeInView";
 import type { SanityHero } from "@/lib/sanity";
+import { loc } from "@/lib/localize";
 
 function openApplyModal() {
   window.dispatchEvent(new CustomEvent("open-apply-modal"));
@@ -12,9 +13,11 @@ function openApplyModal() {
 export default function Hero({
   children,
   sanityHero,
+  locale = "en",
 }: {
   children?: React.ReactNode;
   sanityHero?: SanityHero | null;
+  locale?: string;
 }) {
   const t = useTranslations("Hero");
   const shouldReduce = useReducedMotion();
@@ -28,6 +31,11 @@ export default function Hero({
       transition: { duration: 0.6, delay, ease },
     };
   }
+
+  // Use Sanity data when available (with locale fallback), else fall back to i18n
+  const headline1 = (sanityHero ? loc(sanityHero, 'headlineLine1', locale) : '') || t("headline1");
+  const headline2 = (sanityHero ? loc(sanityHero, 'headlineLine2', locale) : '') || t("headline2");
+  const body = (sanityHero ? loc(sanityHero, 'bodyText', locale) : '') || t("body");
 
   return (
     <section id="hero" style={{ backgroundColor: "#FAF5EC" }}>
@@ -52,7 +60,7 @@ export default function Hero({
             }}
             {...fadeUp(0.35)}
           >
-            {t("headline1")}
+            {headline1}
           </motion.span>
           {/* Line 2 */}
           <motion.span
@@ -64,7 +72,7 @@ export default function Hero({
             }}
             {...fadeUp(0.5)}
           >
-            {t("headline2")}
+            {headline2}
           </motion.span>
         </h1>
 
@@ -73,7 +81,7 @@ export default function Hero({
           style={{ color: "rgba(26,48,40,0.72)" }}
           {...fadeUp(0.65, 12)}
         >
-          {t("body")}
+          {body}
         </motion.p>
 
         <motion.div
