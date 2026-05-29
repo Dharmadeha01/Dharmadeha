@@ -226,7 +226,7 @@ async function main() {
   console.log('IMPORTANT: Go to https://sanity.io/manage')
   console.log('  → your project → API → CORS Origins → Add:')
   console.log('      http://localhost:3000')
-  console.log('      https://dharmadeha.vercel.app')
+  console.log('      ' + (process.env.NEXT_PUBLIC_SITE_URL || 'https://dharmadeha.vercel.app') + '')
   console.log('  This is required for Sanity Studio to work.')
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
 }

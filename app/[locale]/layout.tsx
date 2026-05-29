@@ -22,32 +22,43 @@ const dmSans = DM_Sans({
 });
 
 
-export const metadata: Metadata = {
-  title: "DharmaDeha — No one walks the path alone",
-  description:
-    "Meditation mentorship circles for people who want community on the spiritual path.",
-  metadataBase: new URL("https://dharmadeha.vercel.app"),
-  openGraph: {
-    url: "https://dharmadeha.vercel.app",
-    siteName: "DharmaDeha",
-    images: [
-      {
-        url: "https://dharmadeha.vercel.app/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "DharmaDeha — No one walks the path alone",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    images: ["https://dharmadeha.vercel.app/og-image.jpg"],
-  },
-  icons: {
-    icon: "/favicon.svg",
-    apple: "/apple-touch-icon.svg",
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dharmadeha.vercel.app";
+  const url = `${baseUrl}/${locale}`;
+  const imageUrl = `${baseUrl}/og-image.jpg`;
+
+  return {
+    title: "DharmaDeha — No one walks the path alone",
+    description:
+      "Meditation mentorship circles for people who want community on the spiritual path.",
+    metadataBase: new URL(baseUrl),
+    openGraph: {
+      url,
+      siteName: "DharmaDeha",
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: "DharmaDeha — No one walks the path alone",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: [imageUrl],
+    },
+    icons: {
+      icon: "/favicon.svg",
+      apple: "/apple-touch-icon.svg",
+    },
+  };
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
