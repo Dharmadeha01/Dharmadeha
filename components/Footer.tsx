@@ -51,6 +51,25 @@ export default function Footer() {
             ))}
           </div>
 
+          {/* Donate */}
+          <a
+            href="https://revolut.me/vinaykrsna/pocket/Y7qSpcNBlD"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm px-5 py-2 rounded-full font-medium transition-all duration-150"
+            style={{ color: "#E8A840", border: "1.5px solid #E8A840", backgroundColor: "transparent" }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.backgroundColor = "#E8A840";
+              (e.currentTarget as HTMLElement).style.color = "#1A3028";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
+              (e.currentTarget as HTMLElement).style.color = "#E8A840";
+            }}
+          >
+            {t("donate")}
+          </a>
+
           {/* Social icons */}
           <div className="flex gap-4 items-center">
             {[

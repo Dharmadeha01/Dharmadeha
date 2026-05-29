@@ -82,7 +82,7 @@ export default function Voices({ sanityData }: { sanityData?: SanityTestimonial[
                 <p
                   className="text-base leading-relaxed mb-5 flex-1 italic line-clamp-6"
                   style={{
-                    fontFamily: "var(--font-dm-serif)",
+                    fontFamily: "var(--font-dm-sans)",
                     color: "rgba(26,48,40,0.82)",
                   }}
                 >

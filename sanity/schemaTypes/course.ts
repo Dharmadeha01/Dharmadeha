@@ -5,9 +5,16 @@ export default defineType({
   title: 'Courses',
   type: 'document',
   fields: [
-    defineField({ name: 'title', title: 'Course Title', type: 'string' }),
+    defineField({ name: 'title', title: 'Course Title (EN)', type: 'string' }),
     defineField({ name: 'slug', title: 'Slug', type: 'slug', options: { source: 'title' } }),
-    defineField({ name: 'tagline', title: 'Tagline', type: 'string' }),
+    defineField({ name: 'tagline', title: 'Tagline (EN)', type: 'string' }),
+    defineField({ name: 'description', title: 'Description (EN)', type: 'text' }),
+    defineField({ name: 'titleRu', title: 'Course Title (RU)', type: 'string' }),
+    defineField({ name: 'taglineRu', title: 'Tagline (RU)', type: 'string' }),
+    defineField({ name: 'descriptionRu', title: 'Description (RU)', type: 'text' }),
+    defineField({ name: 'titleUa', title: 'Course Title (UA)', type: 'string' }),
+    defineField({ name: 'taglineUa', title: 'Tagline (UA)', type: 'string' }),
+    defineField({ name: 'descriptionUa', title: 'Description (UA)', type: 'text' }),
     defineField({
       name: 'status',
       title: 'Status',
@@ -21,13 +28,12 @@ export default defineType({
     }),
     defineField({ name: 'lessons', title: 'Number of Lessons', type: 'number' }),
     defineField({ name: 'duration', title: 'Duration (e.g. ~3 months)', type: 'string' }),
-    defineField({ name: 'description', title: 'Description', type: 'text' }),
     defineField({ name: 'cover', title: 'Cover Image', type: 'image', options: { hotspot: true } }),
     defineField({ name: 'authorName', title: 'Author Name', type: 'string' }),
     defineField({ name: 'authorRole', title: 'Author Role', type: 'string' }),
     defineField({
       name: 'whoFor',
-      title: 'Who it is for',
+      title: 'Who it is for (EN)',
       type: 'array',
       of: [{
         type: 'object',
@@ -41,7 +47,7 @@ export default defineType({
     }),
     defineField({
       name: 'curriculum',
-      title: 'Curriculum / Программа',
+      title: 'Curriculum (EN)',
       type: 'array',
       of: [
         {

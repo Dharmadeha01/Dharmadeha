@@ -5,7 +5,8 @@
     "faq": "FAQ",
     "cta": "Join a DharmaDeha",
     "ctaMobile": "Join us",
-    "mentorCta": "Become a mentor"
+    "mentorCta": "Become a mentor",
+    "donate": "Donate"
   },
   "Hero": {
     "eyebrow": "AM mentorship circles",
@@ -308,6 +309,7 @@
     "courses": "Courses",
     "faq": "FAQ",
     "contact": "Contact",
-    "copyright": "© 2026 DharmaDeha · No one is left behind."
+    "copyright": "© 2026 DharmaDeha · No one is left behind.",
+    "donate": "Donate"
   }
 }

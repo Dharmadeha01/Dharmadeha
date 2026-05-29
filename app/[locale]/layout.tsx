@@ -14,7 +14,9 @@ const dmSerifDisplay = DM_Serif_Display({
 });
 
 const dmSans = DM_Sans({
-  subsets: ["latin", "latin-ext"],
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error — DM Sans supports cyrillic; next/font types are behind
+  subsets: ["latin", "latin-ext", "cyrillic", "cyrillic-ext"],
   variable: "--font-dm-sans",
   display: "swap",
 });

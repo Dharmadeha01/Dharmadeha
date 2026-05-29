@@ -88,6 +88,28 @@ export default function Nav() {
           ))}
           <LanguageSwitcher />
 
+          {/* Donate */}
+          <motion.a
+            href="https://revolut.me/vinaykrsna/pocket/Y7qSpcNBlD"
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={shouldReduce ? {} : { scale: 1.02 }}
+            whileTap={shouldReduce ? {} : { scale: 0.97 }}
+            transition={{ duration: 0.15 }}
+            className="text-sm px-5 py-2 rounded-full font-medium cursor-pointer"
+            style={{ color: "#E8A840", border: "1.5px solid #E8A840", backgroundColor: "transparent" }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.backgroundColor = "#E8A840";
+              (e.currentTarget as HTMLElement).style.color = "#FAF5EC";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
+              (e.currentTarget as HTMLElement).style.color = "#E8A840";
+            }}
+          >
+            {t("donate")}
+          </motion.a>
+
           {/* Become a mentor */}
           <motion.button
             onClick={scrollToJoin}
@@ -218,6 +240,21 @@ export default function Nav() {
             >
               {t("mentorCta")}
             </motion.button>
+            <motion.a
+              href="https://revolut.me/vinaykrsna/pocket/Y7qSpcNBlD"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm px-5 py-3 rounded-full font-medium text-center cursor-pointer"
+              style={{ color: "#E8A840", border: "1.5px solid #E8A840", backgroundColor: "transparent" }}
+              onClick={() => setMenuOpen(false)}
+              whileHover={shouldReduce ? {} : { scale: 1.02 }}
+              whileTap={shouldReduce ? {} : { scale: 0.97 }}
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.25, delay: 0.35, ease: "easeOut" }}
+            >
+              {t("donate")}
+            </motion.a>
           </motion.div>
         )}
       </AnimatePresence>

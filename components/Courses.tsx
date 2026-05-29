@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import {
   Dialog,
@@ -204,6 +205,32 @@ function CourseModal({
           ) : (
             <div style={{ position: 'absolute', inset: 0, background: course.gradient }} />
           )}
+          {/* Visible close button */}
+          <button
+            onClick={onClose}
+            aria-label="Close"
+            style={{
+              position: 'absolute',
+              top: '12px',
+              right: '12px',
+              width: '32px',
+              height: '32px',
+              borderRadius: '50%',
+              backgroundColor: 'rgba(255,255,255,0.92)',
+              border: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              zIndex: 10,
+              backdropFilter: 'blur(4px)',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
+            }}
+            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = '#fff')}
+            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.92)')}
+          >
+            <X size={14} style={{ color: '#1A3028' }} />
+          </button>
         </div>
 
         <div className="px-6 md:px-8 pb-8 pt-4 md:pt-5">

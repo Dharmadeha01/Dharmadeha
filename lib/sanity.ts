@@ -42,7 +42,7 @@ export const queries = {
   authors: `*[_type == "author"] | order(order asc)`,
   faq: `*[_type == "faq"] | order(order asc)`,
   testimonials: `*[_type == "testimonial"] | order(order asc)`,
-  principles: `*[_type == "principle"] | order(order asc)`,
+  principles: `*[_type == "principle"] | order(order asc) { _id, title, titleRu, titleUa, body, bodyRu, bodyUa, order }`,
   siteSettings: `*[_type == "siteSettings"][0]`,
   videoSection: `*[_type == "videoSection"][0]`,
 }
@@ -102,7 +102,11 @@ export interface SanityTestimonial {
 export interface SanityPrinciple {
   _id: string
   title: string
+  titleRu?: string
+  titleUa?: string
   body: string
+  bodyRu?: string
+  bodyUa?: string
   order?: number
 }
 

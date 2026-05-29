@@ -1,9 +1,10 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Lock, Heart, Hand, Star } from "lucide-react";
 import FadeInView from "./FadeInView";
 import type { SanityPrinciple } from "@/lib/sanity";
+import { localizedField } from "@/lib/i18n-content";
 
 interface Principle {
   title: string;
@@ -19,10 +20,16 @@ const ICON_CONFIG = [
 
 export default function Principles({ sanityData }: { sanityData?: SanityPrinciple[] | null }) {
   const t = useTranslations("Principles");
+  const locale = useLocale();
+
+  const i18nPrinciples = t.raw("principles") as Principle[];
 
   const principles: Principle[] = sanityData && sanityData.length > 0
-    ? sanityData.map((p) => ({ title: p.title, body: p.body }))
-    : (t.raw("principles") as Principle[]);
+    ? sanityData.map((p, i) => ({
+        title: localizedField(locale, p as unknown as Record<string, unknown>, 'title', i18nPrinciples[i]?.title ?? ''),
+        body: localizedField(locale, p as unknown as Record<string, unknown>, 'body', i18nPrinciples[i]?.body ?? ''),
+      }))
+    : i18nPrinciples;
 
   return (
     <section style={{ backgroundColor: "#1A3028" }} className="py-7 md:py-10">

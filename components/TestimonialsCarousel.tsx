@@ -69,7 +69,7 @@ export function TestimonialsCarousel({ testimonials }: { testimonials: CarouselT
               <p
                 className="text-[15px] leading-relaxed italic mb-3 line-clamp-4"
                 style={{
-                  fontFamily: "var(--font-dm-serif)",
+                  fontFamily: "var(--font-dm-sans)",
                   color: "rgba(26,48,40,0.82)",
                 }}
               >
