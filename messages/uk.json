@@ -290,17 +290,32 @@
   },
   "ApplyModal": {
     "title": "Приєднатися до ДхармаДехи",
-    "nameLabel": "Повне ім'я",
+    "nameLabel": "Ваше ім'я",
     "namePlaceholder": "Ваше ім'я",
     "emailLabel": "Email",
     "emailPlaceholder": "ваш@email.com",
-    "languageLabel": "Бажана мова",
-    "languagePlaceholder": "Оберіть мову",
-    "courseLabel": "Бажаний курс",
-    "coursePlaceholder": "Оберіть курс",
-    "messageLabel": "Повідомлення",
-    "messageLabelOptional": "(необов'язково)",
-    "messagePlaceholder": "Що хочете нам повідомити...",
+    "phoneLabel": "Телефон (Telegram)",
+    "phonePlaceholder": "@username або номер телефону",
+    "cityCountryLabel": "Місто / Країна",
+    "cityCountryPlaceholder": "наприклад, Берлін, Німеччина",
+    "ageLabel": "Вік",
+    "agePlaceholder": "Ваш вік",
+    "languagesSpeakLabel": "Мови, якими ви володієте",
+    "languageOtherPlaceholder": "Вкажіть мову",
+    "preferredMentorLabel": "Хочете приєднатися до ДД з конкретним ментором?",
+    "preferredMentorPlaceholder": "Ім'я ментора (якщо ні — ми підберемо)",
+    "optionalLabel": "(необов'язково)",
+    "hasInitiationLabel": "Чи маєте ви ініціацію AM?",
+    "acaryaLabel": "Хто Ачар'я, який дав вам ініціацію?",
+    "acaryaPlaceholder": "Ім'я Ачар'ї",
+    "courseLabel": "На який курс ви записуєтесь зараз?",
+    "futureTopicsLabel": "Які теми вас найбільше цікавлять у майбутньому?",
+    "futureTopicsPlaceholder": "Теми, які хотіли б вивчити...",
+    "hearAboutLabel": "Як ви дізналися про ДхармаДеху?",
+    "hearAboutPlaceholder": "Друг, соцмережі, подія...",
+    "expectationsLabel": "Які у вас очікування від програми ДхармаДеха?",
+    "expectationsPlaceholder": "Чого ви сподіваєтесь досягти в програмі?",
+    "interestedInMentorLabel": "Чи цікавить вас стати ментором у майбутньому?",
     "submitButton": "Надіслати заявку",
     "submitting": "Надсилаємо...",
     "successTitle": "Заявку надіслано!",
@@ -308,16 +323,21 @@
     "errorMessage": "Сталася помилка. Спробуйте ще раз або напишіть нам напряму.",
     "requiredError": "Це поле обов'язкове",
     "emailError": "Введіть коректний email",
-    "languageOptions": [
-      { "value": "Russian", "label": "Російська" },
+    "yesNoOptions": [
+      { "value": "yes", "label": "Так" },
+      { "value": "no", "label": "Ні" }
+    ],
+    "languageSpeakOptions": [
       { "value": "English", "label": "Англійська" },
+      { "value": "Russian", "label": "Російська" },
       { "value": "Ukrainian", "label": "Українська" },
-      { "value": "Italian", "label": "Італійська" }
+      { "value": "Italian", "label": "Італійська" },
+      { "value": "Other", "label": "Інша" }
     ],
     "courseOptions": [
-      { "value": "Fundamental Philosophy", "label": "Фундаментальна філософія" },
-      { "value": "Yama and Niyama", "label": "Яма і Ніяма" },
-      { "value": "7 Secrets of Shiva", "label": "7 секретів успіху Шіви" }
+      { "value": "Fundamentals of Philosophy", "label": "Основи філософії" },
+      { "value": "Yama & Niyama", "label": "Яма і Ніяма" },
+      { "value": "7 Secrets of Success", "label": "7 секретів успіху" }
     ]
   },
   "MentorApplyModal": {

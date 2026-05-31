@@ -290,17 +290,32 @@
   },
   "ApplyModal": {
     "title": "Join a DharmaDeha",
-    "nameLabel": "Full name",
+    "nameLabel": "Your name",
     "namePlaceholder": "Your name",
-    "emailLabel": "Email address",
+    "emailLabel": "Email",
     "emailPlaceholder": "your@email.com",
-    "languageLabel": "Preferred language",
-    "languagePlaceholder": "Select language",
-    "courseLabel": "Preferred course",
-    "coursePlaceholder": "Select course",
-    "messageLabel": "Message",
-    "messageLabelOptional": "(optional)",
-    "messagePlaceholder": "Anything you want us to know...",
+    "phoneLabel": "Phone number (Telegram)",
+    "phonePlaceholder": "@username or phone number",
+    "cityCountryLabel": "City / Country",
+    "cityCountryPlaceholder": "e.g. Berlin, Germany",
+    "ageLabel": "Age",
+    "agePlaceholder": "Your age",
+    "languagesSpeakLabel": "Language(s) you speak",
+    "languageOtherPlaceholder": "Please specify",
+    "preferredMentorLabel": "Would you like to join DD with a specific mentor?",
+    "preferredMentorPlaceholder": "Mentor name (if none, we will find one for you)",
+    "optionalLabel": "(optional)",
+    "hasInitiationLabel": "Do you have an AM initiation?",
+    "acaryaLabel": "Who is the Acarya who gave you an initiation?",
+    "acaryaPlaceholder": "Acarya name",
+    "courseLabel": "Which course are you enrolling in now?",
+    "futureTopicsLabel": "What topics interest you most in the future?",
+    "futureTopicsPlaceholder": "Topics you'd like to explore...",
+    "hearAboutLabel": "How did you hear about DharmaDeha?",
+    "hearAboutPlaceholder": "Friend, social media, event...",
+    "expectationsLabel": "What are your expectations for the DharmaDeha program?",
+    "expectationsPlaceholder": "What do you hope to gain from the program?",
+    "interestedInMentorLabel": "Are you interested in becoming a mentor in the future?",
     "submitButton": "Send application",
     "submitting": "Sending...",
     "successTitle": "Application sent!",
@@ -308,16 +323,21 @@
     "errorMessage": "Something went wrong. Please try again or write to us directly.",
     "requiredError": "This field is required",
     "emailError": "Please enter a valid email address",
-    "languageOptions": [
-      { "value": "Russian", "label": "Russian" },
+    "yesNoOptions": [
+      { "value": "yes", "label": "Yes" },
+      { "value": "no", "label": "No" }
+    ],
+    "languageSpeakOptions": [
       { "value": "English", "label": "English" },
+      { "value": "Russian", "label": "Russian" },
       { "value": "Ukrainian", "label": "Ukrainian" },
-      { "value": "Italian", "label": "Italian" }
+      { "value": "Italian", "label": "Italian" },
+      { "value": "Other", "label": "Other" }
     ],
     "courseOptions": [
-      { "value": "Fundamental Philosophy", "label": "Fundamental Philosophy" },
-      { "value": "Yama and Niyama", "label": "Yama and Niyama" },
-      { "value": "7 Secrets of Shiva", "label": "7 Secrets of Shiva" }
+      { "value": "Fundamentals of Philosophy", "label": "Fundamentals of Philosophy" },
+      { "value": "Yama & Niyama", "label": "Yama & Niyama" },
+      { "value": "7 Secrets of Success", "label": "7 Secrets of Success" }
     ]
   },
   "MentorApplyModal": {

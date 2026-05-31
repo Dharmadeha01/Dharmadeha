@@ -61,14 +61,36 @@ export async function fetchStats(opts?: RequestInit): Promise<Stats> {
   }
 }
 
-export interface ApplicationPayload {
-  applicationType: ApplicationType;
+export interface MentorApplicationPayload {
+  applicationType: "mentor";
   name: string;
   email: string;
   language: string;
-  course?: string;
   message?: string;
 }
+
+export interface ParticipantApplicationPayload {
+  applicationType: "participant";
+  name: string;
+  email: string;
+  phone: string;
+  cityCountry: string;
+  age: string;
+  languages: string[];
+  languageOther?: string;
+  preferredMentor?: string;
+  hasInitiation: boolean;
+  acaryaName?: string;
+  courses: string[];
+  futureTopics: string;
+  hearAbout: string;
+  expectations: string;
+  interestedInMentor: boolean;
+}
+
+export type ApplicationPayload =
+  | MentorApplicationPayload
+  | ParticipantApplicationPayload;
 
 function roleForType(type: ApplicationType): string {
   return type === "mentor" ? "Mentor" : "Participant";
@@ -76,8 +98,10 @@ function roleForType(type: ApplicationType): string {
 
 /**
  * Submit an application to Airtable.
- * Expects an "Applications" table with fields:
- *   Name, Email, Language, Course, Message, Status, Role
+ * Mentor: Name, Email, Language, Message, Status, Role
+ * Participant: Name, Email, Phone/Telegram, City/Country, Age, Languages,
+ *   Preferred Mentor, Has Initiation, Acarya, Course, Future Topics,
+ *   How did you hear, Expectations, Interested in Mentor, Status, Role
  */
 export async function submitApplication(data: ApplicationPayload): Promise<{ ok: boolean; error?: string }> {
   const token = process.env.AIRTABLE_API_TOKEN;
@@ -87,17 +111,38 @@ export async function submitApplication(data: ApplicationPayload): Promise<{ ok:
     return { ok: false, error: "Airtable not configured" };
   }
 
-  const fields: Record<string, string> = {
+  const fields: Record<string, string | number> = {
     Name: data.name,
     Email: data.email,
-    Language: data.language,
-    Message: data.message ?? "",
     Status: "New",
     Role: roleForType(data.applicationType),
   };
 
-  if (data.applicationType === "participant") {
-    fields.Course = data.course ?? "";
+  if (data.applicationType === "mentor") {
+    fields.Language = data.language;
+    fields.Message = data.message ?? "";
+  } else {
+    const languages = [...data.languages];
+    if (data.languageOther?.trim()) {
+      const otherIdx = languages.indexOf("Other");
+      if (otherIdx >= 0) languages[otherIdx] = `Other (${data.languageOther.trim()})`;
+    }
+    fields["Phone/Telegram"] = data.phone;
+    fields["City/Country"] = data.cityCountry;
+    fields.Age = Number(data.age);
+    fields.Languages = languages.join(", ");
+    if (data.preferredMentor?.trim()) {
+      fields["Preferred Mentor"] = data.preferredMentor.trim();
+    }
+    fields["Has Initiation"] = data.hasInitiation ? "Yes" : "No";
+    if (data.hasInitiation && data.acaryaName?.trim()) {
+      fields.Acarya = data.acaryaName.trim();
+    }
+    fields.Course = data.courses.join(", ");
+    fields["Future Topics"] = data.futureTopics;
+    fields["How did you hear"] = data.hearAbout;
+    fields.Expectations = data.expectations;
+    fields["Interested in Mentor"] = data.interestedInMentor ? "Yes" : "No";
   }
 
   try {
