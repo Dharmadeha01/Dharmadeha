@@ -65,8 +65,15 @@ export interface MentorApplicationPayload {
   applicationType: "mentor";
   name: string;
   email: string;
-  language: string;
-  message?: string;
+  phone: string;
+  cityCountry: string;
+  age: string;
+  languages: string[];
+  languageOther?: string;
+  hasInitiation: boolean;
+  acaryaName?: string;
+  hearAbout: string;
+  expectations: string;
 }
 
 export interface ParticipantApplicationPayload {
@@ -98,7 +105,8 @@ function roleForType(type: ApplicationType): string {
 
 /**
  * Submit an application to Airtable.
- * Mentor: Name, Email, Language, Message, Status, Role
+ * Mentor: Name, Email, Phone/Telegram, City/Country, Age, Language,
+ *   Has Initiation, Acarya, How did you hear, Expectations, Status, Role
  * Participant: Name, Email, Phone/Telegram, City/Country, Age, Languages,
  *   Preferred Mentor, Has Initiation, Acarya, Course, Future Topics,
  *   How did you hear, Expectations, Interested in Mentor, Status, Role
@@ -119,8 +127,21 @@ export async function submitApplication(data: ApplicationPayload): Promise<{ ok:
   };
 
   if (data.applicationType === "mentor") {
-    fields.Language = data.language;
-    fields.Message = data.message ?? "";
+    const languages = [...data.languages];
+    if (data.languageOther?.trim()) {
+      const otherIdx = languages.indexOf("Other");
+      if (otherIdx >= 0) languages[otherIdx] = `Other (${data.languageOther.trim()})`;
+    }
+    fields["Phone/Telegram"] = data.phone;
+    fields["City/Country"] = data.cityCountry;
+    fields.Age = Number(data.age);
+    fields.Language = languages.join(", ");
+    fields["Has Initiation"] = data.hasInitiation ? "Yes" : "No";
+    if (data.hasInitiation && data.acaryaName?.trim()) {
+      fields.Acarya = data.acaryaName.trim();
+    }
+    fields["How did you hear"] = data.hearAbout;
+    fields.Expectations = data.expectations;
   } else {
     const languages = [...data.languages];
     if (data.languageOther?.trim()) {

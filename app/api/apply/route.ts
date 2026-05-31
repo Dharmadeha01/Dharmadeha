@@ -44,15 +44,59 @@ export async function POST(request: Request) {
   let payload: ApplicationPayload;
 
   if (applicationType === "mentor") {
-    if (!isNonEmptyString(body.language)) {
-      return Response.json({ ok: false, error: "Language is required" }, { status: 400 });
+    const {
+      phone,
+      cityCountry,
+      age,
+      languages,
+      languageOther,
+      hasInitiation,
+      acaryaName,
+      hearAbout,
+      expectations,
+    } = body;
+
+    if (!isNonEmptyString(phone)) {
+      return Response.json({ ok: false, error: "Phone is required" }, { status: 400 });
     }
+    if (!isNonEmptyString(cityCountry)) {
+      return Response.json({ ok: false, error: "City / Country is required" }, { status: 400 });
+    }
+    if (!isNonEmptyString(age)) {
+      return Response.json({ ok: false, error: "Age is required" }, { status: 400 });
+    }
+    if (!isStringArray(languages) || languages.length === 0) {
+      return Response.json({ ok: false, error: "At least one language is required" }, { status: 400 });
+    }
+    if (languages.includes("Other") && !isNonEmptyString(languageOther)) {
+      return Response.json({ ok: false, error: "Please specify your other language" }, { status: 400 });
+    }
+    if (typeof hasInitiation !== "boolean") {
+      return Response.json({ ok: false, error: "Initiation status is required" }, { status: 400 });
+    }
+    if (hasInitiation && !isNonEmptyString(acaryaName)) {
+      return Response.json({ ok: false, error: "Acarya name is required" }, { status: 400 });
+    }
+    if (!isNonEmptyString(hearAbout)) {
+      return Response.json({ ok: false, error: "How you heard about us is required" }, { status: 400 });
+    }
+    if (!isNonEmptyString(expectations)) {
+      return Response.json({ ok: false, error: "Motivation is required" }, { status: 400 });
+    }
+
     payload = {
       applicationType: "mentor",
       name: body.name.trim(),
       email: body.email.trim(),
-      language: body.language,
-      message: body.message,
+      phone: phone.trim(),
+      cityCountry: cityCountry.trim(),
+      age: age.trim(),
+      languages,
+      languageOther: languageOther?.trim(),
+      hasInitiation,
+      acaryaName: acaryaName?.trim(),
+      hearAbout: hearAbout.trim(),
+      expectations: expectations.trim(),
     };
   } else {
     const {

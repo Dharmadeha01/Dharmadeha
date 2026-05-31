@@ -20,54 +20,14 @@ import ParticipantApplyForm, {
   type ParticipantFormErrors,
   type ParticipantFormState,
 } from "@/components/ParticipantApplyForm";
-
-interface MentorFormState {
-  name: string;
-  email: string;
-  language: string;
-  message: string;
-}
-
-interface MentorFormErrors {
-  name?: string;
-  email?: string;
-  language?: string;
-}
+import MentorApplyForm, {
+  EMPTY_MENTOR_FORM,
+  validateMentorForm,
+  type MentorFormErrors,
+  type MentorFormState,
+} from "@/components/MentorApplyForm";
 
 type SubmitStatus = "idle" | "loading" | "success" | "error";
-
-const FIELD_STYLE: React.CSSProperties = {
-  width: "100%",
-  padding: "10px 14px",
-  borderRadius: "10px",
-  border: "1px solid rgba(26,48,40,0.18)",
-  backgroundColor: "#fff",
-  color: "#1A3028",
-  fontSize: "14px",
-  fontFamily: "var(--font-dm-sans)",
-  outline: "none",
-  transition: "border-color 0.15s",
-};
-
-const FIELD_ERROR_STYLE: React.CSSProperties = {
-  ...FIELD_STYLE,
-  border: "1px solid #E87030",
-};
-
-const LABEL_STYLE: React.CSSProperties = {
-  display: "block",
-  fontSize: "13px",
-  fontWeight: 500,
-  color: "rgba(26,48,40,0.8)",
-  marginBottom: "6px",
-};
-
-const EMPTY_MENTOR_FORM: MentorFormState = {
-  name: "",
-  email: "",
-  language: "",
-  message: "",
-};
 
 export default function ApplyModal() {
   const tParticipant = useTranslations("ApplyModal");
@@ -86,11 +46,6 @@ export default function ApplyModal() {
   const isMentor = applicationType === "mentor";
   const t = isMentor ? tMentor : tParticipant;
 
-  const languageOptions = tMentor.raw("languageOptions") as {
-    value: string;
-    label: string;
-  }[];
-
   useEffect(() => {
     const handler = (event: Event) => {
       setApplicationType(parseApplyModalType(event));
@@ -105,24 +60,13 @@ export default function ApplyModal() {
     return () => window.removeEventListener(APPLY_MODAL_EVENT, handler);
   }, []);
 
-  const validateMentor = (): boolean => {
-    const next: MentorFormErrors = {};
-    if (!mentorForm.name.trim()) next.name = tMentor("requiredError");
-    if (!mentorForm.email.trim()) {
-      next.email = tMentor("requiredError");
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mentorForm.email)) {
-      next.email = tMentor("emailError");
-    }
-    if (!mentorForm.language) next.language = tMentor("requiredError");
-    setMentorErrors(next);
-    return Object.keys(next).length === 0;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (isMentor) {
-      if (!validateMentor()) return;
+      const next = validateMentorForm(mentorForm, tMentor);
+      setMentorErrors(next);
+      if (Object.keys(next).length > 0) return;
     } else {
       const next = validateParticipantForm(participantForm, tParticipant);
       setParticipantErrors(next);
@@ -136,8 +80,16 @@ export default function ApplyModal() {
             applicationType: "mentor" as const,
             name: mentorForm.name,
             email: mentorForm.email,
-            language: mentorForm.language,
-            message: mentorForm.message,
+            phone: mentorForm.phone,
+            cityCountry: mentorForm.cityCountry,
+            age: mentorForm.age,
+            languages: mentorForm.languages,
+            languageOther: mentorForm.languageOther || undefined,
+            hasInitiation: mentorForm.hasInitiation === "yes",
+            acaryaName:
+              mentorForm.hasInitiation === "yes" ? mentorForm.acaryaName : undefined,
+            hearAbout: mentorForm.hearAbout,
+            expectations: mentorForm.expectations,
           }
         : {
             applicationType: "participant" as const,
@@ -173,15 +125,6 @@ export default function ApplyModal() {
     }
   };
 
-  const setMentor =
-    (key: keyof MentorFormState) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-      setMentorForm((prev) => ({ ...prev, [key]: e.target.value }));
-      if (mentorErrors[key as keyof MentorFormErrors]) {
-        setMentorErrors((prev) => ({ ...prev, [key]: undefined }));
-      }
-    };
-
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && setOpen(false)}>
       <DialogContent
@@ -190,7 +133,7 @@ export default function ApplyModal() {
           backgroundColor: "#FAF5EC",
           maxHeight: "92dvh",
           overflowY: "auto",
-          maxWidth: isMentor ? undefined : "560px",
+          maxWidth: "560px",
         }}
         showCloseButton={false}
       >
@@ -245,112 +188,14 @@ export default function ApplyModal() {
           ) : (
             <form onSubmit={handleSubmit} noValidate>
               {isMentor ? (
-                <>
-                  <div className="mb-4">
-                    <label style={LABEL_STYLE}>{tMentor("nameLabel")}</label>
-                    <input
-                      type="text"
-                      value={mentorForm.name}
-                      onChange={setMentor("name")}
-                      placeholder={tMentor("namePlaceholder")}
-                      style={mentorErrors.name ? FIELD_ERROR_STYLE : FIELD_STYLE}
-                      onFocus={(e) => {
-                        (e.target as HTMLElement).style.borderColor = "#2AA090";
-                      }}
-                      onBlur={(e) => {
-                        (e.target as HTMLElement).style.borderColor = mentorErrors.name
-                          ? "#E87030"
-                          : "rgba(26,48,40,0.18)";
-                      }}
-                    />
-                    {mentorErrors.name && (
-                      <p className="mt-1 text-xs" style={{ color: "#E87030" }}>
-                        {mentorErrors.name}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="mb-4">
-                    <label style={LABEL_STYLE}>{tMentor("emailLabel")}</label>
-                    <input
-                      type="email"
-                      value={mentorForm.email}
-                      onChange={setMentor("email")}
-                      placeholder={tMentor("emailPlaceholder")}
-                      style={mentorErrors.email ? FIELD_ERROR_STYLE : FIELD_STYLE}
-                      onFocus={(e) => {
-                        (e.target as HTMLElement).style.borderColor = "#2AA090";
-                      }}
-                      onBlur={(e) => {
-                        (e.target as HTMLElement).style.borderColor = mentorErrors.email
-                          ? "#E87030"
-                          : "rgba(26,48,40,0.18)";
-                      }}
-                    />
-                    {mentorErrors.email && (
-                      <p className="mt-1 text-xs" style={{ color: "#E87030" }}>
-                        {mentorErrors.email}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="mb-4">
-                    <label style={LABEL_STYLE}>{tMentor("languageLabel")}</label>
-                    <select
-                      value={mentorForm.language}
-                      onChange={setMentor("language")}
-                      style={mentorErrors.language ? FIELD_ERROR_STYLE : FIELD_STYLE}
-                      onFocus={(e) => {
-                        (e.target as HTMLElement).style.borderColor = "#2AA090";
-                      }}
-                      onBlur={(e) => {
-                        (e.target as HTMLElement).style.borderColor = mentorErrors.language
-                          ? "#E87030"
-                          : "rgba(26,48,40,0.18)";
-                      }}
-                    >
-                      <option value="" disabled>
-                        {tMentor("languagePlaceholder")}
-                      </option>
-                      {languageOptions.map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </option>
-                      ))}
-                    </select>
-                    {mentorErrors.language && (
-                      <p className="mt-1 text-xs" style={{ color: "#E87030" }}>
-                        {mentorErrors.language}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="mb-6">
-                    <label style={LABEL_STYLE}>
-                      {tMentor("messageLabel")}{" "}
-                      <span style={{ fontWeight: 400, color: "rgba(26,48,40,0.45)" }}>
-                        {tMentor("messageLabelOptional")}
-                      </span>
-                    </label>
-                    <textarea
-                      value={mentorForm.message}
-                      onChange={setMentor("message")}
-                      placeholder={tMentor("messagePlaceholder")}
-                      rows={3}
-                      style={{
-                        ...FIELD_STYLE,
-                        resize: "vertical",
-                        minHeight: "80px",
-                      }}
-                      onFocus={(e) => {
-                        (e.target as HTMLElement).style.borderColor = "#2AA090";
-                      }}
-                      onBlur={(e) => {
-                        (e.target as HTMLElement).style.borderColor = "rgba(26,48,40,0.18)";
-                      }}
-                    />
-                  </div>
-                </>
+                <MentorApplyForm
+                  form={mentorForm}
+                  errors={mentorErrors}
+                  onChange={setMentorForm}
+                  onClearError={(key) =>
+                    setMentorErrors((prev) => ({ ...prev, [key]: undefined }))
+                  }
+                />
               ) : (
                 <ParticipantApplyForm
                   form={participantForm}

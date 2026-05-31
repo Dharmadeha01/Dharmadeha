@@ -342,28 +342,16 @@
   },
   "MentorApplyModal": {
     "title": "Стати ментором",
-    "nameLabel": "Повне ім'я",
-    "namePlaceholder": "Ваше ім'я",
-    "emailLabel": "Email",
-    "emailPlaceholder": "ваш@email.com",
     "languageLabel": "Мова, якою готові вести групу",
-    "languagePlaceholder": "Оберіть мову",
-    "messageLabel": "Повідомлення",
-    "messageLabelOptional": "(необов'язково)",
-    "messagePlaceholder": "Розкажіть про досвід і доступність...",
+    "expectationsLabel": "Мотивація стати ментором",
+    "expectationsPlaceholder": "Чому ви хочете стати ментором?",
     "submitButton": "Надіслати заявку ментора",
     "submitting": "Надсилаємо...",
     "successTitle": "Заявку надіслано!",
     "successMessage": "Дякуємо за заявку стати ментором. Ми зв'яжемось з вами протягом 1–2 тижнів.",
     "errorMessage": "Сталася помилка. Спробуйте ще раз або напишіть нам напряму.",
     "requiredError": "Це поле обов'язкове",
-    "emailError": "Введіть коректний email",
-    "languageOptions": [
-      { "value": "Russian", "label": "Російська" },
-      { "value": "English", "label": "Англійська" },
-      { "value": "Ukrainian", "label": "Українська" },
-      { "value": "Italian", "label": "Італійська" }
-    ]
+    "emailError": "Введіть коректний email"
   },
   "Footer": {
     "about": "Про проект",
