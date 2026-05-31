@@ -13,6 +13,7 @@ import {
 import FadeInView from "./FadeInView";
 import type { SanityCourse } from "@/lib/sanity";
 import { loc, locArray } from "@/lib/localize";
+import { openApplyModal } from "@/lib/application";
 
 interface CourseData {
   title: string;
@@ -346,7 +347,7 @@ function CourseModal({
             style={{ backgroundColor: "#E87030" }}
             onClick={() => {
               onClose();
-              window.dispatchEvent(new CustomEvent("open-apply-modal"));
+              openApplyModal("participant");
             }}
             onMouseEnter={(e) =>
               ((e.currentTarget as HTMLElement).style.backgroundColor = "#d4612a")

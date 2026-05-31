@@ -1,3 +1,7 @@
+import type { ApplicationType } from "@/lib/application";
+
+export type { ApplicationType } from "@/lib/application";
+
 export interface Stats {
   people: number;
   dharmaDehas: number;
@@ -58,17 +62,22 @@ export async function fetchStats(opts?: RequestInit): Promise<Stats> {
 }
 
 export interface ApplicationPayload {
+  applicationType: ApplicationType;
   name: string;
   email: string;
   language: string;
-  course: string;
+  course?: string;
   message?: string;
+}
+
+function roleForType(type: ApplicationType): string {
+  return type === "mentor" ? "Mentor" : "Participant";
 }
 
 /**
  * Submit an application to Airtable.
  * Expects an "Applications" table with fields:
- *   Name, Email, Language, Course, Message (all Single line text or Long text)
+ *   Name, Email, Language, Course, Message, Status, Role
  */
 export async function submitApplication(data: ApplicationPayload): Promise<{ ok: boolean; error?: string }> {
   const token = process.env.AIRTABLE_API_TOKEN;
@@ -76,6 +85,19 @@ export async function submitApplication(data: ApplicationPayload): Promise<{ ok:
 
   if (!token || !baseId) {
     return { ok: false, error: "Airtable not configured" };
+  }
+
+  const fields: Record<string, string> = {
+    Name: data.name,
+    Email: data.email,
+    Language: data.language,
+    Message: data.message ?? "",
+    Status: "New",
+    Role: roleForType(data.applicationType),
+  };
+
+  if (data.applicationType === "participant") {
+    fields.Course = data.course ?? "";
   }
 
   try {
@@ -87,15 +109,7 @@ export async function submitApplication(data: ApplicationPayload): Promise<{ ok:
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          fields: {
-            Name: data.name,
-            Email: data.email,
-            Language: data.language,
-            Course: data.course,
-            Message: data.message ?? "",
-          },
-        }),
+        body: JSON.stringify({ fields }),
       }
     );
 

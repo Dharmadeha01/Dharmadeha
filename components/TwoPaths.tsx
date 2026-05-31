@@ -4,10 +4,7 @@ import { useTranslations } from "next-intl";
 import { motion, useReducedMotion } from "framer-motion";
 import { Users, Compass } from "lucide-react";
 import FadeInView from "./FadeInView";
-
-function openApplyModal() {
-  window.dispatchEvent(new CustomEvent("open-apply-modal"));
-}
+import { openApplyModal } from "@/lib/application";
 
 /** CSS concentric rings anchored at bottom-right corner */
 function ConcentricRings({ color }: { color: string }) {
@@ -176,7 +173,7 @@ export default function TwoPaths() {
                 </ul>
 
                 <motion.button
-                  onClick={openApplyModal}
+                  onClick={() => openApplyModal("participant")}
                   whileHover={shouldReduce ? {} : { scale: 1.02 }}
                   whileTap={shouldReduce ? {} : { scale: 0.97 }}
                   transition={{ duration: 0.15 }}
@@ -280,6 +277,7 @@ export default function TwoPaths() {
                 </ul>
 
                 <motion.button
+                  onClick={() => openApplyModal("mentor")}
                   whileHover={shouldReduce ? {} : { scale: 1.02, backgroundColor: "#1A3028", color: "#FAF5EC" }}
                   whileTap={shouldReduce ? {} : { scale: 0.97 }}
                   transition={{ duration: 0.2 }}

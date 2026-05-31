@@ -320,6 +320,31 @@
       { "value": "7 Secrets of Shiva", "label": "7 секретов успеха Шивы" }
     ]
   },
+  "MentorApplyModal": {
+    "title": "Стать ментором",
+    "nameLabel": "Полное имя",
+    "namePlaceholder": "Ваше имя",
+    "emailLabel": "Email",
+    "emailPlaceholder": "ваш@email.com",
+    "languageLabel": "Язык, на котором готовы вести группу",
+    "languagePlaceholder": "Выберите язык",
+    "messageLabel": "Сообщение",
+    "messageLabelOptional": "(необязательно)",
+    "messagePlaceholder": "Расскажите об опыте и доступности...",
+    "submitButton": "Отправить заявку ментора",
+    "submitting": "Отправляем...",
+    "successTitle": "Заявка отправлена!",
+    "successMessage": "Спасибо за заявку стать ментором. Мы свяжемся с вами в течение 1–2 недель.",
+    "errorMessage": "Произошла ошибка. Попробуйте ещё раз или напишите нам напрямую.",
+    "requiredError": "Это поле обязательно",
+    "emailError": "Введите корректный email",
+    "languageOptions": [
+      { "value": "Russian", "label": "Русский" },
+      { "value": "English", "label": "Английский" },
+      { "value": "Ukrainian", "label": "Украинский" },
+      { "value": "Italian", "label": "Итальянский" }
+    ]
+  },
   "Footer": {
     "about": "О проекте",
     "courses": "Курсы",

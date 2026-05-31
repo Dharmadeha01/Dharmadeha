@@ -320,6 +320,31 @@
       { "value": "7 Secrets of Shiva", "label": "7 Secrets of Shiva" }
     ]
   },
+  "MentorApplyModal": {
+    "title": "Become a mentor",
+    "nameLabel": "Full name",
+    "namePlaceholder": "Your name",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "your@email.com",
+    "languageLabel": "Preferred language for leading a group",
+    "languagePlaceholder": "Select language",
+    "messageLabel": "Message",
+    "messageLabelOptional": "(optional)",
+    "messagePlaceholder": "Tell us about your experience and availability...",
+    "submitButton": "Send mentor application",
+    "submitting": "Sending...",
+    "successTitle": "Application sent!",
+    "successMessage": "Thank you for applying to become a mentor. We will contact you within 1–2 weeks.",
+    "errorMessage": "Something went wrong. Please try again or write to us directly.",
+    "requiredError": "This field is required",
+    "emailError": "Please enter a valid email address",
+    "languageOptions": [
+      { "value": "Russian", "label": "Russian" },
+      { "value": "English", "label": "English" },
+      { "value": "Ukrainian", "label": "Ukrainian" },
+      { "value": "Italian", "label": "Italian" }
+    ]
+  },
   "Footer": {
     "about": "About",
     "courses": "Courses",

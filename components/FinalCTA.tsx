@@ -3,15 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import FadeInView from "./FadeInView";
-
-function openApplyModal() {
-  window.dispatchEvent(new CustomEvent("open-apply-modal"));
-}
-
-function scrollToJoin() {
-  const el = document.getElementById("join");
-  if (el) el.scrollIntoView({ behavior: "smooth" });
-}
+import { openApplyModal } from "@/lib/application";
 
 export default function FinalCTA() {
   const t = useTranslations("FinalCTA");
@@ -55,7 +47,7 @@ export default function FinalCTA() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6 md:mb-8">
             <motion.button
-              onClick={openApplyModal}
+              onClick={() => openApplyModal("participant")}
               whileHover={shouldReduce ? {} : { scale: 1.02 }}
               whileTap={shouldReduce ? {} : { scale: 0.97 }}
               transition={{ duration: 0.15 }}
@@ -71,7 +63,7 @@ export default function FinalCTA() {
               {t("cta1")}
             </motion.button>
             <motion.button
-              onClick={scrollToJoin}
+              onClick={() => openApplyModal("mentor")}
               whileHover={shouldReduce ? {} : { scale: 1.02 }}
               whileTap={shouldReduce ? {} : { scale: 0.97 }}
               transition={{ duration: 0.15 }}

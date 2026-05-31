@@ -5,10 +5,7 @@ import { useTranslations } from "next-intl";
 import FadeInView from "./FadeInView";
 import type { SanityHero } from "@/lib/sanity";
 import { loc } from "@/lib/localize";
-
-function openApplyModal() {
-  window.dispatchEvent(new CustomEvent("open-apply-modal"));
-}
+import { openApplyModal } from "@/lib/application";
 
 export default function Hero({
   children,
@@ -89,7 +86,7 @@ export default function Hero({
           {...fadeUp(0.8, 8)}
         >
           <motion.button
-            onClick={openApplyModal}
+            onClick={() => openApplyModal("participant")}
             whileHover={shouldReduce ? {} : { scale: 1.02 }}
             whileTap={shouldReduce ? {} : { scale: 0.97 }}
             transition={{ duration: 0.15 }}

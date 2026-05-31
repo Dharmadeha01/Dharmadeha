@@ -1,7 +1,15 @@
-import { submitApplication, type ApplicationPayload } from "@/lib/airtable";
+import {
+  submitApplication,
+  type ApplicationPayload,
+  type ApplicationType,
+} from "@/lib/airtable";
+
+function isApplicationType(value: unknown): value is ApplicationType {
+  return value === "participant" || value === "mentor";
+}
 
 export async function POST(request: Request) {
-  let body: ApplicationPayload;
+  let body: ApplicationPayload & { applicationType?: unknown };
 
   try {
     body = await request.json();
@@ -9,9 +17,15 @@ export async function POST(request: Request) {
     return Response.json({ ok: false, error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { name, email, language, course, message } = body;
+  const { name, email, language, course, message, applicationType } = body;
 
-  // Server-side validation
+  if (!isApplicationType(applicationType)) {
+    return Response.json(
+      { ok: false, error: "Invalid application type" },
+      { status: 400 }
+    );
+  }
+
   if (!name?.trim()) {
     return Response.json({ ok: false, error: "Name is required" }, { status: 400 });
   }
@@ -21,11 +35,18 @@ export async function POST(request: Request) {
   if (!language?.trim()) {
     return Response.json({ ok: false, error: "Language is required" }, { status: 400 });
   }
-  if (!course?.trim()) {
+  if (applicationType === "participant" && !course?.trim()) {
     return Response.json({ ok: false, error: "Course is required" }, { status: 400 });
   }
 
-  const result = await submitApplication({ name: name.trim(), email: email.trim(), language, course, message });
+  const result = await submitApplication({
+    applicationType,
+    name: name.trim(),
+    email: email.trim(),
+    language,
+    course: course?.trim(),
+    message,
+  });
 
   if (!result.ok) {
     return Response.json({ ok: false, error: result.error }, { status: 500 });

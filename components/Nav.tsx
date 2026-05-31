@@ -6,16 +6,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { DharmaDehaLockup } from "@/components/ui/DharmaDehaMark";
-
-function openApplyModal() {
-  window.dispatchEvent(new CustomEvent("open-apply-modal"));
-}
-
-function scrollToJoin(e: React.MouseEvent) {
-  e.preventDefault();
-  const el = document.getElementById("join");
-  if (el) el.scrollIntoView({ behavior: "smooth" });
-}
+import { openApplyModal } from "@/lib/application";
 
 export default function Nav() {
   const t = useTranslations("Nav");
@@ -112,7 +103,7 @@ export default function Nav() {
 
           {/* Become a mentor */}
           <motion.button
-            onClick={scrollToJoin}
+            onClick={() => openApplyModal("mentor")}
             whileHover={shouldReduce ? {} : { scale: 1.02 }}
             whileTap={shouldReduce ? {} : { scale: 0.97 }}
             transition={{ duration: 0.15 }}
@@ -130,7 +121,7 @@ export default function Nav() {
 
           {/* Join — ember */}
           <motion.button
-            onClick={openApplyModal}
+            onClick={() => openApplyModal("participant")}
             whileHover={shouldReduce ? {} : { scale: 1.02 }}
             whileTap={shouldReduce ? {} : { scale: 0.97 }}
             transition={{ duration: 0.15 }}
@@ -151,7 +142,7 @@ export default function Nav() {
         <div className="md:hidden flex flex-col items-end gap-0.5">
           <div className="flex items-center gap-2 h-14">
             <motion.button
-              onClick={openApplyModal}
+              onClick={() => openApplyModal("participant")}
               whileHover={shouldReduce ? {} : { scale: 1.02 }}
               whileTap={shouldReduce ? {} : { scale: 0.97 }}
               transition={{ duration: 0.15 }}
@@ -215,7 +206,7 @@ export default function Nav() {
             <motion.button
               className="text-sm px-5 py-3 rounded-full text-white font-medium text-center cursor-pointer"
               style={{ backgroundColor: "#E87030" }}
-              onClick={() => { setMenuOpen(false); openApplyModal(); }}
+              onClick={() => { setMenuOpen(false); openApplyModal("participant"); }}
               whileHover={shouldReduce ? {} : { scale: 1.02 }}
               whileTap={shouldReduce ? {} : { scale: 0.97 }}
               initial={{ opacity: 0, x: -8 }}
@@ -229,8 +220,7 @@ export default function Nav() {
               style={{ backgroundColor: "#1A3028", color: "#FAF5EC" }}
               onClick={() => {
                 setMenuOpen(false);
-                const el = document.getElementById("join");
-                if (el) el.scrollIntoView({ behavior: "smooth" });
+                openApplyModal("mentor");
               }}
               whileHover={shouldReduce ? {} : { scale: 1.02 }}
               whileTap={shouldReduce ? {} : { scale: 0.97 }}

@@ -9,6 +9,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  APPLY_MODAL_EVENT,
+  parseApplyModalType,
+  type ApplicationType,
+} from "@/lib/application";
 
 interface FormState {
   name: string;
@@ -53,32 +58,45 @@ const LABEL_STYLE: React.CSSProperties = {
   marginBottom: "6px",
 };
 
+const EMPTY_FORM: FormState = {
+  name: "",
+  email: "",
+  language: "",
+  course: "",
+  message: "",
+};
+
 export default function ApplyModal() {
-  const t = useTranslations("ApplyModal");
+  const tParticipant = useTranslations("ApplyModal");
+  const tMentor = useTranslations("MentorApplyModal");
   const [open, setOpen] = useState(false);
-  const [form, setForm] = useState<FormState>({
-    name: "",
-    email: "",
-    language: "",
-    course: "",
-    message: "",
-  });
+  const [applicationType, setApplicationType] =
+    useState<ApplicationType>("participant");
+  const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [errors, setErrors] = useState<FormErrors>({});
   const [status, setStatus] = useState<SubmitStatus>("idle");
 
-  const languageOptions = t.raw("languageOptions") as { value: string; label: string }[];
-  const courseOptions = t.raw("courseOptions") as { value: string; label: string }[];
+  const isMentor = applicationType === "mentor";
+  const t = isMentor ? tMentor : tParticipant;
 
-  // Listen for the open-apply-modal event dispatched by any CTA button
+  const languageOptions = t.raw("languageOptions") as {
+    value: string;
+    label: string;
+  }[];
+  const courseOptions = isMentor
+    ? []
+    : (tParticipant.raw("courseOptions") as { value: string; label: string }[]);
+
   useEffect(() => {
-    const handler = () => {
+    const handler = (event: Event) => {
+      setApplicationType(parseApplyModalType(event));
       setOpen(true);
       setStatus("idle");
-      setForm({ name: "", email: "", language: "", course: "", message: "" });
+      setForm(EMPTY_FORM);
       setErrors({});
     };
-    window.addEventListener("open-apply-modal", handler);
-    return () => window.removeEventListener("open-apply-modal", handler);
+    window.addEventListener(APPLY_MODAL_EVENT, handler);
+    return () => window.removeEventListener(APPLY_MODAL_EVENT, handler);
   }, []);
 
   const validate = (): boolean => {
@@ -90,7 +108,7 @@ export default function ApplyModal() {
       next.email = t("emailError");
     }
     if (!form.language) next.language = t("requiredError");
-    if (!form.course) next.course = t("requiredError");
+    if (!isMentor && !form.course) next.course = t("requiredError");
     setErrors(next);
     return Object.keys(next).length === 0;
   };
@@ -103,7 +121,14 @@ export default function ApplyModal() {
       const res = await fetch("/api/apply", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          applicationType,
+          name: form.name,
+          email: form.email,
+          language: form.language,
+          course: isMentor ? undefined : form.course,
+          message: form.message,
+        }),
       });
       const json = await res.json();
       setStatus(json.ok ? "success" : "error");
@@ -132,7 +157,6 @@ export default function ApplyModal() {
         }}
         showCloseButton={false}
       >
-        {/* Header */}
         <div
           className="flex items-center justify-between px-6 md:px-8 pt-6 pb-4"
           style={{ borderBottom: "1px solid rgba(26,48,40,0.08)" }}
@@ -159,7 +183,6 @@ export default function ApplyModal() {
 
         <div className="px-6 md:px-8 py-6">
           {status === "success" ? (
-            /* Success state */
             <div className="py-6 text-center">
               <div
                 className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-5"
@@ -183,9 +206,7 @@ export default function ApplyModal() {
               </p>
             </div>
           ) : (
-            /* Form */
             <form onSubmit={handleSubmit} noValidate>
-              {/* Name */}
               <div className="mb-4">
                 <label style={LABEL_STYLE}>{t("nameLabel")}</label>
                 <input
@@ -210,7 +231,6 @@ export default function ApplyModal() {
                 )}
               </div>
 
-              {/* Email */}
               <div className="mb-4">
                 <label style={LABEL_STYLE}>{t("emailLabel")}</label>
                 <input
@@ -235,9 +255,13 @@ export default function ApplyModal() {
                 )}
               </div>
 
-              {/* Language + Course (two columns on md+) */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                {/* Language */}
+              <div
+                className={
+                  isMentor
+                    ? "mb-4"
+                    : "grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"
+                }
+              >
                 <div>
                   <label style={LABEL_STYLE}>{t("languageLabel")}</label>
                   <select
@@ -269,40 +293,40 @@ export default function ApplyModal() {
                   )}
                 </div>
 
-                {/* Course */}
-                <div>
-                  <label style={LABEL_STYLE}>{t("courseLabel")}</label>
-                  <select
-                    value={form.course}
-                    onChange={set("course")}
-                    style={errors.course ? FIELD_ERROR_STYLE : FIELD_STYLE}
-                    onFocus={(e) => {
-                      (e.target as HTMLElement).style.borderColor = "#2AA090";
-                    }}
-                    onBlur={(e) => {
-                      (e.target as HTMLElement).style.borderColor = errors.course
-                        ? "#E87030"
-                        : "rgba(26,48,40,0.18)";
-                    }}
-                  >
-                    <option value="" disabled>
-                      {t("coursePlaceholder")}
-                    </option>
-                    {courseOptions.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
+                {!isMentor && (
+                  <div>
+                    <label style={LABEL_STYLE}>{tParticipant("courseLabel")}</label>
+                    <select
+                      value={form.course}
+                      onChange={set("course")}
+                      style={errors.course ? FIELD_ERROR_STYLE : FIELD_STYLE}
+                      onFocus={(e) => {
+                        (e.target as HTMLElement).style.borderColor = "#2AA090";
+                      }}
+                      onBlur={(e) => {
+                        (e.target as HTMLElement).style.borderColor = errors.course
+                          ? "#E87030"
+                          : "rgba(26,48,40,0.18)";
+                      }}
+                    >
+                      <option value="" disabled>
+                        {tParticipant("coursePlaceholder")}
                       </option>
-                    ))}
-                  </select>
-                  {errors.course && (
-                    <p className="mt-1 text-xs" style={{ color: "#E87030" }}>
-                      {errors.course}
-                    </p>
-                  )}
-                </div>
+                      {courseOptions.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.course && (
+                      <p className="mt-1 text-xs" style={{ color: "#E87030" }}>
+                        {errors.course}
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
 
-              {/* Message */}
               <div className="mb-6">
                 <label style={LABEL_STYLE}>
                   {t("messageLabel")}{" "}
@@ -329,7 +353,6 @@ export default function ApplyModal() {
                 />
               </div>
 
-              {/* Error banner */}
               {status === "error" && (
                 <div
                   className="mb-4 px-4 py-3 rounded-xl text-sm"
@@ -343,7 +366,6 @@ export default function ApplyModal() {
                 </div>
               )}
 
-              {/* Submit */}
               <button
                 type="submit"
                 disabled={status === "loading"}
