@@ -105,7 +105,7 @@ function roleForType(type: ApplicationType): string {
 
 /**
  * Submit an application to Airtable.
- * Mentor: Name, Email, Phone/Telegram, City/Country, Age, Language,
+ * Mentor: Name, Email, Phone/Telegram, City/Country, Age, Languages,
  *   Has Initiation, Acarya, How did you hear, Expectations, Status, Role
  * Participant: Name, Email, Phone/Telegram, City/Country, Age, Languages,
  *   Preferred Mentor, Has Initiation, Acarya, Course, Future Topics,
@@ -135,7 +135,7 @@ export async function submitApplication(data: ApplicationPayload): Promise<{ ok:
     fields["Phone/Telegram"] = data.phone;
     fields["City/Country"] = data.cityCountry;
     fields.Age = Number(data.age);
-    fields.Language = languages.join(", ");
+    fields.Languages = languages.join(", ");
     fields["Has Initiation"] = data.hasInitiation ? "Yes" : "No";
     if (data.hasInitiation && data.acaryaName?.trim()) {
       fields.Acarya = data.acaryaName.trim();
