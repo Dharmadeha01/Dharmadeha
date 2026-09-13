@@ -29,6 +29,8 @@ import MentorApplyForm, {
 
 type SubmitStatus = "idle" | "loading" | "success" | "error";
 
+const TELEGRAM_CHANNEL_URL = "https://t.me/+klofOP-JFPJhMzYx";
+
 export default function ApplyModal() {
   const tParticipant = useTranslations("ApplyModal");
   const tMentor = useTranslations("MentorApplyModal");
@@ -178,12 +180,24 @@ export default function ApplyModal() {
               >
                 {t("successTitle")}
               </p>
-              <p
-                className="text-sm leading-relaxed"
-                style={{ color: "rgba(26,48,40,0.65)" }}
-              >
-                {t("successMessage")}
-              </p>
+              {isMentor ? (
+                <p
+                  className="text-sm leading-relaxed"
+                  style={{ color: "rgba(26,48,40,0.65)" }}
+                >
+                  {t("successMessage")}
+                </p>
+              ) : (
+                <a
+                  href={TELEGRAM_CHANNEL_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block text-base leading-relaxed underline underline-offset-4 transition-colors hover:opacity-80"
+                  style={{ color: "#2AA090" }}
+                >
+                  {tParticipant("successMessage")}
+                </a>
+              )}
             </div>
           ) : (
             <form onSubmit={handleSubmit} noValidate>
